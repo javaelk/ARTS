@@ -129,7 +129,7 @@ public class TestCaseSelection {
 			actualCost.put(tec, costArrayPerTec);
 			log.info("Completed RTS technqiue " + tec.getImplmentationName());
 		}
-		Path resultFile = ResultOutput.outputEvalResult("actual",actualPrecision,null,testSubjectVersions,actualCost);
+		Path resultFile = ResultOutput.outputEvalResult_Actual("actual",actualPrecision,null,testSubjectVersions,actualCost);
 		log.info("All techniques are applied successfully, results have been written to "+ resultFile.getFileName());
 	}
     

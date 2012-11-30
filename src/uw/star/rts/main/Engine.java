@@ -3,7 +3,7 @@ package uw.star.rts.main;
 
 import uw.star.rts.TCselection.TestCaseSelection;
 import uw.star.rts.artifact.*;
-import uw.star.rts.cost.CostFactor;
+import uw.star.rts.cost.*;
 import uw.star.rts.extraction.*;
 import uw.star.rts.goal.*;
 import uw.star.rts.technique.*;
@@ -210,51 +210,52 @@ public class Engine {
 			for(int i=0;i<app.getTotalNumVersons();i++)
 				testSubjectVersions.add(appName+"-v"+i);
 		}
-			
-
-			//use to hashmap to store results,key is technique applied, value is a list of % for all test subjects versions
-			Map<uw.star.rts.technique.Technique,List<Double>> predicatedPrecision = new HashMap<>();
-			Map<uw.star.rts.technique.Technique,List<Long>> predicatedAnalysisCost = new HashMap<>();
-			Map<uw.star.rts.technique.Technique,List<StopWatch>> predicationCost = new HashMap<>();
+			//use a Map to store results,key is technique applied, value is a list of % for all test subjects versions
+		    //for each technique - test subject version combination, there is a map of <prediction model, precision>
+			Map<uw.star.rts.technique.Technique,List<Map<PrecisionPredictionModel,Double>>> predicatedPrecision = new HashMap<>();
+			Map<uw.star.rts.technique.Technique,List<Map<PrecisionPredictionModel,Long>>> predicatedAnalysisCost = new HashMap<>();
+			Map<uw.star.rts.technique.Technique,List<Map<PrecisionPredictionModel,StopWatch>>> predicationCost = new HashMap<>();
 			for(uw.star.rts.technique.Technique tec: techs){
-				List<Double> predicatedPrecisionArray = new ArrayList<>();
-				List<Long> predicatedAnalysisCostArray = new ArrayList<>();
-				List<StopWatch> stopwatchArrayPerTec = new ArrayList<>();
+				List<Map<PrecisionPredictionModel,Double>> predicatedPrecisionArrayPerTec = new ArrayList<>();
+				List<Map<PrecisionPredictionModel,Long>> predicatedAnalysisCostArrayPerTec = new ArrayList<>();
+				List<Map<PrecisionPredictionModel,StopWatch>> stopwatchArrayPerTec = new ArrayList<>();
 				for(Application app: testsubjects){
-					List<StopWatch> stopwatchArrayPerApp = new ArrayList<>();
-					int totalNumVersions = app.getTotalNumVersons();
-					//Initialize all stop watches
-					for(int i=0;i<totalNumVersions;i++)
-						stopwatchArrayPerApp.add(new StopWatch());
-					
 					//predicated precision is the same for all versions of the program(i.e. predication only on v0)
-					//call predicatePrecision and predicateAnalysisCost once per applicaiton,  no need to loop through all versions.
+					//call predicatePrecision and predicateAnalysisCost once per application,  no need to loop through all versions.
 					tec.setApplication(app);
-			        StopWatch sw = stopwatchArrayPerApp.get(0);
-					//get PredicatedPrecision 
-					sw.start(CostFactor.PrecisionPredictionCost);
-					double pPrecision = tec.predictPrecision();
-					sw.stop(CostFactor.PrecisionPredictionCost);
-					//get PredicatedAnalysisCost
-					sw.start(CostFactor.AnalysisCostPredictionCost);
-					long pAnalysisCost = tec.predictAnalysisCost();
-					sw.stop(CostFactor.AnalysisCostPredictionCost);
+			        Map<PrecisionPredictionModel,Double> precisionPerTestSubject = new HashMap<>();
+			        Map<PrecisionPredictionModel,Long> predicatedAnalysisCostPerTestSubject = new HashMap<>();
+			        Map<PrecisionPredictionModel,StopWatch> stopwatchPerTestSubject = new HashMap<>();
+			        
+			        for(PrecisionPredictionModel pm: PrecisionPredictionModel.values()){//for each predictor 
+			        	StopWatch sw = new StopWatch();
+			        	//get PredicatedPrecision 
+			        	sw.start(CostFactor.PrecisionPredictionCost);
+			        	precisionPerTestSubject.put(pm,tec.predictPrecision(pm));
+			        	sw.stop(CostFactor.PrecisionPredictionCost);
+				        
+			        	//get PredicatedAnalysisCost
+			        	sw.start(CostFactor.AnalysisCostPredictionCost);
+			        	predicatedAnalysisCostPerTestSubject.put(pm, tec.predictAnalysisCost());
+			        	sw.stop(CostFactor.AnalysisCostPredictionCost);
+			        	
+			        	stopwatchPerTestSubject.put(pm, sw);
+			        }
 					//calculate utility value
-			
 					//same values for all versions
-					for(int i=0;i<totalNumVersions;i++){
-						predicatedPrecisionArray.add(pPrecision);
-						predicatedAnalysisCostArray.add(pAnalysisCost);
+			        for(int i=0;i<app.getTotalNumVersons();i++){
+						predicatedPrecisionArrayPerTec.add(precisionPerTestSubject);
+						predicatedAnalysisCostArrayPerTec.add(predicatedAnalysisCostPerTestSubject);
+						stopwatchArrayPerTec.add(stopwatchPerTestSubject);
 					}
-					stopwatchArrayPerTec.addAll(stopwatchArrayPerApp);
-				}
-				predicatedPrecision.put(tec, predicatedPrecisionArray);
-				predicatedAnalysisCost.put(tec, predicatedAnalysisCostArray);
+				}//end for each test subjects
+				
+				predicatedPrecision.put(tec, predicatedPrecisionArrayPerTec);
+				predicatedAnalysisCost.put(tec, predicatedAnalysisCostArrayPerTec);
 				predicationCost.put(tec, stopwatchArrayPerTec);
 			}
 			//export to CSV
-			//export prediction cost
-			ResultOutput.outputEvalResult("predicated",predicatedPrecision,predicatedAnalysisCost,testSubjectVersions,predicationCost);
+			ResultOutput.outputEvalResult_Prediction("predicated",predicatedPrecision,predicatedAnalysisCost,testSubjectVersions,predicationCost);
 	
 		return techs.get(0);        
 	}

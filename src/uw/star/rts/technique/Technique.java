@@ -7,7 +7,7 @@ import java.util.List;
 
 import uw.star.rts.artifact.*;
 import uw.star.rts.util.*;
-
+import uw.star.rts.cost.*;
 public abstract class Technique {
     String id;
     String description;
@@ -43,7 +43,7 @@ public abstract class Technique {
 	//return list of test cases selected from p that is applicable in pPrime for regression testing 
 	public abstract List<TestCase> selectTests(Program p,Program pPrime,StopWatch sw);
 	
-	public abstract double predictPrecision();
+	public abstract double predictPrecision(PrecisionPredictionModel pm);
 	public abstract long predictAnalysisCost();
 	
 }
