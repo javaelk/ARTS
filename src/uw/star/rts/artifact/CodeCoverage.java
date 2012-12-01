@@ -46,7 +46,7 @@ public class  CodeCoverage<E extends Entity> extends Trace<TestCase, E>{
 	/**
 	 * Let Ec denote the set of covered entities. Ec is defined as follows:
 	 * Ec =for every e in E, there exist a t in T that covers e. i.e entity e is covered by at least one t
-	 * @return
+	 * @return all covered entities in the Coverage Matrix
 	 */
 	
 	public List<E> getCoveredEntities(){
@@ -60,5 +60,17 @@ public class  CodeCoverage<E extends Entity> extends Trace<TestCase, E>{
 			}
 		}
 		return new ArrayList<E>(results);
+	}
+	
+	/*
+	 * @return entities covered by given list of test cases
+	 */
+	
+	public List<E> getCoveredEntities(List<TestCase> testcases){
+		Set<E> coveredEntities = new HashSet<>();
+		for(TestCase test: testcases)
+		   coveredEntities.addAll(this.getLinkedEntitiesByRow(test));
+	
+		return new ArrayList<E>(coveredEntities);
 	}
 }

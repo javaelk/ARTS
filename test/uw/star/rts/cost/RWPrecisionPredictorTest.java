@@ -22,12 +22,13 @@ public class RWPrecisionPredictorTest extends CodeCoverageTest {
 	@Test
 	public void testGetPredicatedPercetageOfTestCaseSelected() {
 		
-		assertEquals("selection rate",0.5,RWPrecisionPredictor.getPredicatedPercetageOfTestCaseSelected(codeCoverage,tca),0.01);
+		assertEquals("selection rate",0.5,RWPrecisionPredictor.predictSelectionRate(codeCoverage,tca),0.01);
 		List<TestCase> regressionSuite = new ArrayList<>();
 		regressionSuite.add(a);
 		regressionSuite.add(b);
 		regressionSuite.add(c);
-		assertEquals("selection rate",0.67,RWPrecisionPredictor2.getPredicatedPercetageOfTestCaseSelected(codeCoverage,regressionSuite),0.01);
+		assertEquals("selection rate",0.67,RWPrecisionPredictor2.predictSelectionRate(codeCoverage,regressionSuite),0.01);
+		assertEquals("selection rate",1,RWPrecisionPredictor_multiChanges.predictSelectionRate(codeCoverage.getCoveredEntities(regressionSuite).size(),2),0.01);
 	}
 
 }

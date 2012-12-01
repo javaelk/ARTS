@@ -35,7 +35,7 @@ public class RWPrecisionPredictor {
 	 *         when an arbitrary changes is made to P 
 	 */
 //	public static double getPredicatedPercetageOfTestCaseSelected(Application app,Program p, Technique teq){
-	public static double getPredicatedPercetageOfTestCaseSelected(CodeCoverage cover,List<TestCase> testcases){
+	public static double predictSelectionRate(CodeCoverage cover,List<TestCase> testcases){
 		double cc = cover.getCumulativeCoverage();
 		log.debug("Cumlative Coverage is " + cc);
 		int ec = cover.getCoveredEntities().size();
