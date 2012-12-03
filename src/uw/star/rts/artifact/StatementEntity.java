@@ -7,12 +7,12 @@ import java.nio.file.*;
  */
 public class StatementEntity extends Entity {
 	Program program;
-	String packageName;
-	String srcName;
-	int lineNum;
-	String statement;
+	protected String packageName;
+	protected String srcName;
+	protected int lineNum;
+	protected String statement;
     //one statement belongs to source file only
-	SourceFileEntity srcFile;
+	protected SourceFileEntity srcFile;
 	
     public StatementEntity(Program p, String packageName,String srcName,int lineNum, String statement,Path sourceFile){
     	super(p.getApplicationName(),p.getVersionNo(),sourceFile);
@@ -58,6 +58,12 @@ public class StatementEntity extends Entity {
     	return statement;
     }
     
+    public String getPackageName(){
+    	return packageName;
+    }
+    public String getSrcName(){
+    	return srcName;
+    }
     @Override
     public boolean equals(Object o){
     	if(o instanceof StatementEntity){

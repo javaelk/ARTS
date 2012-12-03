@@ -109,4 +109,31 @@ public class ResultOutput {
 		return outputFile;
 	}
 	
+	/**
+	 * a generic output method
+	 */
+	public static Path outputResult(String outputFileName, List<String> header, Map<String,List<String>> rows){
+		Path outputFile = Paths.get("output"+File.separator+outputFileName+"_"+DateUtils.now("MMMdd_HHmm")+".csv");
+		Charset charset = Charset.forName("UTF-8");
+
+		try(BufferedWriter writer = Files.newBufferedWriter(outputFile,charset,StandardOpenOption.WRITE,StandardOpenOption.CREATE,StandardOpenOption.TRUNCATE_EXISTING)){
+			//write column headers,1st row
+			for(String columnName: header)
+				writer.write(columnName +",");
+			writer.write("\n");
+
+			//for each row,
+				for(String key: rows.keySet()){
+					writer.write(key+",");
+					for(String value:rows.get(key))
+						writer.write(value+",");
+					writer.write("\n");
+				}
+		}catch(IOException ec){
+			ec.printStackTrace();
+		}
+		return outputFile;
+	}
+	
+	
 }

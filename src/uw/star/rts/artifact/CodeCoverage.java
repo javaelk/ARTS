@@ -44,6 +44,20 @@ public class  CodeCoverage<E extends Entity> extends Trace<TestCase, E>{
 	}
 	
 	/**
+	 * CC is the amount of cumulative coverage of achieved by T (i.e the integer
+	 * sum of the entries in the coverage matrix
+	 * 
+	 * @return cumulative coverage incurred by the given test case set, this is normally the set of test cases with obsolete ones removed.
+	 */
+	public int getCumulativeCoverage(List<TestCase> regressionTests) {
+		int sum = 0;
+		for(TestCase t:regressionTests)
+				sum += this.getLinkedEntitiesByRow(t).size();
+		return sum;
+	}
+	
+	
+	/**
 	 * Let Ec denote the set of covered entities. Ec is defined as follows:
 	 * Ec =for every e in E, there exist a t in T that covers e. i.e entity e is covered by at least one t
 	 * @return all covered entities in the Coverage Matrix
@@ -72,5 +86,40 @@ public class  CodeCoverage<E extends Entity> extends Trace<TestCase, E>{
 		   coveredEntities.addAll(this.getLinkedEntitiesByRow(test));
 	
 		return new ArrayList<E>(coveredEntities);
+	}
+	
+	/**
+	 * Compare this code coverage matrix with another code coverage matrix to find out total number of changed elements
+	 * this method compares every testcase/entity combination in the current matrix with given matrix.
+	 * A change from a zero to a one or from a one to a zero represents one element change.
+	 * @param <T>
+	 * @param lastVer - another code coverage matrix to compare to
+	 * @return total number of changed element
+	 */
+	public int diff(CodeCoverage lastVer,Comparator cp){
+
+		int[] rowmap = new int[this.links.length];
+		int[] colmap = new int[this.links[0].length];
+		//initialize every element as -1
+		for(int i=0;i<rowmap.length;i++)
+			rowmap[i]=-1;
+		for(int i=0;i<colmap.length;i++)
+			colmap[i]=-1;
+		
+		for(int i=0;i<rowmap.length;i++)
+			rowmap[i] =  lastVer.getRows().indexOf(this.row.get(i));
+
+		for(int i=0;i<colmap.length;i++)
+			for(int j=0;j<lastVer.getColumns().size();j++)
+				if(cp.compare(this.column.get(i), lastVer.getColumns().get(j))==0){
+					colmap[i] = j;
+					break;
+				}
+		int diffsum = 0;
+		for (int i = 0; i < row.size(); i++)
+			for (int j = 0; j < column.size(); j++)
+				if(rowmap[i]>=0&&colmap[j]>=0&&this.links[i][j]!=lastVer.links[rowmap[i]][colmap[j]])
+					diffsum++;
+		return diffsum;
 	}
 }

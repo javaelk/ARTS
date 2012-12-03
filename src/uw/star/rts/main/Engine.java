@@ -2,6 +2,7 @@ package uw.star.rts.main;
 
 
 import uw.star.rts.TCselection.TestCaseSelection;
+import uw.star.rts.analysis.TestSubjectAnalysis;
 import uw.star.rts.artifact.*;
 import uw.star.rts.cost.*;
 import uw.star.rts.extraction.*;
@@ -97,6 +98,9 @@ public class Engine {
 		TechniqueFactory tf = new TechniqueFactory(STStechniques);
 		log.info("3.1 == Techniques Modeling ==");
 		List<uw.star.rts.technique.Technique> techs = tf.techniquesModeling();
+		//analyze test subjects to confirm assumptions
+		TestSubjectAnalysis.analyze(testSubjects);
+				
 		uw.star.rts.technique.Technique proposedTechnique = proposeSelectionTechnique(tf,techs,testSubjects);
 		
 		//module 5,
@@ -210,6 +214,7 @@ public class Engine {
 			for(int i=0;i<app.getTotalNumVersons();i++)
 				testSubjectVersions.add(appName+"-v"+i);
 		}
+		
 			//use a Map to store results,key is technique applied, value is a list of % for all test subjects versions
 		    //for each technique - test subject version combination, there is a map of <prediction model, precision>
 			Map<uw.star.rts.technique.Technique,List<Map<PrecisionPredictionModel,Double>>> predicatedPrecision = new HashMap<>();
