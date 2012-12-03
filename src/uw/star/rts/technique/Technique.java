@@ -42,8 +42,8 @@ public abstract class Technique {
 	
 	//return list of test cases selected from p that is applicable in pPrime for regression testing 
 	public abstract List<TestCase> selectTests(Program p,Program pPrime,StopWatch sw);
-	
-	public abstract double predictPrecision(PrecisionPredictionModel pm);
+	//predict test selection rate for pPrime
+	public abstract double predictPrecision(PrecisionPredictionModel pm,Program p,Program pPrime);
 	public abstract long predictAnalysisCost();
 	
 }
