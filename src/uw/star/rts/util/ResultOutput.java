@@ -17,7 +17,7 @@ import uw.star.rts.cost.PrecisionPredictionModel;
 import uw.star.rts.technique.Technique;
 
 public class ResultOutput {
-	public static Path outputEvalResult_Prediction(String firstCellHeader,Map<uw.star.rts.technique.Technique,List<Map<PrecisionPredictionModel,Double>>> precision,Map<uw.star.rts.technique.Technique,List<Map<PrecisionPredictionModel,Long>>> predicatedAnalysisCost, List<String> testSubjectVersions,Map<uw.star.rts.technique.Technique,List<Map<PrecisionPredictionModel,StopWatch>>> actualCost){
+	public static Path outputEvalResult_Prediction(String firstCellHeader,Map<uw.star.rts.technique.Technique,List<Map<PrecisionPredictionModel,Double>>> precision,Map<uw.star.rts.technique.Technique,List<Long>> predicatedAnalysisCost, List<String> testSubjectVersions,Map<uw.star.rts.technique.Technique,List<StopWatch>> actualCost){
 		Path outputFile = Paths.get("output"+File.separator+"evaluationResult_"+firstCellHeader+"_"+DateUtils.now("MMMdd_HHmm")+".csv");
 		Charset charset = Charset.forName("UTF-8");
 
@@ -47,13 +47,13 @@ public class ResultOutput {
 					for(PrecisionPredictionModel pm:PrecisionPredictionModel.values()){
 					writer.write(","+precision.get(tec).get(i).get(pm));
 					if(predicatedAnalysisCost!=null)
-						writer.write(","+predicatedAnalysisCost.get(tec).get(i).get(pm));
+						writer.write(","+predicatedAnalysisCost.get(tec).get(i));
 						
 					//add cost values if exists
 					if(actualCost !=null)
 						for(CostFactor cf: CostFactor.values())
 							if(!(firstCellHeader.equalsIgnoreCase("predicated")^cf.isPredicationCost()))
-							writer.write(","+actualCost.get(tec).get(i).get(pm).getElapsedTime(cf));
+							writer.write(","+actualCost.get(tec).get(i).getElapsedTime(cf));
 					}
 					
 				}

@@ -46,6 +46,6 @@ public class EngineTest {
 	@Test
 	public void testEvaluation(){
 		Engine.getInputFiles("config/ARTSConfiguration.property");
-		Engine.evaluate();
+		//Engine.evaluate();
 	}
 }

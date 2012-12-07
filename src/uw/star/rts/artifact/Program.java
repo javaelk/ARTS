@@ -213,7 +213,14 @@ public class Program extends Artifact{
 		}
 		return false;
 	}
-	
+	/**
+	 * Whether an entity type has already been extracted 
+	 * @param type
+	 * @return
+	 */
+	public boolean containsType(EntityType type){
+		return codeEntities.containsKey(type);
+	}
 		
 	@Override
 	public String toString(){

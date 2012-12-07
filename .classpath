@@ -40,5 +40,6 @@
 	<classpathentry kind="lib" path="/RTS-T25/lib/commons-codec-1.7.jar"/>
 	<classpathentry kind="lib" path="/RTS-T25/lib/commons-exec-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/guava-13.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

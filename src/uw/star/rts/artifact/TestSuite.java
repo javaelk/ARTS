@@ -17,6 +17,8 @@ public class TestSuite extends Artifact{
 	 * @uml.property  name="testcases"
 	 */
 	List<TestCase> testcases;
+	
+	int numVersions; //number of versions in the test suites, this equals number of program versions in the application 
 	  
 	  public TestSuite(String appName,String tpName,List<TestCase> testcases,Path testSuiteRootFolder){
 		  super(appName,0,testSuiteRootFolder); //always v0 as there is only one version of test suite per application
@@ -26,6 +28,14 @@ public class TestSuite extends Artifact{
 	  
 	  public List<TestCase> getTestCases(){
 		  return testcases;
+	  }
+	  
+	  public void setTotalNumVersons(int ver){
+		  numVersions = ver;
+	  }
+	  
+	  public int getTotalNumVersions(){
+		  return numVersions;
 	  }
 	  
 	  public TestCase getTestCaseByName(String name){
@@ -45,6 +55,7 @@ public class TestSuite extends Artifact{
 	  }
 	  
 	  //get all test cases applicable to this version
+	  //version number starting from 0
 	  public List<TestCase> getTestCaseByVersion(int ver){
 		  List<TestCase> results = new ArrayList<TestCase>();
 		  for(TestCase t: testcases)
@@ -55,9 +66,13 @@ public class TestSuite extends Artifact{
 
 	  /**
 	   * get all test cases applicable to this version and the next version
-	   * @return all applicable regression test cases . If ver is the last version of the program, return empty list.  
+	   * version number starting from 0
+	   * If ver is the last version of the program, return the same set as getTestCaseByVersion()
+	   * @return all applicable regression test cases . 
 	   */
 	  public List<TestCase> getRegressionTestCasesByVersion(int ver){
+		  if(ver==numVersions-1) //last version
+			  return getTestCaseByVersion(ver);
 		  List<TestCase> results = new ArrayList<TestCase>();
 		  for(TestCase t: getTestCaseByVersion(ver))
 			  if(t.isApplicabletoVersion(ver+1))

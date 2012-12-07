@@ -4,6 +4,7 @@ package uw.star.rts.technique;
  * 
  */
 import java.util.List;
+import java.util.Map;
 
 import uw.star.rts.artifact.*;
 import uw.star.rts.util.*;
@@ -44,6 +45,7 @@ public abstract class Technique {
 	public abstract List<TestCase> selectTests(Program p,Program pPrime,StopWatch sw);
 	//predict test selection rate for pPrime
 	public abstract double predictPrecision(PrecisionPredictionModel pm,Program p,Program pPrime);
+	public abstract Map<PrecisionPredictionModel,Double>  predictPrecision(Program p,Program pPrime);
 	public abstract long predictAnalysisCost();
 	
 }

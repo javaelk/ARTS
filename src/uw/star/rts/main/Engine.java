@@ -99,7 +99,7 @@ public class Engine {
 		log.info("3.1 == Techniques Modeling ==");
 		List<uw.star.rts.technique.Technique> techs = tf.techniquesModeling();
 		//analyze test subjects to confirm assumptions
-		TestSubjectAnalysis.analyze(testSubjects);
+		TestSubjectAnalysis.analyzeCoverageStability(testSubjects);
 				
 		uw.star.rts.technique.Technique proposedTechnique = proposeSelectionTechnique(tf,techs,testSubjects);
 		
@@ -218,52 +218,46 @@ public class Engine {
 		//use a Map to store results,key is technique applied, value is a list of % for all test subjects versions
 		//for each technique - test subject version combination, there is a map of <prediction model, precision>
 		Map<uw.star.rts.technique.Technique,List<Map<PrecisionPredictionModel,Double>>> predicatedPrecision = new HashMap<>();
-		Map<uw.star.rts.technique.Technique,List<Map<PrecisionPredictionModel,Long>>> predicatedAnalysisCost = new HashMap<>();
-		Map<uw.star.rts.technique.Technique,List<Map<PrecisionPredictionModel,StopWatch>>> predicationCost = new HashMap<>();
+		Map<uw.star.rts.technique.Technique,List<Long>> predicatedAnalysisCost = new HashMap<>();
+		Map<uw.star.rts.technique.Technique,List<StopWatch>> predicationCost = new HashMap<>();
 		
 		for(uw.star.rts.technique.Technique tec: techs){
 			List<Map<PrecisionPredictionModel,Double>> predicatedPrecisionArrayPerTec = new ArrayList<>();
-			List<Map<PrecisionPredictionModel,Long>> predicatedAnalysisCostArrayPerTec = new ArrayList<>();
-			List<Map<PrecisionPredictionModel,StopWatch>> stopwatchArrayPerTec = new ArrayList<>();
+			List<Long> predicatedAnalysisCostArrayPerTec = new ArrayList<>();
+			List<StopWatch> stopwatchArrayPerTec = new ArrayList<>();
 			
 			for(Application app: testsubjects){
 				//predicated precision is the same for all versions of the program(i.e. predication only on v0)
 				//call predicatePrecision and predicateAnalysisCost once per application,  no need to loop through all versions.
 				tec.setApplication(app);
+				//TODO: extract all entities here, at prediction/selection only need to check if it's already extracted.
 
 				for(int i=0;i<app.getTotalNumVersons();i++){ //predict for each version
 
 					Map<PrecisionPredictionModel,Double> precisionPerVersion = new HashMap<>();
-					Map<PrecisionPredictionModel,Long> predicatedAnalysisCostPerVersion = new HashMap<>();
-					Map<PrecisionPredictionModel,StopWatch> stopwatchPerVersion = new HashMap<>();
-
-					for(PrecisionPredictionModel pm: PrecisionPredictionModel.values()){//for each predictor 
-						StopWatch sw = new StopWatch();
+					long predicatedAnalysisCostPerVersion = 0L;
+					StopWatch sw = new StopWatch();
+					
 						//get PredicatedPrecision 
 						sw.start(CostFactor.PrecisionPredictionCost);
 						if(i==0){//first version always select 100%
-							precisionPerVersion.put(pm, 1.0);
+							for(PrecisionPredictionModel pm: PrecisionPredictionModel.values())//for each predictor 
+								precisionPerVersion.put(pm, 1.0);
 						}else{
 							//prediction is based on information from previous version
-							precisionPerVersion.put(pm,tec.predictPrecision(pm,app.getProgram(ProgramVariant.orig, i-1),app.getProgram(ProgramVariant.orig, i)));
+							precisionPerVersion = tec.predictPrecision(app.getProgram(ProgramVariant.orig, i-1),app.getProgram(ProgramVariant.orig, i));
 						}
 						sw.stop(CostFactor.PrecisionPredictionCost);
 
 						//get PredicatedAnalysisCost
 						sw.start(CostFactor.AnalysisCostPredictionCost);
-						if(i==0){
-							predicatedAnalysisCostPerVersion.put(pm,0L);
-						}else{
-							predicatedAnalysisCostPerVersion.put(pm, tec.predictAnalysisCost());
-						}
+						if(i!=0)
+							predicatedAnalysisCostPerVersion=tec.predictAnalysisCost();
 						sw.stop(CostFactor.AnalysisCostPredictionCost);
-
-						stopwatchPerVersion.put(pm, sw);
-					}
 
 					predicatedPrecisionArrayPerTec.add(precisionPerVersion);
 					predicatedAnalysisCostArrayPerTec.add(predicatedAnalysisCostPerVersion);
-					stopwatchArrayPerTec.add(stopwatchPerVersion);
+					stopwatchArrayPerTec.add(sw);
 				}
 			}//end for each test subjects
 

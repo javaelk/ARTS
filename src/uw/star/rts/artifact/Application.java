@@ -74,6 +74,7 @@ public class Application {
 			maxVer =(p.versionNo>maxVer)?p.versionNo:maxVer;
 		this.numVersions = maxVer +1;	
 		this.applicationRootPath = applicationRootPath;
+		this.testsuite.setTotalNumVersons(numVersions);
 	}
 	
 	public String getApplicationName(){
@@ -177,7 +178,7 @@ public class Application {
 		return buff.toString();				
 	}
 	
-	/**
+	/**Application
 	 * print count of each artifacts
 	 * @return
 	 */
