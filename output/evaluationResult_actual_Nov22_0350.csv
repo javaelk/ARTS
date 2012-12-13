@@ -1,0 +1,24 @@
+actual,T25-Change based selection-uw.star.rts.technique.ClassFirewall_Direct_precision,T25-CoverageAnalysisCost(ms),T25-ChangeAnalysisCost(ms),T25-ApplyTechniqueCost(ms),T25-TestExecutionCost(ms)
+jtopas-v0,1.0,-1,-1,-1,-1
+jtopas-v1,0.2857142857142857,46,2135,0,-1
+jtopas-v2,0.7,13,2093,0,-1
+jtopas-v3,0.6363636363636364,20,2113,0,-1
+apache-ant-v0,1.0,-1,-1,-1,-1
+apache-ant-v1,1.0,1439,7900,5,-1
+apache-ant-v2,0.8235294117647058,242,7005,1,-1
+apache-ant-v3,0.5,302,7877,1,-1
+apache-ant-v4,0.5384615384615384,441,8005,1,-1
+apache-ant-v5,0.27722772277227725,599,9159,0,-1
+apache-ant-v6,0.20192307692307693,619,10909,1,-1
+apache-ant-v7,0.26666666666666666,741,11463,0,-1
+apache-ant-v8,0.14666666666666667,864,15891,0,-1
+jakarta-jmeter-v0,1.0,-1,-1,-1,-1
+jakarta-jmeter-v1,0.6666666666666666,2603,9526,0,-1
+jakarta-jmeter-v2,0.30434782608695654,241,9162,0,-1
+jakarta-jmeter-v3,0.2,288,7622,0,-1
+jakarta-jmeter-v4,0.32142857142857145,304,8927,0,-1
+jakarta-jmeter-v5,0.35714285714285715,331,9252,0,-1
+apache-xml-security-v0,1.0,-1,-1,-1,-1
+apache-xml-security-v1,1.0,908,6067,1,-1
+apache-xml-security-v2,1.0666666666666667,127,6064,0,-1
+apache-xml-security-v3,0.0,141,5924,0,-1

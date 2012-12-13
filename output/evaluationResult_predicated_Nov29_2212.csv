@@ -1,0 +1,24 @@
+predicated,T25-Change based selection-uw.star.rts.technique.ClassFirewall_Direct-RWPredictor_precision,PredicatedAnalysisCost(ms),T25-PrecisionPredictionCost(ms),T25-AnalysisCostPredictionCost(ms),T25-Change based selection-uw.star.rts.technique.ClassFirewall_Direct-RWPredictorRegression_precision,PredicatedAnalysisCost(ms),T25-PrecisionPredictionCost(ms),T25-AnalysisCostPredictionCost(ms)
+jtopas-v0,0.31746031746031744,{RWPredictor=0, RWPredictorRegression=0},790,0,0.31746031746031744,{RWPredictor=0, RWPredictorRegression=0},565,0
+jtopas-v1,0.31746031746031744,{RWPredictor=0, RWPredictorRegression=0},790,0,0.31746031746031744,{RWPredictor=0, RWPredictorRegression=0},565,0
+jtopas-v2,0.31746031746031744,{RWPredictor=0, RWPredictorRegression=0},790,0,0.31746031746031744,{RWPredictor=0, RWPredictorRegression=0},565,0
+jtopas-v3,0.31746031746031744,{RWPredictor=0, RWPredictorRegression=0},790,0,0.31746031746031744,{RWPredictor=0, RWPredictorRegression=0},565,0
+apache-ant-v0,0.6365546218487395,{RWPredictor=0, RWPredictorRegression=0},16619,0,0.6365546218487395,{RWPredictor=0, RWPredictorRegression=0},15198,0
+apache-ant-v1,0.6365546218487395,{RWPredictor=0, RWPredictorRegression=0},16619,0,0.6365546218487395,{RWPredictor=0, RWPredictorRegression=0},15198,0
+apache-ant-v2,0.6365546218487395,{RWPredictor=0, RWPredictorRegression=0},16619,0,0.6365546218487395,{RWPredictor=0, RWPredictorRegression=0},15198,0
+apache-ant-v3,0.6365546218487395,{RWPredictor=0, RWPredictorRegression=0},16619,0,0.6365546218487395,{RWPredictor=0, RWPredictorRegression=0},15198,0
+apache-ant-v4,0.6365546218487395,{RWPredictor=0, RWPredictorRegression=0},16619,0,0.6365546218487395,{RWPredictor=0, RWPredictorRegression=0},15198,0
+apache-ant-v5,0.6365546218487395,{RWPredictor=0, RWPredictorRegression=0},16619,0,0.6365546218487395,{RWPredictor=0, RWPredictorRegression=0},15198,0
+apache-ant-v6,0.6365546218487395,{RWPredictor=0, RWPredictorRegression=0},16619,0,0.6365546218487395,{RWPredictor=0, RWPredictorRegression=0},15198,0
+apache-ant-v7,0.6365546218487395,{RWPredictor=0, RWPredictorRegression=0},16619,0,0.6365546218487395,{RWPredictor=0, RWPredictorRegression=0},15198,0
+apache-ant-v8,0.6365546218487395,{RWPredictor=0, RWPredictorRegression=0},16619,0,0.6365546218487395,{RWPredictor=0, RWPredictorRegression=0},15198,0
+jakarta-jmeter-v0,0.10855263157894737,{RWPredictor=0, RWPredictorRegression=0},30846,0,0.12566137566137567,{RWPredictor=0, RWPredictorRegression=0},29624,0
+jakarta-jmeter-v1,0.10855263157894737,{RWPredictor=0, RWPredictorRegression=0},30846,0,0.12566137566137567,{RWPredictor=0, RWPredictorRegression=0},29624,0
+jakarta-jmeter-v2,0.10855263157894737,{RWPredictor=0, RWPredictorRegression=0},30846,0,0.12566137566137567,{RWPredictor=0, RWPredictorRegression=0},29624,0
+jakarta-jmeter-v3,0.10855263157894737,{RWPredictor=0, RWPredictorRegression=0},30846,0,0.12566137566137567,{RWPredictor=0, RWPredictorRegression=0},29624,0
+jakarta-jmeter-v4,0.10855263157894737,{RWPredictor=0, RWPredictorRegression=0},30846,0,0.12566137566137567,{RWPredictor=0, RWPredictorRegression=0},29624,0
+jakarta-jmeter-v5,0.10855263157894737,{RWPredictor=0, RWPredictorRegression=0},30846,0,0.12566137566137567,{RWPredictor=0, RWPredictorRegression=0},29624,0
+apache-xml-security-v0,0.6641355140186916,{RWPredictor=0, RWPredictorRegression=0},10187,0,0.6786484543493889,{RWPredictor=0, RWPredictorRegression=0},10270,0
+apache-xml-security-v1,0.6641355140186916,{RWPredictor=0, RWPredictorRegression=0},10187,0,0.6786484543493889,{RWPredictor=0, RWPredictorRegression=0},10270,0
+apache-xml-security-v2,0.6641355140186916,{RWPredictor=0, RWPredictorRegression=0},10187,0,0.6786484543493889,{RWPredictor=0, RWPredictorRegression=0},10270,0
+apache-xml-security-v3,0.6641355140186916,{RWPredictor=0, RWPredictorRegression=0},10187,0,0.6786484543493889,{RWPredictor=0, RWPredictorRegression=0},10270,0

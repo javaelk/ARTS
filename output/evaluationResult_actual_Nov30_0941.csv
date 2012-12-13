@@ -1,0 +1,10 @@
+actual,T25-Change based selection-uw.star.rts.technique.ClassFirewall_Direct_precision,T25-CoverageAnalysisCost(ms),T25-ChangeAnalysisCost(ms),T25-ApplyTechniqueCost(ms),T25-TestExecutionCost(ms)
+apache-ant-v0,1.0,-1,-1,-1,-1
+apache-ant-v1,1.0,1385,9053,24,-1
+apache-ant-v2,0.8235294117647058,349,5726,2,-1
+apache-ant-v3,0.5,352,7339,1,-1
+apache-ant-v4,0.5384615384615384,457,7747,1,-1
+apache-ant-v5,0.27722772277227725,678,9084,1,-1
+apache-ant-v6,0.20192307692307693,591,9102,1,-1
+apache-ant-v7,0.26666666666666666,646,9375,0,-1
+apache-ant-v8,0.17333333333333334,845,11025,0,-1

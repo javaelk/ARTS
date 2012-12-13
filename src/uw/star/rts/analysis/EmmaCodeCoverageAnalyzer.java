@@ -13,8 +13,13 @@ import uw.star.rts.extraction.ArtifactFactory;
 import uw.star.rts.util.*;
 
 
+/*
+ * TODO: Use Jacoco, advantage: line coverage is in XML output instead of HTML - more reliable. Support API integration instead of command line
+ * cost: re-compile all test subjects, re-write extract entities and extractCoveredentities. change execution script.
+ */
+
 /**
- * An EMMA code coverage analyzer can 1)extract entites from Emma reports or
+ * An EMMA code coverage analyzer can 1)extract entities from Emma reports or
  * 2)extract coverage information &create trace object between entities in a program and a test suite 
  * EmmaCodeCoverageAnalyzer is specific to a version of the program.
  * @author Weining Liu
@@ -128,7 +133,7 @@ public class EmmaCodeCoverageAnalyzer extends CodeCoverageAnalyzer {
 
 	/**
 	 * extract code entities of given type and link back to the program, src entities are set in any cases.
-	 * TODO: use other ways to extract all entities. emma result xml and html files do not contain interfaces. Consider JaCoCo.
+	 * TODO: use other ways to extract all entities. emma result xml and html files do not contain interfaces.
 	 * Ideally, the program artifact should contain ALL classes regardless it's interface or not. 
 	 * @param type
 	 * @return
