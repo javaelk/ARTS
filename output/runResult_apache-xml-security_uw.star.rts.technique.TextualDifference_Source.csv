@@ -1,5 +1,3 @@
-,Total# of Applicable Test Cases,T11-Textual Differing-uw.star.rts.technique.TextualDifference_Source
-apache-xml-security-v0,13,13
-apache-xml-security-v1,15,13
-apache-xml-security-v2,15,15
-apache-xml-security-v3,13,13
+,Total# of Test Cases in this version,Total# of Test Cases in this version and also applicable to the next version(i.e. regression test cases),T11-Textual Differing-uw.star.rts.technique.TextualDifference_Source
+apache-xml-security-v0,106,106,106
+apache-xml-security-v1,106,N/A,106

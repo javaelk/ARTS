@@ -35,7 +35,7 @@
 	<classpathentry kind="lib" path="lib/xmlbeans-qname.jar"/>
 	<classpathentry kind="lib" path="lib/xmlpublic.jar"/>
 	<classpathentry kind="lib" path="lib/junit-4.10.jar"/>
-	<classpathentry kind="lib" path="/RTS-T11/bin"/>
+	<classpathentry kind="lib" path="/RTS-T11/bin" sourcepath="/RTS-T11/src"/>
 	<classpathentry kind="lib" path="/RTS-T25/bin" sourcepath="/RTS-T25/src"/>
 	<classpathentry kind="lib" path="/RTS-T25/lib/commons-codec-1.7.jar"/>
 	<classpathentry kind="lib" path="/RTS-T25/lib/commons-exec-1.1.jar"/>

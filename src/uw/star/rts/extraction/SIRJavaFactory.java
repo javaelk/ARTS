@@ -337,7 +337,7 @@ public class SIRJavaFactory extends ArtifactFactory{
 		 * find diff result file based on textual differencing
 		 * This is the output file of ChangeAnalysis.sh script
 		 * file name is in the format of pVersionpVariantpPrimeVersionpPrimeVariant
-		 * e.g. changesv0origv1orig.txt
+		 * e.g. changesorigv0origv1.txt
 		 * @param p
 		 * @param pPrime
 		 * @return

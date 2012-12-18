@@ -31,6 +31,7 @@ public class Engine {
 	public static String CASESTUDYSUBJECTFILE = "CaseStudySubjectFile";
 	public static String STSTECHNIQUESFILE = "STStechniquesFile";
 	public static String EVALUATION="Evaluation";
+	public static String TESTSUBJECTANALYSIS="TestSubjectAnalysis";
 	
 	static Logger log =LoggerFactory.getLogger(Engine.class.getName());
 	static Path GoalRepository;
@@ -38,6 +39,7 @@ public class Engine {
 	static Path CaseStudySubject;
 	static Path STStechniques;
 	static boolean evaluationMode;
+	static boolean performTestSubjectAnalysis;
 	static String experiment_root;
 
 
@@ -99,7 +101,8 @@ public class Engine {
 		log.info("3.1 == Techniques Modeling ==");
 		List<uw.star.rts.technique.Technique> techs = tf.techniquesModeling();
 		//analyze test subjects to confirm assumptions
-		TestSubjectAnalysis.analyzeCoverageStability(testSubjects);
+		if(performTestSubjectAnalysis) 
+			TestSubjectAnalysis.analyzeCoverageStability(testSubjects);
 				
 		uw.star.rts.technique.Technique proposedTechnique = proposeSelectionTechnique(tf,techs,testSubjects);
 		
@@ -127,6 +130,8 @@ public class Engine {
 		STStechniques = Paths.get(properties.getProperty(STSTECHNIQUESFILE));
 		String eval = properties.getProperty(EVALUATION);
 		evaluationMode =(eval!=null&&eval.equalsIgnoreCase("true"))?true:false;
+		String testsubjectAnalysis = properties.getProperty(TESTSUBJECTANALYSIS);
+		performTestSubjectAnalysis = (testsubjectAnalysis!=null&&testsubjectAnalysis.equalsIgnoreCase("true"))?true:false;
 		experiment_root = properties.getProperty(Constant.EXPERIMENTROOT);
 	}
 
