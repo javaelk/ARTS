@@ -6,6 +6,7 @@ import java.util.*;
 /**
  * Coverage Analysis is used to identify the relationship between the test suite and the entities
  * in the system under test that are exercised by the test suite
+ * A code coverage analyzer should be able to build a Coverage Matrix based on some artifacts created from test execution
  * 
  * @author Weining Liu
  *
@@ -21,11 +22,7 @@ public abstract class CodeCoverageAnalyzer {
 	 *  
 	 * @return
 	 */
-	public abstract List<? extends Entity> extractEntities(EntityType type);
+	public abstract List<? extends Entity> extractEntities(EntityType type); //TODO: Move to static source code parser. 
 	public abstract <E extends Entity> CodeCoverage<E> createCodeCoverage(EntityType type);
 	
-/*	TODO:
- * public abstract long getEstimatedCost();
-	public abstract long getActualCost();
-	*/
 }
