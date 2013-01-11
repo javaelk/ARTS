@@ -369,4 +369,24 @@ public class SIRJavaFactory extends ArtifactFactory{
 				return null;
 			}
 		}
+		
+		/**
+		 * Provide an abstraction of folder structures of output files from JaCoCo code coverage tool
+		 * This can be used by JaCoCoCoverageAnalyzer to further analyze the files. (parse the file line by line)
+		 * @param p
+		 * @param tc
+		 * @param fileType, JaCoCo has two types of output files, html or xml
+		 * @return JaCoCo output file by executing TestCase tc on Program p, xml -> a file, html-> a directory contains all htmls files.
+		 */
+		public Path getJaCoCoCodeCoverageResultFile(Program p, TestCase tc, String fileType){
+			Path verDir =Paths.get(experimentRoot,p.getApplicationName(),TRACE_ROOT_DIRECTORY,CODECOVRAGE_DIRECTORY,p.getVariantType().toString(),VERSIONS_DIRECTORY_PREFIX+p.getVersionNo()); 
+			if(fileType.equalsIgnoreCase("xml")){
+				return Paths.get(verDir.toString(),"coverage."+tc.getTestCaseName()+".xml");
+			}else if(fileType.equalsIgnoreCase("html")){
+				return Paths.get(verDir.toString(),"coverage."+tc.getTestCaseName());
+			}else{
+				log.error("unknown emma result file type " + fileType);
+				return null;
+			}
+		}
 }

@@ -17,6 +17,7 @@ public abstract class ArtifactFactory {
 	public abstract Application extract(String applicationName);
 	public abstract Path getChangeResultFile(Program p, Program pPrime);
 	public abstract Path getEmmaCodeCoverageResultFile(Program p, TestCase tc, String fileType);
+	public abstract Path getJaCoCoCodeCoverageResultFile(Program p, TestCase tc, String fileType);
 	
 	public abstract void setExperimentRoot(String expRoot);
 	abstract Map<ProgramVariant,List<Program>>  extractProgram(String applicationName);

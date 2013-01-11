@@ -24,8 +24,6 @@ public class StatementEntity extends Entity {
 		this.statement = statement;
 		this.program=p;
 		this.lineNum=lineNum;
-
-		
 	}
     
     

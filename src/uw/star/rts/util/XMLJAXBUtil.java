@@ -45,6 +45,13 @@ public class XMLJAXBUtil {
 			SAXSource source = new SAXSource(xmlReader,inputSource);
 			
 			Unmarshaller u = jc.createUnmarshaller();
+			u.setEventHandler(
+				    new ValidationEventHandler() {
+				        public boolean handleEvent(ValidationEvent event ) {
+				            throw new RuntimeException(event.getMessage(),
+				                                       event.getLinkedException());
+				        }
+				});
 			JAXBElement<T> root = u.unmarshal(source,docClass);
 			return root.getValue();
 	}

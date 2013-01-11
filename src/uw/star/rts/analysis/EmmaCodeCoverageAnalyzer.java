@@ -221,7 +221,6 @@ public class EmmaCodeCoverageAnalyzer extends CodeCoverageAnalyzer {
 				// linkages : source <--> *class <-> *method    
 				for(Node srcfileNode: XMLUtility.getChildElementsByTagName(packageNode, "srcfile")){
 					String srcfileName = ((Element)srcfileNode).getAttribute("name");
-					//TODO: test this
 					Path srcfilePath = program.getCodeFilebyName(CodeKind.SOURCE, packageName, srcfileName);
 					SourceFileEntity srcEnt = new SourceFileEntity(program,packageName,srcfileName,srcfilePath);
 					srcEntities.add(srcEnt); //add a source file
@@ -252,7 +251,7 @@ public class EmmaCodeCoverageAnalyzer extends CodeCoverageAnalyzer {
 							methodsOfCurrentClass.add(methodEnt);
 							if(extractCoverageValue(methodNode,"method, %")>0)
 								coveredMethodEntities.add(methodEnt);  //add to covered set if covered
-						}//end of methodnode loop
+						}//end of method node loop
 						classEnt.setMethods(methodsOfCurrentClass); //class ->method
 					}//end of class loop
 					srcEnt.setClasses(classesOfCurrentSourceFile);  //src ->class
@@ -453,7 +452,7 @@ public class EmmaCodeCoverageAnalyzer extends CodeCoverageAnalyzer {
 						break;
 
 						default:
-						log.debug("this trnode does not contain an executable line");
+						//log.debug("this trnode does not contain an executable line");
 							//do nothing
 						}
 
