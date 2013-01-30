@@ -28,6 +28,14 @@ public class ClassEntity extends Entity{
 		this.p =p;
 	}
     
+	//alternative constructor with fully qualified class name
+	public ClassEntity(Program p, String fullyQualifiedClassName,Path classFile){//class name may not be the same as classfile name
+		super(p.getApplicationName(),p.getVersionNo(),classFile);
+		this.packageName =fullyQualifiedClassName.substring(0, fullyQualifiedClassName.lastIndexOf("."));
+		this.className = fullyQualifiedClassName.substring(fullyQualifiedClassName.lastIndexOf(".")+1);
+		this.p =p;
+	}
+	
 	public boolean setSource(SourceFileEntity se){
 		source = se;
 		return true;

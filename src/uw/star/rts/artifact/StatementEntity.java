@@ -19,6 +19,8 @@ public class StatementEntity extends Entity {
 		//lineNum should always greater than 0, starting from 1
     	if(lineNum<1)
     		throw new IllegalArgumentException("lineNum should start from 1");
+    	if(statement==null)
+    		throw new IllegalArgumentException("statement should not be null");
 		this.srcName = srcName;
 		this.packageName = packageName;
 		this.statement = statement;

@@ -259,10 +259,11 @@ public class SIRJavaFactory extends ArtifactFactory{
         		}
         		totalNumOfVersions++;
 	        }
-			//then go through all universe files to verify applicable version, log any inconsistencies as error 
-	        for(Path verDir : FileUtility.listDirectory(testPlanPath, VERSIONS_DIRECTORY_PREFIX+"*",new VersionDirectoryComparator(VERSIONS_DIRECTORY_PREFIX))){
+			//then go through all universe files to verify applicable version, log any inconsistencies as error
+	        //temporay comment out for apache-ant test subject
+/*	        for(Path verDir : FileUtility.listDirectory(testPlanPath, VERSIONS_DIRECTORY_PREFIX+"*",new VersionDirectoryComparator(VERSIONS_DIRECTORY_PREFIX))){
 	        	new SIRJavaArtifactVerification(this).parseUniverseFiles(verDir,testcaseMap,totalNumOfVersions);
-	        }
+	        }*/
 			//TODO: verify junit test cases exist in class file
 			//TODO: verify test cases are in the execution scripts       
 	        
