@@ -2,13 +2,10 @@ package uw.star.rts.analysis;
 
 import java.util.*;
 import java.util.regex.Pattern;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.*;
 
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -17,20 +14,10 @@ import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import uw.star.rts.analysis.jacoco.*;
-import uw.star.rts.artifact.Application;
-import uw.star.rts.artifact.ClassEntity;
-import uw.star.rts.artifact.CodeKind;
-import uw.star.rts.artifact.Entity;
-import uw.star.rts.artifact.EntityType;
-import uw.star.rts.artifact.MethodEntity;
-import uw.star.rts.artifact.Program;
-import uw.star.rts.artifact.SourceFileEntity;
-import uw.star.rts.artifact.StatementEntity;
-import uw.star.rts.artifact.TestCase;
-import uw.star.rts.artifact.TestSuite;
+import uw.star.rts.artifact.*;
 import uw.star.rts.extraction.ArtifactFactory;
-import uw.star.rts.util.FileUtility;
 import uw.star.rts.util.XMLJAXBUtil;
+import com.google.common.collect.*;
 
 public class JacocoCodeCoverageAnalyzer {
 
@@ -79,7 +66,7 @@ public class JacocoCodeCoverageAnalyzer {
 	 * extract code entities of given type and link back to the program, src entities are set in any cases.
 	 * TODO: use other ways to extract all entities. JaCoCo XML reports do not contain interfaces.
 	 * Ideally, the program artifact should contain ALL classes regardless it's interface or not.
-	 * TODO: user java generics to replace EntityType parameter 
+	 * TODO: user java generic to replace EntityType parameter 
 	 * @param type
 	 * @return
 	 */
@@ -96,19 +83,19 @@ public class JacocoCodeCoverageAnalyzer {
 
 			switch(type){
 			case CLAZZ : 
-				result= new ArrayList<ClassEntity>(classEntities);//TODO: use Guava immutable
+				result= ImmutableList.copyOf(classEntities);
 				break;
 
 			case METHOD : 
-				result= new ArrayList<MethodEntity>(methodEntities);
+				result= ImmutableList.copyOf(methodEntities);
 				break;
 
 			case SOURCE : 
-				result =  new ArrayList<SourceFileEntity>(srcEntities);
+				result =  ImmutableList.copyOf(srcEntities);
 				break;
 
 			case STATEMENT: 
-				result = new ArrayList<StatementEntity>(stmEntities);
+				result = ImmutableList.copyOf(stmEntities);
 				break;
 
 			default : 
@@ -117,32 +104,27 @@ public class JacocoCodeCoverageAnalyzer {
 
 			//always link source entities to program as all other types are linked to source
 			if(!type.equals(EntityType.SOURCE)) 
-				program.setCodeEntities(EntityType.SOURCE, new ArrayList<SourceFileEntity>(srcEntities));
+				program.setCodeEntities(EntityType.SOURCE, ImmutableList.copyOf(srcEntities));
 			program.setCodeEntities(type,result);
 		}
 		return result;
 	}
 
 	//TODO: extract covered entities
-	//TODO: test statement coverage
 
 	/**
 	 * Use XML JAXB to parse JaCoCo XML report, all entities type are created as XML file is parsed. and all covered entities are populated as well. 
-	 * It's easier to code if all entities type are extract in one pass of the XML file. The disadvantage is it takes a lot more memeory.
+	 * It's easier to code if all entities type are extract in one pass of the XML file. The disadvantage is it takes a lot more memory.
 	 * TODO: possible to change to lazy initialization?  
 	 * @see http://www.javaworld.com/javaworld/jw-06-2006/jw-0626-jaxb.html
 	 * @param xml
-	 * @return a list of source file names in the given Jacoco XML report 
 	 */
-	List<String> parseJacocoXMLReport(Path xml){
-		List<String> resultLst = new ArrayList<String>();
+	private void parseJacocoXMLReport(Path xml){
 		//use JAXB to unmarshall XML doc if not already done. this would read the whole XML file into memory as a tree
 		try(InputStream stream = Files.newInputStream(xml)){
 			Report jacocoReport =XMLJAXBUtil.unmarshall(Report.class,stream);
 			if(jacocoReport!=null){
 				//parse the XML report follow the hierarchy of source->class->method, source->statement
-				// TODO: in Emma, entities are linked to each other - linkages : source <--> *class <-> *method, however these linkage do not seem to be used and can be removed. also clean up unused objects(reduce garbage collection work)
-
 				for(Object gp: jacocoReport.getGroupOrPackage()){
 					if(gp instanceof uw.star.rts.analysis.jacoco.Group){
 						log.error("not yet implemented");
@@ -165,7 +147,6 @@ public class JacocoCodeCoverageAnalyzer {
 			log.error("JAXBException"+ xml.getFileName());
 			e.printStackTrace();
 		}
-		return resultLst;
 	}
 	/**
 	 * Parse all sourcefile and statement for a package
