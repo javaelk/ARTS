@@ -29,6 +29,11 @@ public class MethodEntity extends Entity {
 		this.methodSignature = methodSignature;
 		this.program=p;
 	}
+    
+    public MethodEntity(ClassEntity clazz,String methodSignature){
+    	this(clazz.getProgram(),clazz.getPackageName(),clazz.getClassName(),methodSignature,clazz.getArtifactFile());
+    }
+    
     /*
      * Link a method to its class
      */

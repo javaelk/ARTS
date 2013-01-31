@@ -47,8 +47,7 @@ public class TestSubjectAnalysis {
 				
 				//statement
 				
-				CodeCoverageAnalyzer cca = new EmmaCodeCoverageAnalyzer(testapp.getRepository(),testapp,testapp.getProgram(ProgramVariant.orig, i),ts);
-				cca.extractEntities(EntityType.STATEMENT);
+				CodeCoverageAnalyzer cca = new JacocoCodeCoverageAnalyzer(testapp.getRepository(),testapp,testapp.getProgram(ProgramVariant.orig, i),ts);
 				CodeCoverage stmTrace =  cca.createCodeCoverage(EntityType.STATEMENT);
                 row.add(stmTrace.getColumns().size()+""); //Statement-Total# of Entity
                 row.add(stmTrace.getCoveredEntities().size()+""); //"Statement-#Covered Entity(Ec)

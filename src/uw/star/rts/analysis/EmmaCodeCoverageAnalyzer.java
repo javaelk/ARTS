@@ -118,18 +118,7 @@ public class EmmaCodeCoverageAnalyzer extends CodeCoverageAnalyzer {
 
 	}
 	
-	/**
-	 * Parse test case name from the result file name
-	 * coverage.testcasename.xml
-	 * @return
-	 */
-	String extractTestCaseName(Path xmlfile){
-		//log.debug("file name is :"+ xmlfile.getFileName().toString());
-		String filename = xmlfile.getFileName().toString();
-		String tcName = filename.substring(filename.indexOf(".")+1,filename.lastIndexOf("."));
-		//log.debug("test case name is: "+ tcName);
-		return tcName;
-	}
+
 
 	/**
 	 * extract code entities of given type and link back to the program, src entities are set in any cases.

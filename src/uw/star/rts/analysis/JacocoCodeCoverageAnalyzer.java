@@ -16,10 +16,11 @@ import org.xml.sax.SAXException;
 import uw.star.rts.analysis.jacoco.*;
 import uw.star.rts.artifact.*;
 import uw.star.rts.extraction.ArtifactFactory;
+import uw.star.rts.util.FileUtility;
 import uw.star.rts.util.XMLJAXBUtil;
 import com.google.common.collect.*;
 
-public class JacocoCodeCoverageAnalyzer {
+public class JacocoCodeCoverageAnalyzer extends CodeCoverageAnalyzer{
 
 	ArtifactFactory af;
 	Application testapp;
@@ -35,21 +36,22 @@ public class JacocoCodeCoverageAnalyzer {
 
 	//values of the following should be changed for each test case, i.e. class/method/statement coverage are different for each test case
 	//coverage only on class and method, not on source file, these are populated by parseXML
+	Set<SourceFileEntity> coveredSrcEntities;
 	Set <ClassEntity> coveredClassEntities;
 	Set <MethodEntity> coveredMethodEntities;
-
+    Set <StatementEntity> coveredStmEntities;
+    
 	static int totalExecutableStms;
 	static int totalCoveredStms;
 
 	//Special char &#160 - ASCII HEX A0
 	private static final Pattern nonASCII = Pattern.compile("\\xa0");
 
-
 	/**
 	 * constructor to provide all information needed
 	 * 
 	 */
-	JacocoCodeCoverageAnalyzer(ArtifactFactory af, Application testapp, Program p,TestSuite testSuite){
+	public JacocoCodeCoverageAnalyzer(ArtifactFactory af, Application testapp, Program p,TestSuite testSuite){
 		log = LoggerFactory.getLogger(JacocoCodeCoverageAnalyzer.class.getName());
 		this.af = af;
 		this.testapp = testapp;
@@ -60,6 +62,11 @@ public class JacocoCodeCoverageAnalyzer {
 		classEntities = new HashSet<>();
 		methodEntities = new HashSet<>();
 		stmEntities = new HashSet<>();
+		
+		coveredSrcEntities= new HashSet<>();
+		coveredClassEntities =new HashSet<>();
+		coveredMethodEntities= new HashSet<>();
+	    coveredStmEntities =new HashSet<>();
 	}
 
 	/**
@@ -110,7 +117,81 @@ public class JacocoCodeCoverageAnalyzer {
 		return result;
 	}
 
-	//TODO: extract covered entities
+	/**
+	 * extract covered code entities of given type 
+	 * @param type
+	 * @return
+	 */
+	public  List<? extends Entity> extractCoveredEntities(EntityType type,TestCase tc){
+		coveredSrcEntities.clear();
+		coveredClassEntities.clear();
+		coveredMethodEntities.clear();
+	    coveredStmEntities.clear();
+	    
+		List<? extends Entity> result = null;
+			log.debug("parse xml result of test case :" + tc);
+			parseJacocoXMLReport(af.getJaCoCoCodeCoverageResultFile(program,tc,"xml"));
+
+			switch(type){
+			case CLAZZ : 
+				result= ImmutableList.copyOf(coveredClassEntities);
+				break;
+
+			case METHOD : 
+				result= ImmutableList.copyOf(coveredMethodEntities);
+				break;
+
+			case SOURCE : 
+				result =  ImmutableList.copyOf(coveredSrcEntities);
+				break;
+
+			case STATEMENT: 
+				result = ImmutableList.copyOf(coveredStmEntities);
+				break;
+
+			default : 
+				log.error("unknown enum value found" + type);
+			}
+		return result;
+	}
+	
+	/**
+	 * Construct a trace matrix by going through all coverage result files of all test cases.
+	 * 
+	 * A trace matrix of a particular type (class/method) is constructed by 
+	 *   1) extract all test cases of the version(same version as p) as the row of the matrix 
+	 *   2) extract all class/method entities of the version as the column
+	 *   3) for each coverage file, extract Covered Entities
+	 *   4) insert covered entities into the Trace matrix 
+	 * @param app
+	 * @return a trace between entities of specified type and all test cases in the test suite
+	 */
+    @Override
+	public <E extends Entity> CodeCoverage<E> createCodeCoverage(EntityType type){
+		//1)rows index
+		List<TestCase> testcases = testSuite.getTestCaseByVersion(program.getVersionNo());
+		//2)columns index
+		List<E> entities = new ArrayList<>();
+		for(Entity e:this.extractEntities(type)) 
+		                     entities.add((E)e);
+		
+		Path codeCoverageResultFolder = null;
+		CodeCoverage<E> coverage = new CodeCoverage<E>(testcases,entities,codeCoverageResultFolder);
+		//3
+		for(TestCase tc: testcases){ //set link for every test case
+			Path coverageResultFile =af.getJaCoCoCodeCoverageResultFile(program,tc,"xml");
+			if(codeCoverageResultFolder==null) codeCoverageResultFolder=coverageResultFile.getParent();
+			List<E> coveredEntites = new ArrayList<>();
+			for(Entity e:this.extractCoveredEntities(type,tc) )
+				coveredEntites.add((E)e);
+			//4
+			coverage.setLink(tc,coveredEntites);
+		}
+		coverage.setArtifactFile(codeCoverageResultFolder);
+		return coverage;
+	}
+    
+	//TODO: extract covered entities would extract all entities again, any side effect??
 
 	/**
 	 * Use XML JAXB to parse JaCoCo XML report, all entities type are created as XML file is parsed. and all covered entities are populated as well. 
@@ -119,7 +200,7 @@ public class JacocoCodeCoverageAnalyzer {
 	 * @see http://www.javaworld.com/javaworld/jw-06-2006/jw-0626-jaxb.html
 	 * @param xml
 	 */
-	private void parseJacocoXMLReport(Path xml){
+	void parseJacocoXMLReport(Path xml){
 		//use JAXB to unmarshall XML doc if not already done. this would read the whole XML file into memory as a tree
 		try(InputStream stream = Files.newInputStream(xml)){
 			Report jacocoReport =XMLJAXBUtil.unmarshall(Report.class,stream);
@@ -162,7 +243,9 @@ public class JacocoCodeCoverageAnalyzer {
 				Path srcfilePath = program.getCodeFilebyName(CodeKind.SOURCE, packageName, srcfileName);
 				SourceFileEntity srcEnt = new SourceFileEntity(program,packageName,srcfileName,srcfilePath);
 				srcEntities.add(srcEnt); //add a source file entity
-
+                if(isCovered(srcFile))
+                	coveredSrcEntities.add(srcEnt);
+                
 				//get all statements under this sourcefile
 				//Jacoco report xml file only contains line number, but does not have the string of that line. Need to parse the actual java source file to get the statement string
 				Charset cs = Charset.forName("UTF-8");
@@ -183,6 +266,8 @@ public class JacocoCodeCoverageAnalyzer {
 						StatementEntity stmEntity =new StatementEntity(srcEnt,lineNum,line);
 						stmEntity.setSourceFileEntity(srcEnt);  //statement -> source linked is used. 
 						stmEntities.add(stmEntity);
+						if(isCovered(stm))
+							coveredStmEntities.add(stmEntity);
 					}
 				} catch (IOException e) {
 					log.error("IOException in reading file"+ srcfilePath);
@@ -192,7 +277,10 @@ public class JacocoCodeCoverageAnalyzer {
 			}
 		}
 	}
-
+    
+	/*
+	 * Parse Class and Method section in Jacoco xml report. Iterate all class and method entities and update covered entities at the same time.
+	 */
 	private void parseClassAndMethod(uw.star.rts.analysis.jacoco.Package p){
 		String packageName = p.getName().replaceAll("/", ".");
 		for(Object o :p.getClazzOrSourcefile()){
@@ -205,15 +293,19 @@ public class JacocoCodeCoverageAnalyzer {
 				ClassEntity classEnt = new ClassEntity(program,packageName,className,classfilePath);
 				// LINK:	classEnt.setSource(findSourceEntityByClassname(packageName,className));  //this link was used to roll up class coverage to source coverage in emma but no longer needed for jacoco
 				classEntities.add(classEnt); //add a class entity
+				if(isCovered(currentClazz))
+					coveredClassEntities.add(classEnt);
 
 				//LINK : List <MethodEntity> methodsOfCurrentClass = new ArrayList<>();  //this holds all methods of current class to build linkage
 				//get all methods under this class node
 				for(uw.star.rts.analysis.jacoco.Method currentMethod: currentClazz.getMethod()){
 					String methodName = currentMethod.getName()+"."+currentMethod.getDesc();
 					log.debug("method name :"+ methodName);
-					MethodEntity methodEnt = new MethodEntity(program,packageName,fullyQualifiedClassName,methodName,classfilePath);
+					MethodEntity methodEnt = new MethodEntity(classEnt,methodName);
 					//LINK : methodEnt.setClassEntity(classEnt); //method ->class
 					methodEntities.add(methodEnt); //add a method
+					if(isCovered(currentMethod))
+						coveredMethodEntities.add(methodEnt);
 					//LINK: methodsOfCurrentClass.add(methodEnt);
 				}//end of method node loop
 				//LINK: classEnt.setMethods(methodsOfCurrentClass);//class ->method
@@ -221,6 +313,35 @@ public class JacocoCodeCoverageAnalyzer {
 		}//end of class loop
 	}
 
+	//class is covered ==> <counter type="CLASS" missed="0" covered="1"/>
+	private boolean isCovered(uw.star.rts.analysis.jacoco.Class classNode){
+		for(uw.star.rts.analysis.jacoco.Counter c: classNode.getCounter())
+			if(c.getType().equals("CLASS")&&c.getMissed().equals("0")&&c.getCovered().equals("1"))
+				return true;
+		return false;
+	}
+	
+	//sourcefile is covered ==> <counter type="CLASS" missed=xxx covered>0/> , a source file could have multiple classes, as long as one class is covered, source is covered.
+	private boolean isCovered(uw.star.rts.analysis.jacoco.Sourcefile sourceFileNode){
+		for(uw.star.rts.analysis.jacoco.Counter c: sourceFileNode.getCounter())
+			if(c.getType().equals("CLASS")&&Integer.parseInt(c.getCovered())>0)
+				return true;
+		return false;
+	}
 
+	
+	//method is covered ==> <counter type="METHOD" missed="0" covered="1"/>
+	private boolean isCovered(uw.star.rts.analysis.jacoco.Method methodNode){
+		for(uw.star.rts.analysis.jacoco.Counter c: methodNode.getCounter())
+			if(c.getType().equals("METHOD")&&c.getMissed().equals("0")&&c.getCovered().equals("1"))
+				return true;
+		
+		return false;
+	}
+	
+	//statement is covered ==><line nr="98" mi="0" ci="3" , ci ( covered instruction) is greater than 0
+	private boolean isCovered(uw.star.rts.analysis.jacoco.Line lineNode){
+         return Integer.parseInt(lineNode.getCi())>0;
+	}
 
 }

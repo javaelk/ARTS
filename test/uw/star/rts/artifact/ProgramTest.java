@@ -9,7 +9,9 @@ import java.nio.file.Paths;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import uw.star.rts.analysis.CodeCoverageAnalyzer;
 import uw.star.rts.analysis.EmmaCodeCoverageAnalyzer;
+import uw.star.rts.analysis.JacocoCodeCoverageAnalyzer;
 import uw.star.rts.extraction.ArtifactFactory;
 import uw.star.rts.extraction.SIRJavaFactory;
 
@@ -24,7 +26,7 @@ public class ProgramTest {
 		af.setExperimentRoot("/home/wliu/sir");
 		Application app = af.extract("apache-xml-security");
 		p=app.getProgram(ProgramVariant.orig, 0);
-		EmmaCodeCoverageAnalyzer analyzer = new EmmaCodeCoverageAnalyzer(af,app,p,app.getTestSuite());
+		CodeCoverageAnalyzer analyzer = new JacocoCodeCoverageAnalyzer(af,app,p,app.getTestSuite());
 		analyzer.extractEntities(EntityType.CLAZZ);
 	}
 
