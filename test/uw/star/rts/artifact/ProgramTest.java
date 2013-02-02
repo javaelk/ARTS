@@ -24,7 +24,7 @@ public class ProgramTest {
 	public static void oneTimeSetUp() throws Exception {
 		ArtifactFactory af =new SIRJavaFactory();
 		af.setExperimentRoot("/home/wliu/sir");
-		Application app = af.extract("apache-xml-security");
+		Application app = af.extract("apache-ant");
 		p=app.getProgram(ProgramVariant.orig, 0);
 		CodeCoverageAnalyzer analyzer = new JacocoCodeCoverageAnalyzer(af,app,p,app.getTestSuite());
 		analyzer.extractEntities(EntityType.CLAZZ);
@@ -32,25 +32,19 @@ public class ProgramTest {
 
 	@Test
 	public void testGetCodeFilebyName() {
-		System.out.println(p.getCodeFiles(CodeKind.BINARY));
-		System.out.println(p.getCodeFiles(CodeKind.SOURCE));
 		//test public class
-		Path jcemapper = Paths.get("/home/wliu/sir/apache-xml-security/versions.alt/orig/v0/xml-security/build/classes/org/apache/xml/security/algorithms/JCEMapper.class");
-		assertEquals("test public class",0,jcemapper.compareTo(p.getCodeFilebyName(CodeKind.BINARY, "org.apache.xml.security.algorithms", "JCEMapper")));
-		
-		//test public class
-		Path hexDump = Paths.get("/home/wliu/sir/apache-xml-security/versions.alt/orig/v0/xml-security/build/classes/ant/HexDump.class");
-		assertTrue(Files.exists(hexDump));
-		assertEquals("test public class",0,hexDump.compareTo(p.getCodeFilebyName(CodeKind.BINARY, "ant", "HexDump")));
-				
+		Path commandline = Paths.get("/home/wliu/sir/apache-ant/versions.alt/orig/v0/ant/build/ant/classes/org/apache/tools/ant/types/Commandline.class");
+		Path codeFile =p.getCodeFilebyName(CodeKind.BINARY, "org.apache.tools.ant.types", "Commandline");
+		assertEquals("test public class",0,commandline.compareTo(codeFile));
+			
 		//test inner class
-		Path jcemapperInner = Paths.get("/home/wliu/sir/apache-xml-security/versions.alt/orig/v0/xml-security/build/classes/org/apache/xml/security/algorithms/JCEMapper$ProviderIdClass.class");
-		Path codeFile = p.getCodeFilebyName(CodeKind.BINARY, "org.apache.xml.security.algorithms", "JCEMapper$ProviderIdClass");
-		assertEquals("test inner class",0,jcemapperInner.compareTo(codeFile));
+		Path introspectionHelperInner = Paths.get("/home/wliu/sir/apache-ant/versions.alt/orig/v0/ant/build/ant/classes/org/apache/tools/ant/IntrospectionHelper$10.class");
+		codeFile = p.getCodeFilebyName(CodeKind.BINARY, "org.apache.tools.ant", "IntrospectionHelper$10");
+		assertEquals("test inner class",0,introspectionHelperInner.compareTo(codeFile));
 		
 		//test java
-		Path aJavaFile = Paths.get("/home/wliu/sir/apache-xml-security/versions.alt/orig/v0/xml-security/build/src/org/apache/xml/security/algorithms/JCEMapper.java");
-		codeFile = p.getCodeFilebyName(CodeKind.SOURCE, "org.apache.xml.security.algorithms", "JCEMapper.java");
+		Path aJavaFile = Paths.get("/home/wliu/sir/apache-ant/versions.alt/orig/v0/ant/build/src/main/org/apache/tools/ant/types/Commandline.java");
+		codeFile = p.getCodeFilebyName(CodeKind.SOURCE, "org.apache.tools.ant.types", "Commandline.java");
 		System.out.println("Comparing " + aJavaFile.toString() +" \n to " + codeFile.toString());
 		assertEquals("test java source file",0,aJavaFile.compareTo(codeFile));
 		
@@ -63,12 +57,12 @@ public class ProgramTest {
 	@Test
 	public void testGetEntityByName() {
 
-		Entity e = p.getEntityByName(EntityType.SOURCE, "org.apache.xml.security.algorithms.JCEMapper.java");
-		Path aJavaFile = Paths.get("/home/wliu/sir/apache-xml-security/versions.alt/orig/v0/xml-security/build/src/org/apache/xml/security/algorithms/JCEMapper.java");
+		Entity e = p.getEntityByName(EntityType.SOURCE, "org.apache.tools.ant.types.Commandline.java");
+		Path aJavaFile = Paths.get("/home/wliu/sir/apache-ant/versions.alt/orig/v0/ant/build/src/main/org/apache/tools/ant/types/Commandline.java");
 		assertEquals("test get source entity",0,aJavaFile.compareTo(e.getArtifactFile()));
 
-		Entity c = p.getEntityByName(EntityType.CLAZZ, "org.apache.xml.security.algorithms.JCEMapper$ProviderIdClass");
-		Path jcemapperInner = Paths.get("/home/wliu/sir/apache-xml-security/versions.alt/orig/v0/xml-security/build/classes/org/apache/xml/security/algorithms/JCEMapper$ProviderIdClass.class");
+		Entity c = p.getEntityByName(EntityType.CLAZZ, "org.apache.tools.ant.IntrospectionHelper$10");
+		Path jcemapperInner = Paths.get("/home/wliu/sir/apache-ant/versions.alt/orig/v0/ant/build/ant/classes/org/apache/tools/ant/IntrospectionHelper$10.class");
 		assertEquals("test get source entity",0,jcemapperInner.compareTo(c.getArtifactFile()));
 
 	}

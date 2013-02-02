@@ -133,7 +133,7 @@ public class Program extends Artifact{
 	    for(Path code: codeFiles)
 	        if(code.endsWith(className))
 	        	return code;
-	    log.error("Package " + packageName + " class " + className + extenstion + " not found in given code list ");
+	    log.error("Package " + packageName + " class " + className + " not found in given code list ");
 	    return null;
 	}
 	

@@ -258,8 +258,13 @@ public class JacocoCodeCoverageAnalyzer extends CodeCoverageAnalyzer{
                 
 				//get all statements under this sourcefile
 				//Jacoco report xml file only contains line number, but does not have the string of that line. Need to parse the actual java source file to get the statement string
-				Charset cs = Charset.forName("UTF-8");
+				
+                Charset cs = Charset.forName("UTF-8");
 				try(BufferedReader reader = Files.newBufferedReader(srcfilePath, cs)){
+				
+					//special list to keep statements as their order in the xml report
+					List<StatementEntity> orderedAllExecutableStm = new ArrayList<>();
+					
 					int currentLineNum =1;  //line number starting from 1	
 					for(uw.star.rts.analysis.jacoco.Line stm: srcFile.getLine()){
 
@@ -276,9 +281,17 @@ public class JacocoCodeCoverageAnalyzer extends CodeCoverageAnalyzer{
 						StatementEntity stmEntity =new StatementEntity(srcEnt,lineNum,line);
 						stmEntity.setSourceFileEntity(srcEnt);  //statement -> source linked is used. 
 						stmEntities.add(stmEntity);
+						orderedAllExecutableStm.add(stmEntity);
 						if(isCovered(stm))
 							coveredStmEntities.add(stmEntity);
+						
 					}
+
+					//source -> statement link, update all executable statements, this should be already ordered.
+					if(!orderedAllExecutableStm.isEmpty()) 
+						srcEnt.setExecutableStatements(orderedAllExecutableStm);
+					
+					
 				} catch (IOException e) {
 					log.error("IOException in reading file"+ srcfilePath);
 					e.printStackTrace();
