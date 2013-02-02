@@ -1,7 +1,13 @@
 package uw.star.rts.artifact;
 
 import java.util.*;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.*;
+
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
 
 /**
  * Coverage represents coverage relation between test cases and an entity type E over execution of a Program p.
@@ -121,5 +127,38 @@ public class  CodeCoverage<E extends Entity> extends Trace<TestCase, E>{
 				if(rowmap[i]>=0&&colmap[j]>=0&&this.links[i][j]!=lastVer.links[rowmap[i]][colmap[j]])
 					diffsum++;
 		return diffsum;
+	}
+	
+	/**
+	 * Create a histogram of this trace matrix
+	 * 1. count #of test cases covers each entity
+	 * 2. count #of entities covered by exactly n number of test cases
+	 * 3. create an csv output of #of entities and #of test cases  
+	 * @param outputFile
+	 */
+	public Multiset<Integer> createHistogram(){
+		Multiset<Integer> entityTestCaseBag = HashMultiset.create();
+		//for each column, do a sum
+		for(int j=0;j<column.size();j++){
+			int sum=0;
+			for(int i=0;i<row.size();i++)
+				sum += links[i][j];
+		    entityTestCaseBag.add(sum);
+		}
+		return entityTestCaseBag;
+
+	}
+	
+	public void outputHistogram(Path outputFile){
+		Multiset<Integer> entityTestCaseBag = createHistogram();
+		Charset charset = Charset.forName("UTF-8");
+		try(BufferedWriter writer = Files.newBufferedWriter(outputFile,charset,StandardOpenOption.WRITE,StandardOpenOption.CREATE,StandardOpenOption.TRUNCATE_EXISTING)){
+			writer.write("#of test cases,#of entities covered by exactly t test cases\n");
+			for(int i=0;i<row.size()+1;i++)
+				writer.write(i+","+entityTestCaseBag.count(i)+"\n");
+		}catch(IOException e){
+			log.error("error in writing to file " + outputFile.getFileName());
+			e.printStackTrace();
+		}
 	}
 }

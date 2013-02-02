@@ -8,7 +8,10 @@ import java.util.*;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.google.common.collect.Multiset;
 
 import uw.star.rts.artifact.Artifact;
 import uw.star.rts.artifact.TestCase;
@@ -184,8 +187,5 @@ public class TraceTest {
 		t1.serializeCompressedMatrixToCSV(file2);
 		assertTrue(file.toFile().exists());
 		assertTrue(file2.toFile().exists());
-		
-		
-		
 	}
 }

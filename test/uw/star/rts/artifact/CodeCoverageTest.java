@@ -12,6 +12,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.google.common.collect.Multiset;
+
 public class CodeCoverageTest extends TraceTest{
 
 	
@@ -134,4 +136,17 @@ public class CodeCoverageTest extends TraceTest{
 		cc.setLink(f,s1);
 		assertEquals("changed elements",3,codeCoverage.diff(cc,new StatementEntityComparator()));
 	}
+	
+	@Test
+	public void testCreateHistogram(){
+        Multiset<Integer> result = codeCoverage.createHistogram();
+        assertEquals(1,result.count(0));
+        assertEquals(1,result.count(1));
+        assertEquals(0,result.count(2));
+        assertEquals(2,result.count(3));
+        assertEquals(0,result.count(4));
+        assertEquals(0,result.count(5));
+        assertEquals(0,result.count(6));
+	}
+	
 }

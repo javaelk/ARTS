@@ -1,6 +1,7 @@
 package uw.star.rts.artifact;
 
 import java.io.*;
+import com.google.common.collect.*;
 import java.nio.charset.Charset;
 import java.nio.file.*;
 import java.nio.*;
@@ -367,5 +368,6 @@ public class Trace<T extends Artifact, U extends Artifact> extends Artifact {
 					nt.setLink(i, j);
 		return nt;
 	}
+
 
 }

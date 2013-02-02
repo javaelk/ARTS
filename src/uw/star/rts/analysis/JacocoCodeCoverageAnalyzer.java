@@ -69,24 +69,22 @@ public class JacocoCodeCoverageAnalyzer extends CodeCoverageAnalyzer{
 	    coveredStmEntities =new HashSet<>();
 	}
 
+	
 	/**
 	 * extract code entities of given type and link back to the program, src entities are set in any cases.
 	 * TODO: use other ways to extract all entities. JaCoCo XML reports do not contain interfaces.
 	 * Ideally, the program artifact should contain ALL classes regardless it's interface or not.
 	 * TODO: user java generic to replace EntityType parameter 
 	 * @param type
+	 * @param jacocoXMLReport - extract all entities based on given jacocoXMLReport file
 	 * @return
 	 */
-	public  List<? extends Entity> extractEntities(EntityType type){
+	public  List<? extends Entity> extractEntities(EntityType type,Path jacocoXMLReport){
 		List<? extends Entity> result = null;
-		List<TestCase> testcases =testSuite.getTestCaseByVersion(program.getVersionNo());
-		if(testcases.size()==0){
-			log.error("test case set should not be zero");
-		}else{
-			TestCase t0 =testcases.get(0);
-			log.debug("parse xml result of test case :" + t0);
 			//parse any xml result file would have the same entities
-			parseJacocoXMLReport(af.getJaCoCoCodeCoverageResultFile(program,t0,"xml"));
+            clearAll();
+            
+			parseJacocoXMLReport(jacocoXMLReport);
 
 			switch(type){
 			case CLAZZ : 
@@ -113,20 +111,32 @@ public class JacocoCodeCoverageAnalyzer extends CodeCoverageAnalyzer{
 			if(!type.equals(EntityType.SOURCE)) 
 				program.setCodeEntities(EntityType.SOURCE, ImmutableList.copyOf(srcEntities));
 			program.setCodeEntities(type,result);
-		}
 		return result;
 	}
 
+
+	/**
+	 * if jacocoXMLReport is not specified, always parse xml report of testcase 0
+	 */
+	public  List<? extends Entity> extractEntities(EntityType type){
+		List<TestCase> testcases =testSuite.getTestCaseByVersion(program.getVersionNo());
+		if(testcases.size()==0){
+			log.error("test case set should not be zero");
+			throw new IllegalArgumentException("test case set should not be zero");
+		}
+			TestCase t0 =testcases.get(0);
+			log.debug("parse xml result of test case :" + t0);
+			return extractEntities(type,af.getJaCoCoCodeCoverageResultFile(program,t0,"xml"));
+	}
+	
 	/**
 	 * extract covered code entities of given type 
 	 * @param type
+	 * @param tc - code entities covered by this test case 
 	 * @return
 	 */
 	public  List<? extends Entity> extractCoveredEntities(EntityType type,TestCase tc){
-		coveredSrcEntities.clear();
-		coveredClassEntities.clear();
-		coveredMethodEntities.clear();
-	    coveredStmEntities.clear();
+       clearAll();
 	    
 		List<? extends Entity> result = null;
 			log.debug("parse xml result of test case :" + tc);
@@ -200,7 +210,7 @@ public class JacocoCodeCoverageAnalyzer extends CodeCoverageAnalyzer{
 	 * @see http://www.javaworld.com/javaworld/jw-06-2006/jw-0626-jaxb.html
 	 * @param xml
 	 */
-	void parseJacocoXMLReport(Path xml){
+	private void parseJacocoXMLReport(Path xml){
 		//use JAXB to unmarshall XML doc if not already done. this would read the whole XML file into memory as a tree
 		try(InputStream stream = Files.newInputStream(xml)){
 			Report jacocoReport =XMLJAXBUtil.unmarshall(Report.class,stream);
@@ -344,4 +354,15 @@ public class JacocoCodeCoverageAnalyzer extends CodeCoverageAnalyzer{
          return Integer.parseInt(lineNode.getCi())>0;
 	}
 
+	private void clearAll(){
+		srcEntities.clear();
+		classEntities.clear();
+		methodEntities.clear();
+		stmEntities.clear();
+		
+		coveredSrcEntities.clear();
+		coveredClassEntities.clear();
+		coveredMethodEntities.clear();
+	    coveredStmEntities.clear();
+	}
 }
