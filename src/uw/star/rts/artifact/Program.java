@@ -170,7 +170,7 @@ public class Program extends Artifact{
 	 */
 	public boolean setCodeEntities(EntityType type,List<? extends Entity> entities){
 		if(codeEntities.containsKey(type)){
-			log.error("Entity type " + type + " already exist, replace by new values");
+			log.warn("Entity type " + type + " already exist, replace by new values");
 		}
 		codeEntities.put(type, entities);
 		return true;
@@ -202,7 +202,7 @@ public class Program extends Artifact{
 		for(Entity e: codeEntities.get(type))
 			if(name.equals(e.getName()))
 					return e;
-		log.error("Entity " + type + name + " not found ");
+		log.warn("Entity " + type +" " + name + " not found ");
 		return null;
 	}
 	

@@ -17,6 +17,45 @@ public class JavaFileParser {
 
 	static Logger log = LoggerFactory.getLogger(SIRJavaFactory.class.getName());
 
+	
+	/**
+	 * parse Java source file to find a matcher
+	 * 
+	 */
+	public static String getMatcher(String fileName,Pattern pattern1){
+		Path javafile = Paths.get(fileName);
+		//read file 
+		if(!Files.exists(javafile)){
+			log.error(fileName + " does not exist" );
+			throw new IllegalArgumentException();
+		}
+		if(Files.isDirectory(javafile)){
+			log.error(fileName + " is a directory" );
+			throw new IllegalArgumentException();
+		}
+
+		Charset cs = Charset.forName("UTF-8");
+		try(BufferedReader reader = Files.newBufferedReader(javafile, cs)){
+			String line =null;
+			while((line = reader.readLine())!=null){
+				Matcher m1 = pattern1.matcher(line);
+				if(m1.find())
+					return m1.group(1).trim();
+			}
+			log.error("pattern " + pattern1.toString() + "not found in file " + fileName);
+		}catch(IOException e){
+			log.error("IO exception in reading file " + fileName);
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static boolean isInterface(String fileName){
+		String className = Paths.get(fileName).getFileName().toString();
+		Pattern interfaceLine = Pattern.compile("^public interface(.*)");
+		return getMatcher(fileName,interfaceLine)!=null;
+	}
+	
 	/**
 	 * parse java file and get package name 
 	 * @param fileName - absolute path to the java file

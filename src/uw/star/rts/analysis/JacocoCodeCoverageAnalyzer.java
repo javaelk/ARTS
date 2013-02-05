@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.io.*;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 
 import javax.xml.bind.JAXBException;
@@ -221,7 +222,7 @@ public class JacocoCodeCoverageAnalyzer extends CodeCoverageAnalyzer{
 						log.error("not yet implemented");
 					}else if(gp instanceof uw.star.rts.analysis.jacoco.Package){
 						uw.star.rts.analysis.jacoco.Package p= (uw.star.rts.analysis.jacoco.Package)gp;
-						log.debug("package name: " + p.getName());
+						//log.debug("package name: " + p.getName());
 						//get all sourcefile and line under this package
 						parseSourcefileAndLine(p);
 						//get class and method under this package
@@ -249,7 +250,7 @@ public class JacocoCodeCoverageAnalyzer extends CodeCoverageAnalyzer{
 			if(o instanceof uw.star.rts.analysis.jacoco.Sourcefile){
 				uw.star.rts.analysis.jacoco.Sourcefile srcFile = (uw.star.rts.analysis.jacoco.Sourcefile)o;
 				String srcfileName = srcFile.getName();
-				log.debug("source file name: "+ srcfileName);
+				//log.debug("source file name: "+ srcfileName);
 				Path srcfilePath = program.getCodeFilebyName(CodeKind.SOURCE, packageName, srcfileName);
 				SourceFileEntity srcEnt = new SourceFileEntity(program,packageName,srcfileName,srcfilePath);
 				srcEntities.add(srcEnt); //add a source file entity
@@ -259,8 +260,8 @@ public class JacocoCodeCoverageAnalyzer extends CodeCoverageAnalyzer{
 				//get all statements under this sourcefile
 				//Jacoco report xml file only contains line number, but does not have the string of that line. Need to parse the actual java source file to get the statement string
 				
-                Charset cs = Charset.forName("UTF-8");
-				try(BufferedReader reader = Files.newBufferedReader(srcfilePath, cs)){
+                //BUG FIXES: use Files.newBufferReader(path,StandardCharsets.ISO_8859_1) instead of UTF-8. 
+				try(BufferedReader reader = Files.newBufferedReader(srcfilePath, StandardCharsets.ISO_8859_1)){
 				
 					//special list to keep statements as their order in the xml report
 					List<StatementEntity> orderedAllExecutableStm = new ArrayList<>();
@@ -311,7 +312,7 @@ public class JacocoCodeCoverageAnalyzer extends CodeCoverageAnalyzer{
 				uw.star.rts.analysis.jacoco.Class currentClazz =(uw.star.rts.analysis.jacoco.Class)o; 
 				String fullyQualifiedClassName = currentClazz.getName().replaceAll("/", ".");
 				String className = fullyQualifiedClassName.substring(fullyQualifiedClassName.lastIndexOf(".")+1);
-				log.debug("class name: "+ className);
+				//log.debug("class name: "+ className);
 				Path classfilePath = program.getCodeFilebyName(CodeKind.BINARY, packageName, className);
 				ClassEntity classEnt = new ClassEntity(program,packageName,className,classfilePath);
 				// LINK:	classEnt.setSource(findSourceEntityByClassname(packageName,className));  //this link was used to roll up class coverage to source coverage in emma but no longer needed for jacoco
@@ -323,7 +324,7 @@ public class JacocoCodeCoverageAnalyzer extends CodeCoverageAnalyzer{
 				//get all methods under this class node
 				for(uw.star.rts.analysis.jacoco.Method currentMethod: currentClazz.getMethod()){
 					String methodName = currentMethod.getName()+"."+currentMethod.getDesc();
-					log.debug("method name :"+ methodName);
+					//log.debug("method name :"+ methodName);
 					MethodEntity methodEnt = new MethodEntity(classEnt,methodName);
 					//LINK : methodEnt.setClassEntity(classEnt); //method ->class
 					methodEntities.add(methodEnt); //add a method

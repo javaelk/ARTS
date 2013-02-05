@@ -185,9 +185,18 @@ public class Application {
 	public String getStats(){
 		//TODO: print type of specification, size of source code
 		StringBuffer buf = new StringBuffer();
-		buf.append("# of Versions - " + programs.size()+"\n");
+		int ver = programs.get(ProgramVariant.orig).size();
+		buf.append("# of Versions - " + ver +"\n");
 		//buf.append("# of Specifications - " + specifications.size() + "\n");
-		buf.append("# of test cases - " + testsuite.getTestCases().size()+"\n");
+		buf.append("total # of test cases - " + testsuite.getTestCases().size()+"\n");
+		buf.append("#of test cases per version -  ");
+		for(int i=0;i<ver;i++)
+			buf.append(testsuite.getTestCaseByVersion(i).size()+",");
+		buf.append("\n");
+		buf.append("#of regression test cases per version -  ");
+		for(int i=0;i<ver;i++)
+			buf.append(testsuite.getRegressionTestCasesByVersion(i).size()+",");
+		buf.append("\n");
 		return buf.toString();
 		
 	}

@@ -191,8 +191,8 @@ public class Engine {
 					log.info("2.1 == Artifacts Modeling ==");
 					af.setExperimentRoot(experiment_root);
 					Application newApp = af.extract(caseStudySubject.getName());
-					log.debug("## application details ##:/n" + newApp.toString());
-					log.debug("## application stats ##:/n" + newApp.getStats());
+					log.debug("## application details ##:\n" + newApp.toString());
+					log.debug("## application stats ##:\n" + newApp.getStats());
 					//TODO: log.info("2.2 == Artifacts Validation ==");
 					//TODO: log.info("2.3 == Availability Analysis ==");
 					resultList.add(newApp);

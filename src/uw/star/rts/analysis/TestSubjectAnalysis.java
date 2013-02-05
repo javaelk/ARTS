@@ -22,6 +22,7 @@ public class TestSubjectAnalysis {
 	 * @param testSubjects
 	 */
 	public static void analyzeCoverageStability(List<Application> testSubjects){
+
 		String[] header = {"TestSubject-Version","#of TestCases","#of Regression Test Cases (|T|)",
 				"Statement-Total# of Entity","Statement-#Covered Entity(Ec)","Statement-#Covered Entity(Ec) by regression TC","Statement-Cumulative Coverage(CC)","Statement-#Changed Elements","Statement-total#of Elements",
 				"Source-Total# of Entity","Source-#Covered Entity(Ec)","Source-#Covered Entity(Ec) by regression TC","Source-Cumulative Coverage(CC)","Source-#Changed Elements","Source-total#of Elements",
@@ -139,4 +140,8 @@ public class TestSubjectAnalysis {
 		ResultOutput.outputResult("TestSubjectAnalysis", Arrays.asList(header), rows);
 
 	}
+	
 }
+
+
+
