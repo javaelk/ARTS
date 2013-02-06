@@ -368,6 +368,15 @@ public class Trace<T extends Artifact, U extends Artifact> extends Artifact {
 					nt.setLink(i, j);
 		return nt;
 	}
-
+	
+	/**
+	 * merge all the ones from col1 to col2
+	 */
+	protected void merge(int col1,int col2){
+		for(int i=0;i<row.size();i++)
+			if(links[i][col1]==1)
+				links[i][col2]=1;
+		
+	}
 
 }

@@ -188,4 +188,17 @@ public class TraceTest {
 		assertTrue(file.toFile().exists());
 		assertTrue(file2.toFile().exists());
 	}
+	@Test 
+	public void testMerge(){
+		t1.setLink(0, 0);
+		t1.setLink(1,1);
+		t1.setLink(2,2);
+		t1.setLink(2,1);
+		t1.merge(1, 2);
+        int[][] linkM = t1.getLinkMatrix();
+        assertEquals(1,linkM[1][2]);
+        assertEquals(1,linkM[0][0]);
+        assertEquals(1,linkM[1][1]);
+        assertEquals(1,linkM[2][2]);
+	}
 }

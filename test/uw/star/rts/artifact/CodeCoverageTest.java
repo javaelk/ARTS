@@ -149,4 +149,19 @@ public class CodeCoverageTest extends TraceTest{
         assertEquals(0,result.count(6));
 	}
 	
+	@Test
+	public void testTransform(){
+		List<String> dependents = new ArrayList<>();
+		dependents.add(s4.getName());
+		dependents.add(s2.getName());
+		dependents.add(s1.getName());
+		codeCoverage.transform(s3, dependents);
+		List<TestCase> tcs = codeCoverage.getLinkedEntitiesByColumn(s3);
+		assertTrue(tcs.contains(a));
+		assertTrue(tcs.contains(c));
+		assertTrue(tcs.contains(d));
+		assertTrue(tcs.contains(e));
+		assertTrue(tcs.contains(f));
+		assertFalse(tcs.contains(b));
+	}
 }

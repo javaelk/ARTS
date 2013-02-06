@@ -161,4 +161,22 @@ public class  CodeCoverage<E extends Entity> extends Trace<TestCase, E>{
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * Transform the code coverage matrix based on inbound dependency information
+	 * for each entity e' in inboundDependentEntities
+     * merge test cases covers e' into e
+     * @param e - entity column which will be modified to merge other test cases into
+	 * @param inboundDependentEntities - list of entities (in names) the dependent on e,i.e. modification of e would require tests of every ePrime to be selected too. 
+	 */
+	public void transform(E e,List<String> inboundDependentEntities){
+	    int ecol = column.indexOf(e);  //column number of e
+		for(int j=0;j<column.size();j++){
+	    	for(String ePrime : inboundDependentEntities){
+	    		if(column.get(j).getName().equals(ePrime)) //column number of ePrime is j
+	    		    merge(j,ecol);
+	    	}
+	    }
+	}
+	
+
 }
