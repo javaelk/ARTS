@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="test"/>
+	<classpathentry excluding="testfiles/" kind="src" path="test"/>
+	<classpathentry kind="src" path="generated"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/STStechniques.jar"/>
 	<classpathentry kind="lib" path="lib/findbugs.jar" sourcepath="/findbugs-2.0.0"/>
@@ -34,7 +35,6 @@
 	<classpathentry kind="lib" path="lib/xbean.jar"/>
 	<classpathentry kind="lib" path="lib/xmlbeans-qname.jar"/>
 	<classpathentry kind="lib" path="lib/xmlpublic.jar"/>
-	<classpathentry kind="lib" path="lib/junit-4.10.jar"/>
 	<classpathentry kind="lib" path="/RTS-T11/bin" sourcepath="/RTS-T11/src"/>
 	<classpathentry kind="lib" path="/RTS-T25/bin" sourcepath="/RTS-T25/src"/>
 	<classpathentry kind="lib" path="/RTS-T25/lib/commons-codec-1.7.jar"/>
@@ -42,5 +42,6 @@
 	<classpathentry kind="lib" path="lib/commons-collections-3.2.1.jar"/>
 	<classpathentry kind="lib" path="lib/guava-13.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/javaparser-1.0.8.jar" sourcepath="/home/wliu/java/javaparser-1.0.8-src"/>
+	<classpathentry kind="lib" path="lib/junit-4.10.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

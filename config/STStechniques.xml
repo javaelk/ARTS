@@ -19,11 +19,5 @@
 		<EntityType>SOURCE</EntityType>
 	 	<programming_language>JAVA</programming_language>
 	</Implementation>
-	<Implementation>
-	 	<ClassName>uw.star.rts.technique.TextualDifference_Statement</ClassName>
-		<Required_artifact>StatementEntity</Required_artifact> 	
-		<EntityType>StatementEntity</EntityType>
-	 	<programming_language>JAVA</programming_language>
-	</Implementation>
 </technique>
 </STStechniques>
