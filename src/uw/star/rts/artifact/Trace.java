@@ -142,6 +142,15 @@ public class Trace<T extends Artifact, U extends Artifact> extends Artifact {
 	}
 
 	/**
+	 * Set this link matrix with another link matrix
+	 * @param anotherLinks
+	 */
+	public void setLink(int[][] anotherLinks){
+		for(int i=0;i<anotherLinks.length;i++)
+			for(int j=0;j<anotherLinks[i].length;j++)
+				this.links[i][j]=anotherLinks[i][j];
+	}
+	/**
 	 * Retrieve all artifacts linked to a,search a in row only.
 	 * 
 	 * @param a

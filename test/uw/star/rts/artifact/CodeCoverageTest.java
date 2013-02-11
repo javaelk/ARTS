@@ -82,6 +82,14 @@ public class CodeCoverageTest extends TraceTest{
 		assertTrue("s4 is covered",covered.contains(s4));
 	}
 	
+	@Test public void testCreateImmutableCopy(){
+		List<Entity> covered = codeCoverage.createImmutableCopy().getCoveredEntities();
+		assertEquals("# of  entites are covered",3,covered.size());
+		assertTrue("s1 is covered",covered.contains(s1));
+		assertFalse("s2 is not covered",covered.contains(s2));
+		assertTrue("s3 is covered",covered.contains(s3));
+		assertTrue("s4 is covered",covered.contains(s4));
+	}
 	@Test
 	public void testGetCumulativeCoverageList() {
 		assertEquals("cumlative coverage ",4,codeCoverage.getCumulativeCoverage(tcb));
@@ -155,8 +163,8 @@ public class CodeCoverageTest extends TraceTest{
 		dependents.add(s4.getName());
 		dependents.add(s2.getName());
 		dependents.add(s1.getName());
-		codeCoverage.transform(s3, dependents);
-		List<TestCase> tcs = codeCoverage.getLinkedEntitiesByColumn(s3);
+		CodeCoverage newcc = codeCoverage.transform(s3, dependents);
+		List<TestCase> tcs = newcc.getLinkedEntitiesByColumn(s3);
 		assertTrue(tcs.contains(a));
 		assertTrue(tcs.contains(c));
 		assertTrue(tcs.contains(d));

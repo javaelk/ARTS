@@ -7,6 +7,7 @@ import java.nio.charset.Charset;
 import java.nio.file.*;
 
 import com.google.common.collect.HashMultiset;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multiset;
 
 /**
@@ -166,17 +167,28 @@ public class  CodeCoverage<E extends Entity> extends Trace<TestCase, E>{
 	 * for each entity e' in inboundDependentEntities
      * merge test cases covers e' into e
      * @param e - entity column which will be modified to merge other test cases into
-	 * @param inboundDependentEntities - list of entities (in names) the dependent on e,i.e. modification of e would require tests of every ePrime to be selected too. 
+	 * @param inboundDependentEntities - list of entities (in names) the dependent on e,i.e. modification of e would require tests of every ePrime to be selected too.
+	 * @return a transformed codecoverage matrix , original code coverage is not modified
 	 */
-	public void transform(E e,List<String> inboundDependentEntities){
+	public CodeCoverage transform(E e,List<String> inboundDependentEntities){
+		CodeCoverage newcc = this.createImmutableCopy();
 	    int ecol = column.indexOf(e);  //column number of e
 		for(int j=0;j<column.size();j++){
 	    	for(String ePrime : inboundDependentEntities){
 	    		if(column.get(j).getName().equals(ePrime)) //column number of ePrime is j
-	    		    merge(j,ecol);
+	    		    newcc.merge(j,ecol);
 	    	}
 	    }
+		return newcc;
 	}
 	
-
+	/**
+	 * @return an immutable copy of this CodeCoverage with the same coverage information. O 
+	 */
+    public CodeCoverage<E> createImmutableCopy(){
+    	CodeCoverage<E> newcc = new CodeCoverage<E>(ImmutableList.copyOf(this.row),ImmutableList.copyOf(this.column),this.artifactPath);
+    	newcc.setLink(this.getLinkMatrix());
+    	return newcc;
+    }
+	
 }
