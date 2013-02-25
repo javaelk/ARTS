@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry excluding="testfiles/" kind="src" path="test"/>
+	<classpathentry excluding="testfiles/|testfiles/|testfiles/" kind="src" path="test"/>
+	<classpathentry kind="src" path="test/testfiles"/>
 	<classpathentry kind="src" path="generated"/>
+	<classpathentry kind="src" path="tmp"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/STStechniques.jar"/>
 	<classpathentry kind="lib" path="lib/findbugs.jar" sourcepath="/findbugs-2.0.0"/>

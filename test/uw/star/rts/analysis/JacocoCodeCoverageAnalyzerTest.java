@@ -28,6 +28,7 @@ public class JacocoCodeCoverageAnalyzerTest {
 		app = af.extract("apache-ant");
 		p=app.getProgram(ProgramVariant.orig, 0);
 		analyzer = new JacocoCodeCoverageAnalyzer(af,app,p,app.getTestSuite());
+		//TODO: change the way to access test resources to InputStream is = getClass().getResourceAsStream( "/test.properties" );
        testxml = Paths.get("test"+File.separator+"testfiles"+File.separator+"coverage.org.apache.tools.ant.IntrospectionHelperTest.testAddText.xml");
 	}
 	

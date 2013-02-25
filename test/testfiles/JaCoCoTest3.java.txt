@@ -1,0 +1,19 @@
+package org.jacoco.core;
+import static org.junit.Assert.assertNotNull;
+public class JaCoCoTest {
+	@Test
+	public void testVERSION() {
+		assertNotNull(JaCoCo.VERSION);
+	}
+
+	@Test
+	public void testHOMEURL() {
+		assertNotNull(JaCoCo.HOMEURL);
+	}
+
+	@Test
+	public testRUNTIMEPACKAGE() {
+		assertNotNull(JaCoCo.RUNTIMEPACKAGE);
+	}
+
+}

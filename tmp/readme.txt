@@ -1,0 +1,1 @@
+this folder contain temporary class files may be used one time for specific purpose. Put these in tmp folder to keep src folder clean.
