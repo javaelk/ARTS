@@ -119,7 +119,10 @@ public class JavaFileParser {
 	public static List<String> junit4TestMethodParser(String fileName){
 		verifyFileExistandNotADirecotry(fileName);
 		Path javafile = Paths.get(fileName);
-
+		return junit4TestMethodParser(javafile);
+	}
+	
+	public static List<String> junit4TestMethodParser(Path javafile){
 		Pattern pattern1 = Pattern.compile("@Test");
 		Pattern pattern2 = Pattern.compile("^.*public void (.*)\\(");
 		List<String> methodNames = new ArrayList<>();
@@ -136,9 +139,9 @@ public class JavaFileParser {
 				}
 			}
 			if(methodNames.size()==0)
-				log.error("No Junit4 test methods found in file " + fileName);
+				log.error("No Junit4 test methods found in file " + javafile);
 		}catch(IOException e){
-			log.error("IO exception in reading file " + fileName);
+			log.error("IO exception in reading file " + javafile);
 			e.printStackTrace();
 		}
 		return methodNames;	
