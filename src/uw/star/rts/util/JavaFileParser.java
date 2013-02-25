@@ -6,6 +6,8 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,12 +19,38 @@ public class JavaFileParser {
 
 	static Logger log = LoggerFactory.getLogger(SIRJavaFactory.class.getName());
 
-	
+
 	/**
 	 * parse Java source file to find a matcher
+	 * this method return as soon as it finds the 1st match
 	 * 
 	 */
 	public static String getMatcher(String fileName,Pattern pattern1){
+
+		verifyFileExistandNotADirecotry(fileName);
+
+		Path javafile = Paths.get(fileName);
+		return getMatcher(javafile,pattern1);
+	}
+	
+   public static String getMatcher(Path javafile,Pattern pattern1){
+		Charset cs = Charset.forName("latin1");
+		try(BufferedReader reader = Files.newBufferedReader(javafile, cs)){
+			String line =null;
+			while((line = reader.readLine())!=null){
+				Matcher m1 = pattern1.matcher(line);
+				if(m1.find())
+					return m1.group(1).trim();
+			}
+			log.error("pattern " + pattern1.toString() + "not found in file " + javafile);
+		}catch(IOException e){
+			log.error("IO exception in reading file " + javafile);
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static void verifyFileExistandNotADirecotry(String fileName){
 		Path javafile = Paths.get(fileName);
 		//read file 
 		if(!Files.exists(javafile)){
@@ -33,29 +61,13 @@ public class JavaFileParser {
 			log.error(fileName + " is a directory" );
 			throw new IllegalArgumentException();
 		}
-
-		Charset cs = Charset.forName("UTF-8");
-		try(BufferedReader reader = Files.newBufferedReader(javafile, cs)){
-			String line =null;
-			while((line = reader.readLine())!=null){
-				Matcher m1 = pattern1.matcher(line);
-				if(m1.find())
-					return m1.group(1).trim();
-			}
-			log.error("pattern " + pattern1.toString() + "not found in file " + fileName);
-		}catch(IOException e){
-			log.error("IO exception in reading file " + fileName);
-			e.printStackTrace();
-		}
-		return null;
 	}
-	
+
 	public static boolean isInterface(String fileName){
-		String className = Paths.get(fileName).getFileName().toString();
 		Pattern interfaceLine = Pattern.compile("^public interface(.*)");
 		return getMatcher(fileName,interfaceLine)!=null;
 	}
-	
+
 	/**
 	 * parse java file and get package name 
 	 * @param fileName - absolute path to the java file
@@ -72,8 +84,10 @@ public class JavaFileParser {
 			log.error(fileName + " is a directory" );
 			throw new IllegalArgumentException();
 		}
+		return getJavaPackageName(javafile);
+	}
 
-
+	public static String getJavaPackageName(Path javafile){
 		Charset cs = Charset.forName("latin1");
 		try(BufferedReader reader = Files.newBufferedReader(javafile, cs)){
 			String line =null;
@@ -86,13 +100,48 @@ public class JavaFileParser {
 				Matcher m2 = pattern2.matcher(line);
 				if(m2.find())
 					return m2.group(1).trim();
-				
+
 			}
-			log.error("package name not found in file " + fileName);
+			log.error("package name not found in file " + javafile);
+		}catch(IOException e){
+			log.error("IO exception in reading file " + javafile);
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * this method parse through the java source file and find all test methods
+	 * this method looks for \\@Test annotation and parse the method name of the following line
+	 * @param fileName - a Junit4 test class source file
+	 * @return a list of all test methods
+	 */
+	public static List<String> junit4TestMethodParser(String fileName){
+		verifyFileExistandNotADirecotry(fileName);
+		Path javafile = Paths.get(fileName);
+
+		Pattern pattern1 = Pattern.compile("@Test");
+		Pattern pattern2 = Pattern.compile("^.*public void (.*)\\(");
+		List<String> methodNames = new ArrayList<>();
+		Charset cs = Charset.forName("latin1");
+		try(BufferedReader reader = Files.newBufferedReader(javafile, cs)){
+			String line =null;
+			//find pattern1 first then find pattern2 on the exact following line
+			while((line = reader.readLine())!=null){
+				Matcher m1 = pattern1.matcher(line);
+				if(m1.find()&&(line = reader.readLine())!=null){
+					Matcher m2 = pattern2.matcher(line);
+					if(m2.find()) 
+						methodNames.add(m2.group(1).trim());
+				}
+			}
+			if(methodNames.size()==0)
+				log.error("No Junit4 test methods found in file " + fileName);
 		}catch(IOException e){
 			log.error("IO exception in reading file " + fileName);
 			e.printStackTrace();
 		}
-		return null;
+		return methodNames;	
+
 	}
 }
