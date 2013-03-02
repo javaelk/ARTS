@@ -3,6 +3,7 @@ package uw.star.rts.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -122,12 +123,12 @@ public class JavaFileParser {
 		return junit4TestMethodParser(javafile);
 	}
 	
+	//TODO: this method does not handle abstract test class and extend test classes properly at this time.
 	public static List<String> junit4TestMethodParser(Path javafile){
 		Pattern pattern1 = Pattern.compile("@Test");
 		Pattern pattern2 = Pattern.compile("^.*public void (.*)\\(");
 		List<String> methodNames = new ArrayList<>();
-		Charset cs = Charset.forName("latin1");
-		try(BufferedReader reader = Files.newBufferedReader(javafile, cs)){
+		try(BufferedReader reader = Files.newBufferedReader(javafile, StandardCharsets.ISO_8859_1)){
 			String line =null;
 			//find pattern1 first then find pattern2 on the exact following line
 			while((line = reader.readLine())!=null){
