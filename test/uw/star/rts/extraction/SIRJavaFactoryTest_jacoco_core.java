@@ -33,9 +33,12 @@ public class SIRJavaFactoryTest_jacoco_core {
 	@Test
 	public void testExtractProgram() {
 		 testapp = sir.extract(appname);
-		assertEquals("orig has 1 version",1,testapp.getProgram(ProgramVariant.orig).size());
-        assertEquals("#of .java files in orig v0", 168,testapp.getProgram(ProgramVariant.orig, 0).getCodeFiles(CodeKind.SOURCE).size());
-        assertEquals("#of .class files in orig v0", 255,testapp.getProgram(ProgramVariant.orig, 0).getCodeFiles(CodeKind.BINARY).size());
+		assertEquals("orig has 14 version",14,testapp.getProgram(ProgramVariant.orig).size());
+        assertEquals("#of .java files in orig v0", 152,testapp.getProgram(ProgramVariant.orig, 0).getCodeFiles(CodeKind.SOURCE).size());
+        assertEquals("#of .class files in orig v0", 225,testapp.getProgram(ProgramVariant.orig, 0).getCodeFiles(CodeKind.BINARY).size());
+        assertEquals("#of .java files in orig v13", 168,testapp.getProgram(ProgramVariant.orig, 13).getCodeFiles(CodeKind.SOURCE).size());
+        assertEquals("#of .class files in orig v13", 255,testapp.getProgram(ProgramVariant.orig, 13).getCodeFiles(CodeKind.BINARY).size());
+        
 	}
 	
 	@Test 
