@@ -1,4 +1,4 @@
-package uw.star.rts.main;
+package uw.star.rts.internal;
 
 import java.io.BufferedReader;
 import java.io.IOException;

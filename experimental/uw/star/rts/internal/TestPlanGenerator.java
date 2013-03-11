@@ -1,4 +1,4 @@
-package uw.star.rts.main;
+package uw.star.rts.internal;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -7,7 +7,7 @@ import uw.star.rts.util.*;
 
 /**
  * this is one time use to generate a test plan universal file
- * This doesn't seem to be able to handle test classes extends super test class but has no @Test in it. need manual update to fix those scenarios
+ * TODO:This doesn't seem to be able to handle test classes extends super test class but has no @Test in it. need manual update to fix those scenarios
  * @author wliu
  *
  */
