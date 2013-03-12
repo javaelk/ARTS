@@ -32,7 +32,7 @@ public class JUnitTestClassParser implements JUnit4TestsParser{
 		String className = javafile.getFileName().toString().split("\\.")[0];
 		String packageName = JavaFileParser.getJavaPackageName(javafile);
 		try {
-			log.debug("test class - " + packageName + "."+className);
+			//log.debug("test class - " + packageName + "."+className);
 			TestClass testClass = new TestClass(Class.forName(packageName+"."+className));
 			List<FrameworkMethod> testMethods = testClass.getAnnotatedMethods(org.junit.Test.class);
 			for(FrameworkMethod m: testMethods)
@@ -41,7 +41,7 @@ public class JUnitTestClassParser implements JUnit4TestsParser{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalArgumentException e){
-			log.error(className + "is not a test class");
+			//log.error(className + "is not a test class");
 		}
         return resultLst;
 	}

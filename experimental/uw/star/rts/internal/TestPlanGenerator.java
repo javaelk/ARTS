@@ -17,7 +17,8 @@ import com.google.common.collect.*;
 public class TestPlanGenerator {
 	public static void main(String[] args){
 		//todo: change this to create file for all versions
-		Path testcaseSrcDir = Paths.get("/home/wliu/sir/jacoco_core/versions.alt/orig/v1/jacoco_core/build/src/testcases");
+		//Path testcaseSrcDir = Paths.get("/home/wliu/sir/jacoco_core/versions.alt/orig/v1/jacoco_core/build/src/testcases");
+		Path testcaseSrcDir = Paths.get(args[0]);
 		//Path testcaseClassDir = Paths.get("/home/wliu/sir/jacoco_core/versions.alt/orig/v0/jacoco_core/build/testcases");
 		//Path mainClassDir = Paths.get("/home/wliu/sir/jacoco_core/versions.alt/orig/v0/jacoco_core/build/classes");
 		// method 1 - use junit4
