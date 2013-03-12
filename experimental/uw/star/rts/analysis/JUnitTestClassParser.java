@@ -53,5 +53,6 @@ public class JUnitTestClassParser implements JUnit4TestsParser{
 		    methods1.addAll(getJUnit4TestMethodsFromFile(junit));
 		return methods1;
 	}
+	
 
 }

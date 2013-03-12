@@ -45,8 +45,8 @@
 	<classpathentry kind="lib" path="lib/guava-13.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/javaparser-1.0.8.jar" sourcepath="/home/wliu/java/javaparser-1.0.8-src"/>
 	<classpathentry kind="lib" path="lib/junit-4.10.jar"/>
-	<classpathentry kind="lib" path="/home/wliu/sir/jacoco_core/versions.alt/orig/v0/jacoco_core/build/testcases"/>
-	<classpathentry kind="lib" path="/home/wliu/sir/jacoco_core/versions.alt/orig/v0/jacoco_core/build/classes"/>
+	<classpathentry kind="lib" path="/home/wliu/sir/jacoco_core/versions.alt/orig/v1/jacoco_core/build/testcases"/>
+	<classpathentry kind="lib" path="/home/wliu/sir/jacoco_core/versions.alt/orig/v1/jacoco_core/build/classes"/>
 	<classpathentry kind="lib" path="/home/wliu/workspace/ARTS/lib/qdox-2.0-20101128.200019-2.jar" sourcepath="/home/wliu/java/qdox-2.0-SNAPSHOT"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
