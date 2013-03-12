@@ -26,47 +26,50 @@ import japa.parser.ast.visitor.VoidVisitorAdapter;
  * @author wliu
  *
  */
-public class JavaParserImpl implements JavaParser {
+public class GoogleJavaParser implements JavaParser {
 
 	Program p;
 	ArtifactFactory af;
 	Logger log;
 	
 	/**
-	 * Constructor, need to know which program(of a specific version) and the ArtifactFactory which has access to the underlaying files
+	 * Constructor, need to know which program(of a specific version) and the ArtifactFactory which has access to the underlying files
 	 */
-	public JavaParserImpl(ArtifactFactory af,Program p){
+	public GoogleJavaParser(ArtifactFactory af,Program p){
 		this.af=af;
 		this.p=p;
-		log = LoggerFactory.getLogger(JavaParserImpl.class.getName());
+		log = LoggerFactory.getLogger(GoogleJavaParser.class.getName());
 	}
 	
-	@Override
+
 	public List<? extends Entity> extractEntities(EntityType type) {
 		List<MethodEntity> resultLst = new ArrayList<>();
 		if(type.equals(EntityType.METHOD)){
-	        CompilationUnit cu;
-	        
 			for(Path javafile : p.getCodeFiles(CodeKind.SOURCE))
 				if(javafile.getFileName().toString().endsWith("java")){
-					
-					try(InputStream in=Files.newInputStream(javafile, StandardOpenOption.READ)){						
-						cu=japa.parser.JavaParser.parse(in, "UTF-8");
-						MethodVisitor mv = new MethodVisitor();
-						mv.visit(cu, null);
-			//			resultLst.addAll(mv.getMethods());
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+                      //resultLst.add(extractMethodName(javafile));					
 				}
 		}		
 		return resultLst;
 	}
 
+	public String extractMethodName(Path javafile){
+	    StringBuffer mn = new StringBuffer();
+		try(InputStream in=Files.newInputStream(javafile, StandardOpenOption.READ)){						
+			CompilationUnit cu=japa.parser.JavaParser.parse(in, "UTF-8");
+			MethodVisitor mv = new MethodVisitor();
+			mv.visit(cu, null);
+			mn.append(mv.getMethods());
+//			resultLst.addAll(mv.getMethods());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return mn.toString();
+	}
 	
 	/**
 	 * parse all method signatures

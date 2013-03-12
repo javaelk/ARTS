@@ -20,7 +20,7 @@ import uw.star.rts.extraction.SIRJavaFactory;
 
 public class JavaFileParser {
 
-	static Logger log = LoggerFactory.getLogger(SIRJavaFactory.class.getName());
+	static Logger log = LoggerFactory.getLogger(JavaFileParser.class.getName());
 
 
 	/**
@@ -35,8 +35,8 @@ public class JavaFileParser {
 		Path javafile = Paths.get(fileName);
 		return getMatcher(javafile,pattern1);
 	}
-	
-   public static String getMatcher(Path javafile,Pattern pattern1){
+
+	public static String getMatcher(Path javafile,Pattern pattern1){
 		Charset cs = Charset.forName("latin1");
 		try(BufferedReader reader = Files.newBufferedReader(javafile, cs)){
 			String line =null;
@@ -113,40 +113,4 @@ public class JavaFileParser {
 		return null;
 	}
 
-	/**
-	 * this method parse through the java source file and find all test methods
-	 * this method looks for \\@Test annotation and parse the method name of the following line
-	 * @param fileName - a Junit4 test class source file
-	 * @return a list of all test methods
-	 */
-	public static List<String> junit4TestMethodParser(String fileName){
-		verifyFileExistandNotADirecotry(fileName);
-		Path javafile = Paths.get(fileName);
-		return junit4TestMethodParser(javafile);
-	}
-	
-    /**
-     * this should find out all junit4 test methods , this uses Junit testclass and FrameworkMethod
-     * @param javafile
-     * @return
-     */
-	public static List<String> junit4TestMethodParser(Path javafile){
-		//todo: draw back of this solution is test classes of test subjects have to be on ARTS classpath now! 
-		List<String> resultLst = new ArrayList<>();
-		String className = javafile.getFileName().toString().split("\\.")[0];
-		String packageName = getJavaPackageName(javafile);
-		try {
-			log.debug("test class - " + packageName + "."+className);
-			TestClass testClass = new TestClass(Class.forName(packageName+"."+className));
-			List<FrameworkMethod> testMethods = testClass.getAnnotatedMethods(org.junit.Test.class);
-			for(FrameworkMethod m: testMethods)
-				resultLst.add(m.getName());
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        return resultLst;
-	}
-	
-	
 }

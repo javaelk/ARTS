@@ -1,9 +1,6 @@
 package uw.star.rts.analysis;
 
 import java.util.*;
-
-import org.apache.commons.collections.CollectionUtils;
-
 import uw.star.rts.artifact.*;
 import uw.star.rts.util.*;
 import com.google.common.collect.*;
