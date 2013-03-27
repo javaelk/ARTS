@@ -1,5 +1,5 @@
 package uw.star.rts.cost;
-
+//todo: framework code should not import / dependent on technique code 
 import uw.star.rts.analysis.DependencyAnalyzer_C2CInboundTransitive;
 import uw.star.rts.artifact.*;
 
