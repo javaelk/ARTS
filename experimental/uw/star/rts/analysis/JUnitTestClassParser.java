@@ -1,5 +1,6 @@
 package uw.star.rts.analysis;
 
+import java.lang.reflect.Modifier;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,10 @@ public class JUnitTestClassParser implements JUnit4TestsParser{
 		try {
 			//log.debug("test class - " + packageName + "."+className);
 			TestClass testClass = new TestClass(Class.forName(packageName+"."+className));
+           
+			//BUG fix, skip for abstract class
+			if(isAbstract(testClass))
+				return resultLst;
 			List<FrameworkMethod> testMethods = testClass.getAnnotatedMethods(org.junit.Test.class);
 			for(FrameworkMethod m: testMethods)
 				resultLst.add(packageName + "." + className+"."+m.getName());
@@ -52,6 +57,14 @@ public class JUnitTestClassParser implements JUnit4TestsParser{
 		for(Path junit: junitTestFiles)
 		    methods1.addAll(getJUnit4TestMethodsFromFile(junit));
 		return methods1;
+	}
+	/**
+	 * check whether a junit test class is abstract 
+	 * @param junitTestClass
+	 * @return
+	 */
+	private boolean isAbstract(TestClass junitTestClass){
+		return Modifier.isAbstract(junitTestClass.getJavaClass().getModifiers());
 	}
 	
 
