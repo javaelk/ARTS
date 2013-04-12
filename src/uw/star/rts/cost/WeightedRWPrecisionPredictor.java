@@ -15,7 +15,7 @@ import ca.uwaterloo.uw.star.sts.schema.stStechniques.TechniqueDocument.Technique
  * @author Weining Liu
  *
  */
-public class WeightedRWPrecisionPredictor extends RWPrecisionPredictor {
+public class WeightedRWPrecisionPredictor extends RWPredictor {
 	
 	/**
 	 * @param app

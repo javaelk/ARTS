@@ -53,7 +53,7 @@ public class RWPredictorCombinesDependency {
         	cc.transform(ce,eDependent);
         }
        //predictor2 with new transformed cc 
-       return RWPrecisionPredictor2.predictSelectionRate(cc,regressionTests);
+       return RWPredictor_RegressionTestsOnly.predictSelectionRate(cc,regressionTests);
 	}
 	
 	/**

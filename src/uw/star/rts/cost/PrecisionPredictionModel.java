@@ -1,6 +1,6 @@
 package uw.star.rts.cost;
 
 public enum PrecisionPredictionModel {
-   RWPredictor,RWPredictorRegression,RWPrecisionPredictor_multiChanges,RWPrecisionPredictor3,RWPredictorCombinesDependency
-   //,RWPredictorChangeInfo
+   RWPredictor,RWPredictor_RegressionTestsOnly,RWPredictor_multiChanges,RWPredictor_multiChanges2,
+   RWPredictor_CombinesClassDependency,RWPredictor_RegressionTestsOnly_CombinesClassDependency,RWPredictor_multiChanges_CombinesClassDependency,RWPredictor_multiChanges2_CombinesClassDependency
 }

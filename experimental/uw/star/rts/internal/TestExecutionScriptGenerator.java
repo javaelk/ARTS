@@ -24,8 +24,8 @@ public class TestExecutionScriptGenerator {
 					while((line=reader.readLine())!=null){
 						String testcaseName = line.split("\\[")[1].split("\\]")[0];
 						writter.write("echo \" running test "+ counter +"\""+"\n");
-						writter.write("java -javaagent:/home/wliu/java/jacoco/jacocoagent.jar=excludes=org.jacoco.core.test.validation.targets.*:org.jacoco.core.instr.InstrumenterTest\\$SerializationTarget  SingleJUnitTestRunner "+testcaseName + "> $experiment_root/$TESTSUBJECT/outputs/t"+counter+" 2>&1"+"\n" );
-						writter.write("$experiment_root/$TESTSUBJECT/scripts/TestScripts/jacoco.sh " + testcaseName+"\n\n");
+						writter.write("java -javaagent:/home/wliu/java/jacoco/jacocoagent.jar=excludes=$EXCLUDEDCLASSES SingleJUnitTestRunner "+testcaseName + "> $experiment_root/$TESTSUBJECT/outputs/t"+counter+" 2>&1"+"\n" );
+						writter.write("$experiment_root/$TESTSUBJECT/scripts/TestScripts/jacoco.sh " + testcaseName+ " $VER"+"\n\n");
 						counter++;
 					}
 				}catch(IOException e){

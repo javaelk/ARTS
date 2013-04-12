@@ -15,29 +15,25 @@ import ca.uwaterloo.uw.star.sts.schema.stStechniques.TechniqueDocument.Technique
  * to Predict the Cost-Effectiveness of Regression Testing Strategies",
  * IEEE Trans. Software Eng., vol. 23, no. 3, pp. 146-156, Mar. 1997.
  * 
- * This Predictor is different from RWPrecisionPredictor in that it counts CC and Ec ONLY for test cases applicable to next version
- * i.e. coverage incurred by obsolete test cases are removed.
+ * This Predictor modifies RWPrecisionPredictor to consider all changed entities(i.e. including changed entities not covered by any test cases)
  * @author Weining Liu
  * @version 2012-11-28
  *
  */
 
-public class RWPrecisionPredictor2 {
-	static Logger log =LoggerFactory.getLogger(RWPrecisionPredictor2.class.getName());
+public class RWPredictor_multiChanges2 {
+	static Logger log =LoggerFactory.getLogger(RWPredictor_multiChanges2.class.getName());
 	/**
-	 * PIm = CC/ |Ec||T|
+	 * PIm = k * CC/ |E||T|
 	 * The fraction of the test suite that needs to be rerun is called PIm
-	 * PIm equals cumulative coverage / (size of covered entities * size of test suite)
+	 * PIm equals number of entity changes * cumulative coverage / (size of entities * size of test suite)
 	 * 
-	 * this method should definitely NOT apply the technique getPredicatedPercetageOfTestCaseSelectedto select test case! 
-	 * this is assume there is only single entity change,if technique is not effective with single entity change, 
-	 * it won't be effective for multiple entity changes (as there will be more test cases selected)
 	 * @param 
 	 * @return the percentage of test case of T that the RW predictor predicts will be selected by technique teq 
 	 *         when an arbitrary changes is made to P 
 	 */
 
-	public static double predictSelectionRate(CodeCoverage cover,List<TestCase> testcases){
+	public static double predictSelectionRate(CodeCoverage cover,List<TestCase> testcases,int k){
 //		calculate cc and ec based on given testcases only(regression tests)
 		double cc=0.0;
 		Set coveredEntities = new HashSet();
@@ -48,11 +44,11 @@ public class RWPrecisionPredictor2 {
 		   coveredEntities.addAll(linkedEntities);
 		}
 		log.debug("Cumlative Coverage is " + cc);
-		int ec = coveredEntities.size();
-		log.debug("Total num of covered entities is " + ec);
+		int e = cover.getColumns().size(); //column is entity
+		log.debug("Total num of entities is " + e);
 		int t = testcases.size();
 		log.debug("Test case size is " + t);
-		double pim = cc/(ec*t);
+		double pim = (k*1.0*cc)/(e*t);
 		return pim;
 	}
 	

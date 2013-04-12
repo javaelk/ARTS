@@ -22,8 +22,8 @@ import ca.uwaterloo.uw.star.sts.schema.stStechniques.TechniqueDocument.Technique
  *
  */
 
-public class RWPrecisionPredictor_multiChanges {
-	static Logger log =LoggerFactory.getLogger(RWPrecisionPredictor_multiChanges.class.getName());
+public class RWPredictor_multiChanges {
+	static Logger log =LoggerFactory.getLogger(RWPredictor_multiChanges.class.getName());
 	/**
 	 * @see paper section 3.3 
 	 * @return the percentage of test case of T that the RW predictor predicts will be selected by technique  
