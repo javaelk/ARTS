@@ -44,6 +44,9 @@ public class Application {
 	//or code coverage analysis (getEmmaCodecoverageResultFile)
 	
 	ArtifactFactory af;
+	
+	TraceType traceType;
+	
 	Path applicationRootPath; //root folder of application on disk
 	/**
 	 * @uml.property  name="log"
@@ -57,7 +60,7 @@ public class Application {
 	 * @param programs
 	 * @param testsuite
 	 */
-	public Application(String appName, Map<ProgramVariant,List<Program>> programs,TestSuite testsuite,ArtifactFactory af,Path applicationRootPath){
+	public Application(String appName, Map<ProgramVariant,List<Program>> programs,TestSuite testsuite,ArtifactFactory af,Path applicationRootPath,TraceType type){
 	    log = LoggerFactory.getLogger(Application.class.getName());
 		//An application in minimum should consist of a non-empty program and non-empty test suite
 		if(programs.size()==0||testsuite.isEmpty()){
@@ -68,6 +71,7 @@ public class Application {
 		this.programs = programs;
 		this.testsuite = testsuite;
 		this.af = af;
+		this.traceType = type;
 		//total number of versions equals to the largest version number of the original program + 1(assume always starts from version 0) 
 		int maxVer =0;
 		for(Program p : this.programs.get(ProgramVariant.orig))
@@ -91,6 +95,10 @@ public class Application {
 		return af;
 	}
 	
+	public TraceType getTraceType(){
+		return traceType;
+	}
+
 	/*
 	 * 
 	 * DESIGN PATTERN:Do not expose internal data structure. Only expose various getter methods. 

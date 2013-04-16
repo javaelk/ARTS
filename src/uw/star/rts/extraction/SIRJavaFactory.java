@@ -53,8 +53,8 @@ public class SIRJavaFactory extends ArtifactFactory{
 	/**
 	 * this should extract all artifacts except changes(change analysis) and traces (coverage analysis)
 	 */
-	public Application extract(String applicationName){
-		Application newApp = new Application(applicationName,extractProgram(applicationName),extractTestSuite(applicationName),this,Paths.get(experimentRoot,applicationName));
+	public Application extract(String applicationName,TraceType traceType){
+		Application newApp = new Application(applicationName,extractProgram(applicationName),extractTestSuite(applicationName),this,Paths.get(experimentRoot,applicationName),traceType);
 		return newApp;
 	}
 	

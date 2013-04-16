@@ -187,7 +187,7 @@ public class JacocoCodeCoverageAnalyzer extends CodeCoverageAnalyzer{
 		                     entities.add((E)e);
 		
 		Path codeCoverageResultFolder = null;
-		CodeCoverage<E> coverage = new CodeCoverage<E>(testcases,entities,codeCoverageResultFolder);
+		CodeCoverage<E> coverage = new CodeCoverage<E>(TraceType.CODECOVERAGE_JACOCO,testcases,entities,codeCoverageResultFolder);
 		//3
 		for(TestCase tc: testcases){ //set link for every test case
 			Path coverageResultFile =af.getJaCoCoCodeCoverageResultFile(program,tc,"xml");

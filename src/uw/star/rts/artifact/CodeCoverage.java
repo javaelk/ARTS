@@ -19,8 +19,8 @@ import com.google.common.collect.Multiset;
 public class  CodeCoverage<E extends Entity> extends Trace<TestCase, E>{
 
 	
-	public  CodeCoverage(List<TestCase> testcases,List<E> entities,Path coverageFilesFolder){
-		super(TraceType.CODECOVERAGE,testcases, entities,coverageFilesFolder);	
+	public  CodeCoverage(TraceType traceType, List<TestCase> testcases,List<E> entities,Path coverageFilesFolder){
+		super(traceType,testcases, entities,coverageFilesFolder);	
 		//as CodeCoverage represent coverage of a list of test cases, there are multiple files, so the path is the folder contains all coverage files
 	}
 
@@ -186,7 +186,7 @@ public class  CodeCoverage<E extends Entity> extends Trace<TestCase, E>{
 	 * @return an immutable copy of this CodeCoverage with the same coverage information. O 
 	 */
     public CodeCoverage<E> createImmutableCopy(){
-    	CodeCoverage<E> newcc = new CodeCoverage<E>(ImmutableList.copyOf(this.row),ImmutableList.copyOf(this.column),this.artifactPath);
+    	CodeCoverage<E> newcc = new CodeCoverage<E>(this.traceType,ImmutableList.copyOf(this.row),ImmutableList.copyOf(this.column),this.artifactPath);
     	newcc.setLink(this.getLinkMatrix());
     	return newcc;
     }

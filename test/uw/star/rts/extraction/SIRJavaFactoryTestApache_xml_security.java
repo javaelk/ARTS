@@ -41,7 +41,7 @@ public class SIRJavaFactoryTestApache_xml_security {
 	public static void setUpBeforeClass() throws Exception {
 	  sir = new SIRJavaFactory();
 	  sir.setExperimentRoot("/home/wliu/sir");
-
+	  testapp = sir.extract(appname,TraceType.CODECOVERAGE_EMMA);
 	}
 
 	@After
@@ -60,7 +60,7 @@ public class SIRJavaFactoryTestApache_xml_security {
 
 	@Test
 	public void testExtractProgram() {
-		 testapp = sir.extract(appname);
+		 
 		assertEquals("orig has 4 version",4,testapp.getProgram(ProgramVariant.orig).size());
 		//assertEquals("seeded has 3 version",3,testapp.getProgram(ProgramVariant.seeded).size());
 		//TODO:java.lang.AssertionError: #of .java files in orig v0 expected:<228> but was:<395>
@@ -70,8 +70,8 @@ public class SIRJavaFactoryTestApache_xml_security {
 	
 	@Test
 	public void testExtractAntProgram() {
-		  testapp = sir.extract("apache-ant");
-        assertEquals("#of .class file in apache-ant orig v1",316,testapp.getProgram(ProgramVariant.orig, 1).getCodeFiles(CodeKind.BINARY).size());
+		Application testapp2 = sir.extract("apache-ant",TraceType.CODECOVERAGE_EMMA);
+        assertEquals("#of .class file in apache-ant orig v1",316,testapp2.getProgram(ProgramVariant.orig, 1).getCodeFiles(CodeKind.BINARY).size());
 	}
 	
 
@@ -135,7 +135,7 @@ public class SIRJavaFactoryTestApache_xml_security {
 	
 	@Test
 	public void testGetEmmaCodeCoverageResultFile(){
-		testapp = sir.extract(appname);
+
 		Path xmlfile = Paths.get("/home/wliu/sir/apache-xml-security/traces.alt/CODECOVERAGE/orig/v0/coverage.org.apache.xml.security.test.c14n.helper.C14nHelperTest.xml");
 		Path htmldir = Paths.get("/home/wliu/sir/apache-xml-security/traces.alt/CODECOVERAGE/orig/v0/coverage.org.apache.xml.security.test.c14n.helper.C14nHelperTest/_files"); 
 		Program p0 = testapp.getProgram(ProgramVariant.orig, 0);

@@ -67,7 +67,7 @@ public class TraceTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		 t1= new Trace(TraceType.CODECOVERAGE,Arrays.asList(aa),Arrays.asList(ab),null);
+		 t1= new Trace(TraceType.CODECOVERAGE_EMMA,Arrays.asList(aa),Arrays.asList(ab),null);
 	}
 
 	@After

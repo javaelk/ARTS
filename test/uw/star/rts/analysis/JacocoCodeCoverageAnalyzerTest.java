@@ -25,7 +25,7 @@ public class JacocoCodeCoverageAnalyzerTest {
 	public static void setUpBeforeClass() throws Exception {
 		af =new SIRJavaFactory();
 		af.setExperimentRoot("/home/wliu/sir");
-		app = af.extract("apache-ant");
+		app = af.extract("apache-ant-TM",TraceType.CODECOVERAGE_JACOCO);
 		p=app.getProgram(ProgramVariant.orig, 0);
 		analyzer = new JacocoCodeCoverageAnalyzer(af,app,p,app.getTestSuite());
 		//TODO: change the way to access test resources to InputStream is = getClass().getResourceAsStream( "/test.properties" );

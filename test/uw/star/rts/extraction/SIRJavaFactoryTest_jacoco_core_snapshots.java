@@ -8,6 +8,7 @@ import org.junit.Test;
 import uw.star.rts.artifact.Application;
 import uw.star.rts.artifact.CodeKind;
 import uw.star.rts.artifact.ProgramVariant;
+import uw.star.rts.artifact.TraceType;
 
 public class SIRJavaFactoryTest_jacoco_core_snapshots {
 	static Application testapp;
@@ -21,7 +22,7 @@ public class SIRJavaFactoryTest_jacoco_core_snapshots {
 
 	@Test
 	public void testExtractProgram2() {
-		 testapp = sir.extract(appname);
+		 testapp = sir.extract(appname,TraceType.CODECOVERAGE_JACOCO);
 		assertEquals("orig has 20 version",20,testapp.getProgram(ProgramVariant.orig).size());
         assertEquals("#of .java files in orig v0", 168,testapp.getProgram(ProgramVariant.orig, 0).getCodeFiles(CodeKind.SOURCE).size());
         assertEquals("#of .class files in orig v0", 255,testapp.getProgram(ProgramVariant.orig, 0).getCodeFiles(CodeKind.BINARY).size());

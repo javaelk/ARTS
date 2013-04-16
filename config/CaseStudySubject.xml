@@ -3,6 +3,7 @@
 	<cs_subject>
 		<name>jacoco_core</name>
 		<repository>SIR_JAVA</repository>
+		<trace_type>CODECOVERAGE_JACOCO</trace_type>
 		<test_type>unit</test_type>
 		<fault_type>seeded</fault_type>
 		<language>java</language>

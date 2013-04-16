@@ -10,6 +10,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import uw.star.rts.analysis.CodeCoverageAnalyzer;
+import uw.star.rts.analysis.CodeCoverageAnalyzerFactory;
 import uw.star.rts.analysis.EmmaCodeCoverageAnalyzer;
 import uw.star.rts.analysis.JacocoCodeCoverageAnalyzer;
 import uw.star.rts.extraction.ArtifactFactory;
@@ -24,21 +25,21 @@ public class ProgramTest {
 	public static void oneTimeSetUp() throws Exception {
 		ArtifactFactory af =new SIRJavaFactory();
 		af.setExperimentRoot("/home/wliu/sir");
-		Application app = af.extract("apache-ant");
+		Application app = af.extract("apache-ant",TraceType.CODECOVERAGE_EMMA);
 		p=app.getProgram(ProgramVariant.orig, 0);
-		CodeCoverageAnalyzer analyzer = new JacocoCodeCoverageAnalyzer(af,app,p,app.getTestSuite());
+		CodeCoverageAnalyzer analyzer =  CodeCoverageAnalyzerFactory.create(af,app,p,app.getTestSuite());
 		analyzer.extractEntities(EntityType.CLAZZ);
 	}
 
 	@Test
 	public void testGetCodeFilebyName() {
 		//test public class
-		Path commandline = Paths.get("/home/wliu/sir/apache-ant/versions.alt/orig/v0/ant/build/ant/classes/org/apache/tools/ant/types/Commandline.class");
+		Path commandline = Paths.get("/home/wliu/sir/apache-ant/versions.alt/orig/v0/ant/build/classes/org/apache/tools/ant/types/Commandline.class");
 		Path codeFile =p.getCodeFilebyName(CodeKind.BINARY, "org.apache.tools.ant.types", "Commandline");
 		assertEquals("test public class",0,commandline.compareTo(codeFile));
 			
 		//test inner class
-		Path introspectionHelperInner = Paths.get("/home/wliu/sir/apache-ant/versions.alt/orig/v0/ant/build/ant/classes/org/apache/tools/ant/IntrospectionHelper$10.class");
+		Path introspectionHelperInner = Paths.get("/home/wliu/sir/apache-ant/versions.alt/orig/v0/ant/build/classes/org/apache/tools/ant/IntrospectionHelper$10.class");
 		codeFile = p.getCodeFilebyName(CodeKind.BINARY, "org.apache.tools.ant", "IntrospectionHelper$10");
 		assertEquals("test inner class",0,introspectionHelperInner.compareTo(codeFile));
 		
@@ -62,7 +63,7 @@ public class ProgramTest {
 		assertEquals("test get source entity",0,aJavaFile.compareTo(e.getArtifactFile()));
 
 		Entity c = p.getEntityByName(EntityType.CLAZZ, "org.apache.tools.ant.IntrospectionHelper$10");
-		Path jcemapperInner = Paths.get("/home/wliu/sir/apache-ant/versions.alt/orig/v0/ant/build/ant/classes/org/apache/tools/ant/IntrospectionHelper$10.class");
+		Path jcemapperInner = Paths.get("/home/wliu/sir/apache-ant/versions.alt/orig/v0/ant/build/classes/org/apache/tools/ant/IntrospectionHelper$10.class");
 		assertEquals("test get source entity",0,jcemapperInner.compareTo(c.getArtifactFile()));
 
 	}

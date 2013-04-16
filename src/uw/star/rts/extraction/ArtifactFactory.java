@@ -14,7 +14,7 @@ public abstract class ArtifactFactory {
 	 * folder structures ,file names etc to store various artifacts.
 	 * @return
 	 */
-	public abstract Application extract(String applicationName);
+	public abstract Application extract(String applicationName,TraceType traceType);
 	public abstract Path getChangeResultFile(Program p, Program pPrime);
 	public abstract Path getEmmaCodeCoverageResultFile(Program p, TestCase tc, String fileType);
 	public abstract Path getJaCoCoCodeCoverageResultFile(Program p, TestCase tc, String fileType);

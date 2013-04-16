@@ -17,11 +17,11 @@ import uw.star.rts.extraction.ArtifactFactory;
 import uw.star.rts.extraction.SIRJavaFactory;
 
 public class EmmaCodeCoverageAnalyzerTest {
-/*    
+    
 	
-	*//**
+	/**
 	 * @uml.property  name="file"
-	 *//*
+	 */
 	
 	//TODO: these test files no longer exist as the test case is broken down to method level, need to regenerate Emma code coverage results in order to test it.
 	static Path xmlfile = Paths.get("/home/wliu/sir/apache-xml-security/traces.alt/CODECOVERAGE/orig/v0/coverage.org.apache.xml.security.test.c14n.helper.C14nHelperTest.xml");
@@ -29,16 +29,16 @@ public class EmmaCodeCoverageAnalyzerTest {
 	static Path htmldir = Paths.get("/home/wliu/sir/apache-xml-security/traces.alt/CODECOVERAGE/orig/v0/coverage.org.apache.xml.security.test.c14n.helper.C14nHelperTest/_files"); 
 	static Path tidyhtmlfile = Paths.get("/home/wliu/sir/apache-xml-security/traces.alt/CODECOVERAGE/orig/v0/coverage.org.apache.xml.security.test.c14n.helper.C14nHelperTest/_files/71.xml");
 	static String packageName = "org.apache.xml.security.algorithms.implementations";
-	*//**
+	/**
 	 * @uml.property  name="app"
 	 * @uml.associationEnd  
-	 *//*
+	 */
 	static Application app;
 	static ArtifactFactory af;
-	*//**
+	/**
 	 * @uml.property  name="p"
 	 * @uml.associationEnd  
-	 *//*
+	 */
 	static Program p;
 	static EmmaCodeCoverageAnalyzer analyzer;
 	
@@ -46,7 +46,7 @@ public class EmmaCodeCoverageAnalyzerTest {
 	public static void setUp() throws Exception {
 		af =new SIRJavaFactory();
 		af.setExperimentRoot("/home/wliu/sir");
-		app = af.extract("apache-xml-security");
+		app = af.extract("apache-xml-security",TraceType.CODECOVERAGE_EMMA);
 		p=app.getProgram(ProgramVariant.orig, 0);
 		analyzer = new EmmaCodeCoverageAnalyzer(af,app,p,app.getTestSuite());
 		
@@ -183,4 +183,4 @@ public class EmmaCodeCoverageAnalyzerTest {
 		List<StatementEntity> coveredStms = analyzer.coveredStatementsOfSourceFile.get(sfe);
 		assertEquals("test number of covered statements", 3, coveredStms.size());
 	}
-*/}
+}

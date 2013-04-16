@@ -48,7 +48,7 @@ public class BasicBlockFactoryTest extends TestCase {
 		// Add additional set up code here
 		  SIRJavaFactory sir = new SIRJavaFactory();
 		  sir.setExperimentRoot("/home/wliu/sir");
-		  testapp = sir.extract(appname);
+		  testapp = sir.extract(appname,TraceType.CODECOVERAGE_EMMA);
 	}
 
 	/**

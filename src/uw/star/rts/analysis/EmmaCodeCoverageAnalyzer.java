@@ -14,7 +14,7 @@ import uw.star.rts.util.*;
 
 
 /*
- * TODO: Use Jacoco, advantage: line coverage is in XML output instead of HTML - more reliable. Support API integration instead of command line
+ * 
  * cost: re-compile all test subjects, re-write extract entities and extractCoveredentities. change execution script.
  */
 
@@ -283,11 +283,11 @@ public class EmmaCodeCoverageAnalyzer extends CodeCoverageAnalyzer {
 		List<TestCase> testcases = testSuite.getTestCaseByVersion(program.getVersionNo());
 		
 		List<E> entities = new ArrayList<>();
-		for(Entity e:program.getCodeEntities(type)) 
-		                     entities.add((E)e);
-		
+	//	for(Entity e:this.extractEntities(type))       entities.add((E)e);
+		for(Entity e:program.getCodeEntities(type))
+			entities.add((E)e);
 		Path codeCoverageResultFolder = null;
-		CodeCoverage<E> coverage = new CodeCoverage<E>(testcases,entities,codeCoverageResultFolder); 
+		CodeCoverage<E> coverage = new CodeCoverage<E>(TraceType.CODECOVERAGE_EMMA,testcases,entities,codeCoverageResultFolder); 
 		for(TestCase tc: testcases){ //set link for every test case
 			Path coverageResultFile =af.getEmmaCodeCoverageResultFile(program,tc,"xml");
 			if(codeCoverageResultFolder==null) codeCoverageResultFolder=coverageResultFile.getParent();
@@ -330,7 +330,7 @@ public class EmmaCodeCoverageAnalyzer extends CodeCoverageAnalyzer {
 		List<SourceFileEntity> allSrc = new ArrayList<>();
 		for(Entity e: program.getCodeEntities(EntityType.SOURCE))
 			allSrc.add((SourceFileEntity)e);
-		CodeCoverage<SourceFileEntity> srcCoverage = new CodeCoverage(testSuite.getTestCases(),allSrc,clazzCoverage.getArtifactFile());
+		CodeCoverage<SourceFileEntity> srcCoverage = new CodeCoverage(TraceType.CODECOVERAGE_EMMA,testSuite.getTestCases(),allSrc,clazzCoverage.getArtifactFile());
 		
 		//create a new matrix based on given clazzCoverageMatrix
 		int[][] clazzCoverageMatrix = clazzCoverage.getLinkMatrix();

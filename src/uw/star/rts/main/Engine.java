@@ -190,7 +190,7 @@ public class Engine {
 				if(af!=null){
 					log.info("2.1 == Artifacts Modeling ==");
 					af.setExperimentRoot(experiment_root);
-					Application newApp = af.extract(caseStudySubject.getName());
+					Application newApp = af.extract(caseStudySubject.getName(),Enum.valueOf(TraceType.class, caseStudySubject.getTraceType()));
 					log.debug("## application details ##:\n" + newApp.toString());
 					log.debug("## application stats ##:\n" + newApp.getStats());
 					//TODO: log.info("2.2 == Artifacts Validation ==");

@@ -1,7 +1,7 @@
 package uw.star.rts.artifact;
 
 public enum TraceType {
-	CODECOVERAGE
+	CODECOVERAGE_EMMA,CODECOVERAGE_JACOCO
 	//,SPECIFICATIONCOVERAGE
 
 }

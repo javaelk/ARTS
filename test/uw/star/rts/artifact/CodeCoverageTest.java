@@ -40,7 +40,7 @@ public class CodeCoverageTest extends TraceTest{
 		super.setUp();
 		SIRJavaFactory sir = new SIRJavaFactory();
 		sir.setExperimentRoot(EXPERIMENTROOT);
-		Application testapp = sir.extract(appname);
+		Application testapp = sir.extract(appname,TraceType.CODECOVERAGE_EMMA);
 		p = testapp.getProgram(ProgramVariant.orig, 0);
 		sfe = new SourceFileEntity(p,"default.package","test.java",null);
 		s1 = new StatementEntity(sfe,10,"int i=0");
@@ -54,7 +54,7 @@ public class CodeCoverageTest extends TraceTest{
 		tcb.add(a);tcb.add(b);tcb.add(c);
 		List<StatementEntity> sea = new ArrayList<>();
 		sea.add(s1);sea.add(s2);sea.add(s3); sea.add(s4);
-		codeCoverage =new CodeCoverage<StatementEntity>(tca,sea,null);
+		codeCoverage =new CodeCoverage<StatementEntity>(TraceType.CODECOVERAGE_EMMA,tca,sea,null);
 		codeCoverage.setLink(a, s1);
 		codeCoverage.setLink(a, s3);
 		codeCoverage.setLink(c, s1);
@@ -122,7 +122,7 @@ public class CodeCoverageTest extends TraceTest{
 		 * f  x
 		 */
 		SIRJavaFactory sir = new SIRJavaFactory();
-		Application testapp = sir.extract(appname);
+		Application testapp = sir.extract(appname,TraceType.CODECOVERAGE_EMMA);
 		Program p1 = testapp.getProgram(ProgramVariant.orig, 1);
 		SourceFileEntity sfe1 = new SourceFileEntity(p1,"default.package","test.java",null);
 		StatementEntity s1 = new StatementEntity(sfe1,10,"int i=0");
@@ -132,7 +132,7 @@ public class CodeCoverageTest extends TraceTest{
 		tcc.add(a);tcc.add(b);tcc.add(c);tcc.add(d);tcc.add(f);
 		List<StatementEntity> sea = new ArrayList<>();
 		sea.add(s1);sea.add(s2);sea.add(s3);
-		CodeCoverage cc =new CodeCoverage<StatementEntity>(tcc,sea,null);
+		CodeCoverage cc =new CodeCoverage<StatementEntity>(TraceType.CODECOVERAGE_EMMA,tcc,sea,null);
 		cc.setLink(a, s1);
 		cc.setLink(a, s3);
 		cc.setLink(b, s3);

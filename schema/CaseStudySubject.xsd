@@ -11,16 +11,17 @@
     <xs:element name="cs_subject">	
 		<xs:complexType>
 			
-			<xs:all> <!--child elements can appear in any order, and each element must occur only once-->
-<!-- TODO: add restrictions to some values!-->
-				<xs:element name="name" type="xs:string"/>
-				<xs:element name="repository" type="xs:string"/>
-				<xs:element name="test_type" type="xs:string"/>
-				<xs:element name="fault_type" type="xs:string"/>
-				<xs:element name="language" type="xs:string"/>
-				<xs:element name="sequential_versions" type="xs:int"/>
-				<xs:element name="size_loc" type="xs:int"/>
-				<xs:element name="size_class" type="xs:int"/>
+			<xs:all><!--child elements can appear in any order, and each element must occur only once-->
+				<!-- TODO: add restrictions to some values!-->
+				<xs:element name="name" type="xs:string" />
+				<xs:element name="repository" type="xs:string" />
+				<xs:element name="trace_type" type="xs:string"></xs:element>
+				<xs:element name="test_type" type="xs:string" />
+				<xs:element name="fault_type" type="xs:string" />
+				<xs:element name="language" type="xs:string" />
+				<xs:element name="sequential_versions" type="xs:int" />
+				<xs:element name="size_loc" type="xs:int" />
+				<xs:element name="size_class" type="xs:int" />
 			</xs:all>
 		</xs:complexType>
 	</xs:element>

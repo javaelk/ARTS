@@ -24,7 +24,7 @@ public class SourceFileEntityTest {
 	public void setUp() throws Exception {
 	SIRJavaFactory sir = new SIRJavaFactory();
 	sir.setExperimentRoot(EXPERIMENTROOT);
-	Application testapp = sir.extract(appname);
+	Application testapp = sir.extract(appname,TraceType.CODECOVERAGE_EMMA);
 	p = testapp.getProgram(ProgramVariant.orig, 0);
 	sfe = new SourceFileEntity(p,"default.package","test.java",null);
 	s1 = new StatementEntity(sfe,10,"int i=0");
