@@ -40,7 +40,7 @@ public class EngineTest {
 	@Test
 	public void testExtractInfoFromRepository() {
 		Engine.getInputFiles("config"+File.separator+"ARTSConfiguration.property");
-		assertEquals("test extract from repository",4,Engine.extractInfoFromRepository(Paths.get("config/CaseStudySubject.xml")).size());
+		assertEquals("test extract from repository",4,Engine.extractInfoFromRepository(Paths.get("test/testfiles/CaseStudySubject.xml")).size());
 	}
 
 	@Test

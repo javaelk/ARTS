@@ -5,6 +5,7 @@
 		<repository>SIR_JAVA</repository>
 		<test_type>unit</test_type>
 		<fault_type>seeded</fault_type>
+		<trace_type>CODECOVERAGE_EMMA</trace_type>
 		<language>java</language>
 		<sequential_versions>9</sequential_versions>
 		<size_loc>80500</size_loc>

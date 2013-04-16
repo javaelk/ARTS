@@ -3,7 +3,6 @@ package uw.star.rts.analysis;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.io.*;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 
