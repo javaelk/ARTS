@@ -21,7 +21,7 @@ public class SIRJavaArtifactVerificationTest {
 	public static void setUpBeforeClass() throws Exception {
 		//extract all applications 
 		Engine.getInputFiles("config"+File.separator+"ARTSConfiguration.property");
-		testapps = Engine.extractInfoFromRepository(Paths.get("config/CaseStudySubject.xml"));
+		testapps = Engine.extractInfoFromRepository(Paths.get("test/testfiles/CaseStudySubject_EMMAONLY.xml"));
 		sir = new SIRJavaFactory();
 		sir.setExperimentRoot("/home/wliu/sir");
 	}

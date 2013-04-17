@@ -4,6 +4,7 @@
 		<name>jtopas</name>
 		<repository>SIR_JAVA</repository>
 		<test_type>unit</test_type>
+		<trace_type>CODECOVERAGE_EMMA</trace_type>
 		<fault_type>seeded</fault_type>
 		<language>java</language>
 		<sequential_versions>4</sequential_versions>
@@ -14,6 +15,7 @@
 		<name>apache-ant</name>
 		<repository>SIR_JAVA</repository>
 		<test_type>unit</test_type>
+		<trace_type>CODECOVERAGE_EMMA</trace_type>
 		<fault_type>seeded</fault_type>
 		<language>java</language>
 		<sequential_versions>9</sequential_versions>
@@ -24,6 +26,7 @@
 		<name>jakarta-jmeter</name>
 		<repository>SIR_JAVA</repository>
 		<test_type>tsl</test_type>
+		<trace_type>CODECOVERAGE_EMMA</trace_type>
 		<fault_type>seeded</fault_type>
 		<language>java</language>
 		<sequential_versions>7</sequential_versions>
@@ -34,6 +37,7 @@
 		<name>apache-xml-security</name>
 		<repository>SIR_JAVA</repository>
 		<test_type>unit</test_type>
+		<trace_type>CODECOVERAGE_EMMA</trace_type>
 		<fault_type>seeded</fault_type>
 		<language>java</language>
 		<sequential_versions>9</sequential_versions>
