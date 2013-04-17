@@ -359,7 +359,7 @@ public class SIRJavaFactory extends ArtifactFactory{
 		 * @param fileType, emma has two types of output files, html or xml
 		 * @return Emma output file by executing TestCase tc on Program p, xml -> a file, html-> a directory contains all htmls files.
 		 */
-		public Path getEmmaCodeCoverageResultFile(Program p, TestCase tc, String fileType){
+		Path getEmmaCodeCoverageResultFile(Program p, TestCase tc, String fileType){
 			Path verDir =Paths.get(experimentRoot,p.getApplicationName(),TRACE_ROOT_DIRECTORY,CODECOVRAGE_DIRECTORY,p.getVariantType().toString(),VERSIONS_DIRECTORY_PREFIX+p.getVersionNo()); 
 			if(fileType.equalsIgnoreCase("xml")){
 				return Paths.get(verDir.toString(),"coverage."+tc.getTestCaseName()+".xml");
@@ -379,7 +379,7 @@ public class SIRJavaFactory extends ArtifactFactory{
 		 * @param fileType, JaCoCo has two types of output files, html or xml
 		 * @return JaCoCo output file by executing TestCase tc on Program p, xml -> a file, html-> a directory contains all htmls files.
 		 */
-		public Path getJaCoCoCodeCoverageResultFile(Program p, TestCase tc, String fileType){
+		Path getJaCoCoCodeCoverageResultFile(Program p, TestCase tc, String fileType){
 			Path verDir =Paths.get(experimentRoot,p.getApplicationName(),TRACE_ROOT_DIRECTORY,CODECOVRAGE_DIRECTORY,p.getVariantType().toString(),VERSIONS_DIRECTORY_PREFIX+p.getVersionNo()); 
 			if(fileType.equalsIgnoreCase("xml")){
 				return Paths.get(verDir.toString(),"coverage."+tc.getTestCaseName()+".xml");
@@ -389,5 +389,19 @@ public class SIRJavaFactory extends ArtifactFactory{
 				log.error("unknown emma result file type " + fileType);
 				return null;
 			}
+		}
+		
+		@Override
+		public Path getCoverageResultFile(TraceType traceType,Program p, TestCase tc, String fileType){
+			switch(traceType){
+			case CODECOVERAGE_EMMA:
+				return getEmmaCodeCoverageResultFile(p,tc,fileType);
+			case CODECOVERAGE_JACOCO:
+				return getJaCoCoCodeCoverageResultFile(p,tc,fileType);
+			default:
+				log.error("Unknow trace type: " + traceType);
+				return null;
+			}
+			
 		}
 }

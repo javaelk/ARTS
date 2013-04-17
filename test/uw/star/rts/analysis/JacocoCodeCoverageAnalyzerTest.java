@@ -19,7 +19,7 @@ public class JacocoCodeCoverageAnalyzerTest {
 	static ArtifactFactory af;
 	static Program p;
 	static JacocoCodeCoverageAnalyzer analyzer;
-	static Path testxml;
+	static TestCase t0,t1;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -28,14 +28,11 @@ public class JacocoCodeCoverageAnalyzerTest {
 		app = af.extract("apache-ant-TM",TraceType.CODECOVERAGE_JACOCO);
 		p=app.getProgram(ProgramVariant.orig, 0);
 		analyzer = new JacocoCodeCoverageAnalyzer(af,app,p,app.getTestSuite());
-		//TODO: change the way to access test resources to InputStream is = getClass().getResourceAsStream( "/test.properties" );
-       testxml = Paths.get("test"+File.separator+"testfiles"+File.separator+"coverage.org.apache.tools.ant.IntrospectionHelperTest.testAddText.xml");
+        t0 = app.getTestSuite().getTestCaseByName("org.apache.tools.ant.IntrospectionHelperTest.testAddText");
 	}
-	
-
 	@Test
 	public void testParseEntities() {
-	    analyzer.extractEntities(EntityType.CLAZZ, testxml); //this would extract everything anyways.
+	    analyzer.extractCoveredEntities(EntityType.CLAZZ,t0); //this would extract everything anyways.
 		assertEquals(121,analyzer.srcEntities.size());
 		assertEquals(175,analyzer.classEntities.size());
 		assertEquals(1577,analyzer.methodEntities.size());
@@ -45,7 +42,7 @@ public class JacocoCodeCoverageAnalyzerTest {
 		assertEquals(3,analyzer.coveredSrcEntities.size());
 		assertEquals(90,analyzer.coveredStmEntities.size());
 		//parse again, and should yield same results
-		analyzer.extractEntities(EntityType.CLAZZ, testxml);
+		analyzer.extractCoveredEntities(EntityType.CLAZZ,t0);
 		assertEquals(121,analyzer.srcEntities.size());
 		assertEquals(175,analyzer.classEntities.size());
 		assertEquals(1577,analyzer.methodEntities.size());
@@ -58,7 +55,7 @@ public class JacocoCodeCoverageAnalyzerTest {
 	}
 	@Test
 	public void testCreateCodeCoverage(){
-		TestCase t0 = app.getTestSuite().getTestCaseByName(analyzer.extractTestCaseName(testxml));
+
 		TestCase t1= app.getTestSuite().getTestCaseByName("org.apache.tools.ant.taskdefs.DeleteTest.test1");
 		
 		CodeCoverage clazztrace = analyzer.createCodeCoverage(EntityType.CLAZZ);

@@ -156,7 +156,7 @@ public class EmmaCodeCoverageAnalyzerTest {
 	}
     @Test
 	public void testParseSourceFileEntity(){
-		analyzer.parseXML(xmlfile);
+		analyzer.parseEmmaXMLReport(xmlfile);
 		Document htmldoc = analyzer.convertHTMLtoXML(htmlfile);
 		SourceFileEntity sfe = analyzer.parseSourceFileEntity(htmldoc);
 		assertTrue("source file entity found!" , sfe!=null);
@@ -165,7 +165,7 @@ public class EmmaCodeCoverageAnalyzerTest {
 	
     @Test
 	public void testCreateStm(){
-		analyzer.parseXML(xmlfile);
+		analyzer.parseEmmaXMLReport(xmlfile);
 		Document htmldoc = analyzer.convertHTMLtoXML(htmlfile);
 		Node tableNode = htmldoc.getElementsByTagName("table").item(3);
 		Node trNode = tableNode.getChildNodes().item(98);
@@ -175,12 +175,15 @@ public class EmmaCodeCoverageAnalyzerTest {
     @Test
 	public void testParseHtml(){
 		analyzer.extractEntities(EntityType.STATEMENT);
-		analyzer.parseXML(xmlfile);
+		analyzer.parseEmmaXMLReport(xmlfile);
 		analyzer.parseHTML(htmlfile);
 		
 		Document htmldoc = analyzer.convertHTMLtoXML(htmlfile);
 		SourceFileEntity sfe = analyzer.parseSourceFileEntity(htmldoc);
-		List<StatementEntity> coveredStms = analyzer.coveredStatementsOfSourceFile.get(sfe);
-		assertEquals("test number of covered statements", 3, coveredStms.size());
+		int counter =0;
+		for(StatementEntity stm: analyzer.coveredStmEntities)
+			if(stm.getSourceFileEntity().equals(sfe))
+				counter ++;
+		assertEquals("test number of covered statements", 3, counter);
 	}
 }
