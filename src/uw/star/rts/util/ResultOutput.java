@@ -17,6 +17,9 @@ import uw.star.rts.cost.PrecisionPredictionModel;
 import uw.star.rts.technique.Technique;
 
 public class ResultOutput {
+	
+	static boolean OUTPUTCOST=false;
+	
 	public static Path outputEvalResult_Prediction(String firstCellHeader,Map<uw.star.rts.technique.Technique,List<Map<PrecisionPredictionModel,Double>>> precision,Map<uw.star.rts.technique.Technique,List<Long>> predicatedAnalysisCost, List<String> testSubjectVersions,Map<uw.star.rts.technique.Technique,List<StopWatch>> actualCost){
 		Path outputFile = Paths.get("output"+File.separator+"evaluationResult_"+firstCellHeader+"_"+DateUtils.now("MMMdd_HHmm")+".csv");
 		Charset charset = Charset.forName("UTF-8");
@@ -28,10 +31,10 @@ public class ResultOutput {
 			for(Technique tech: techs ){
 				for(PrecisionPredictionModel pm:PrecisionPredictionModel.values()){
 				writer.write(","+tech.getID()+"-"+tech.getDescription()+"-"+tech.getImplmentationName()+"-"+pm+"_precision");
-				if(predicatedAnalysisCost!=null)
+				if(OUTPUTCOST&&predicatedAnalysisCost!=null)
 					writer.write(",PredicatedAnalysisCost(ms)");
 				//add cost columns if exists
-				if(actualCost !=null)
+				if(OUTPUTCOST&&actualCost !=null)
 					for(CostFactor cf: CostFactor.values())
 						if(!(firstCellHeader.equalsIgnoreCase("predicated")^cf.isPredicationCost()))
 								writer.write(","+tech.getID()+"-"+cf.name()+"(ms)");
@@ -46,11 +49,11 @@ public class ResultOutput {
 				for(Technique tec: techs){
 					for(PrecisionPredictionModel pm:PrecisionPredictionModel.values()){
 					writer.write(","+precision.get(tec).get(i).get(pm));
-					if(predicatedAnalysisCost!=null)
+					if(OUTPUTCOST&&predicatedAnalysisCost!=null)
 						writer.write(","+predicatedAnalysisCost.get(tec).get(i));
 						
 					//add cost values if exists
-					if(actualCost !=null)
+					if(OUTPUTCOST&&actualCost !=null)
 						for(CostFactor cf: CostFactor.values())
 							if(!(firstCellHeader.equalsIgnoreCase("predicated")^cf.isPredicationCost()))
 							writer.write(","+actualCost.get(tec).get(i).getElapsedTime(cf));
@@ -75,10 +78,10 @@ public class ResultOutput {
 			List<Technique> techs = new ArrayList<>(precision.keySet());
 			for(Technique tech: techs ){
 				writer.write(","+tech.getID()+"-"+tech.getDescription()+"-"+tech.getImplmentationName()+"_precision");
-				if(predicatedAnalysisCost!=null)
+				if(OUTPUTCOST&&predicatedAnalysisCost!=null)
 					writer.write(",PredicatedAnalysisCost(ms)");
 				//add cost columns if exists
-				if(actualCost !=null)
+				if(OUTPUTCOST&&actualCost !=null)
 					for(CostFactor cf: CostFactor.values())
 						if(!(firstCellHeader.equalsIgnoreCase("predicated")^cf.isPredicationCost()))
 								writer.write(","+tech.getID()+"-"+cf.name()+"(ms)");
@@ -91,11 +94,11 @@ public class ResultOutput {
 				writer.write(testSubjectVersions.get(i));
 				for(Technique tec: techs){
 					writer.write(","+precision.get(tec).get(i));
-					if(predicatedAnalysisCost!=null)
+					if(OUTPUTCOST&&predicatedAnalysisCost!=null)
 						writer.write(","+predicatedAnalysisCost.get(tec).get(i));
 						
 					//add cost values if exists
-					if(actualCost !=null)
+					if(OUTPUTCOST&&actualCost !=null)
 						for(CostFactor cf: CostFactor.values())
 							if(!(firstCellHeader.equalsIgnoreCase("predicated")^cf.isPredicationCost()))
 							writer.write(","+actualCost.get(tec).get(i).getElapsedTime(cf));
