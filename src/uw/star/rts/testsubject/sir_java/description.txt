@@ -1,0 +1,1 @@
+This package contains utilities to convert test subjects from other repositories (e.g. sourceforge) into a SIR_JAVA like test subjects 

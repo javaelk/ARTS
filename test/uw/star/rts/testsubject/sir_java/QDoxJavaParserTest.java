@@ -1,4 +1,4 @@
-package uw.star.rts.analysis;
+package uw.star.rts.testsubject.sir_java;
 
 import static org.junit.Assert.*;
 
@@ -10,6 +10,7 @@ import java.util.List;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import uw.star.rts.testsubject.sir_java.QDoxJavaParser;
 import uw.star.rts.util.JavaFileParser;
 
 public class QDoxJavaParserTest extends AbstractParserTest {

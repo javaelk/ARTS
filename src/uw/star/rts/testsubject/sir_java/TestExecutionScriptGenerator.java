@@ -1,4 +1,4 @@
-package uw.star.rts.internal;
+package uw.star.rts.testsubject.sir_java;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -13,8 +13,8 @@ import java.nio.file.Paths;
 public class TestExecutionScriptGenerator {
 	public static void main(String[] args){
 		for(int i=0;i<14;i++){
-			Path testplanScript = Paths.get("/home/wliu/sir/jacoco_core/testplans.alt/v"+i+"/v"+i+".class.junit.universe.all");
-			Path testExecutionScript = Paths.get("/home/wliu/sir/jacoco_core/scripts/TestScripts/scriptR"+i+"coverage.cls");
+			Path testplanScript = Paths.get("/home/wliu/sir/jacoco_core-TC/testplans.alt/v"+i+"/v"+i+".class.junit.universe.all");
+			Path testExecutionScript = Paths.get("/home/wliu/sir/jacoco_core-TC/scripts/TestScripts/scriptR"+i+"coverage.cls");
 			System.out.println("read from " + testplanScript + " to generate file " +testExecutionScript);
 			
 			try(BufferedReader reader = Files.newBufferedReader(testplanScript, StandardCharsets.ISO_8859_1)){
@@ -24,7 +24,7 @@ public class TestExecutionScriptGenerator {
 					while((line=reader.readLine())!=null){
 						String testcaseName = line.split("\\[")[1].split("\\]")[0];
 						writter.write("echo \" running test "+ counter +"\""+"\n");
-						writter.write("java -javaagent:/home/wliu/java/jacoco/jacocoagent.jar=excludes=$EXCLUDEDCLASSES SingleJUnitTestRunner "+testcaseName + "> $experiment_root/$TESTSUBJECT/outputs/t"+counter+" 2>&1"+"\n" );
+						writter.write("java -javaagent:/home/wliu/java/jacoco/jacocoagent.jar=excludes=$EXCLUDEDCLASSES org.junit.runner.JUnitCore "+testcaseName + "> $experiment_root/$TESTSUBJECT/outputs/t"+counter+" 2>&1"+"\n" );
 						writter.write("$experiment_root/$TESTSUBJECT/scripts/TestScripts/jacoco.sh " + testcaseName+ " $VER"+"\n\n");
 						counter++;
 					}

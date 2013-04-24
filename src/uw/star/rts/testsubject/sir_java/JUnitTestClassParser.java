@@ -1,4 +1,4 @@
-package uw.star.rts.analysis;
+package uw.star.rts.testsubject.sir_java;
 
 import java.lang.reflect.Modifier;
 import java.nio.file.Path;
@@ -65,6 +65,40 @@ public class JUnitTestClassParser implements JUnit4TestsParser{
 	 */
 	private boolean isAbstract(TestClass junitTestClass){
 		return Modifier.isAbstract(junitTestClass.getJavaClass().getModifiers());
+	}
+
+	   //parse from an entire folder
+	@Override
+    public List<String> getJUnit4TestClassesFromFolder(Path testFileFolder){
+		List<String> clazz = new ArrayList<>();
+		List<Path> junitTestFiles = FileUtility.findFiles(testFileFolder, "*.java");
+		for(Path junit: junitTestFiles)
+			clazz.addAll(getJUnit4TestClassesFromFile(junit));
+		return clazz;
+		
+		
+	}
+    //parse one file only
+	@Override
+    public List<String> getJUnit4TestClassesFromFile(Path javafile){
+		List<String> resultLst = new ArrayList<>();
+		String className = javafile.getFileName().toString().split("\\.")[0];
+		String packageName = JavaFileParser.getJavaPackageName(javafile);
+		try {
+			//log.debug("test class - " + packageName + "."+className);
+			TestClass testClass = new TestClass(Class.forName(packageName+"."+className));
+           
+			//skip abstract class
+			if(isAbstract(testClass))
+				return resultLst;
+				resultLst.add(testClass.getJavaClass().getName());
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e){
+			//log.error(className + "is not a test class");
+		}
+        return resultLst;
 	}
 	
 

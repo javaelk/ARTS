@@ -1,16 +1,14 @@
-package uw.star.rts.internal;
+package uw.star.rts.testsubject.sir_java;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import uw.star.rts.analysis.JUnitTestClassParser;
-import uw.star.rts.analysis.QDoxJavaParser;
 import uw.star.rts.util.*;
 import com.google.common.collect.*;
 /**
- * this is one time use to generate a test plan universal file
+ * this is one time use to generate a test plan universal file, generate test methods as test case
  * @author wliu
  *
  */
