@@ -2,8 +2,11 @@ package uw.star.rts.analysis;
 
 import uw.star.rts.artifact.*;
 import uw.star.rts.extraction.ArtifactFactory;
+import uw.star.rts.util.DateUtils;
 
+import java.io.File;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 import org.slf4j.Logger;
@@ -183,6 +186,9 @@ public abstract class CodeCoverageAnalyzer {
 			coverage.setLink(tc,coveredEntites);
 		}
 		coverage.setArtifactFile(codeCoverageResultFolder);
+		coverage.serializeCompressedMatrixToCSV(
+				Paths.get("output"+File.separator + type + "_" + traceType + "_" + testapp.getApplicationName() + "v" + program.getVersionNo()
+						+ "_" + DateUtils.now()+".txt"));
 		return coverage;
 	}
     
