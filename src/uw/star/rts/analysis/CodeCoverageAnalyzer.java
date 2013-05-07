@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+import org.apache.commons.lang.time.StopWatch;
 import org.slf4j.Logger;
 
 import com.google.common.collect.ImmutableList;
@@ -167,28 +168,41 @@ public abstract class CodeCoverageAnalyzer {
 	 */
 	public <E extends Entity> CodeCoverage<E> createCodeCoverage(EntityType type, TraceType traceType){
 		//1)rows index
+		StopWatch sp = new StopWatch();
+		sp.start();
 		List<TestCase> testcases = testSuite.getTestCaseByVersion(program.getVersionNo());
+		sp.stop();
+		log.debug("[PERFORMANCE] - extracting test cases :" + sp.getTime() + " ms");
+		
 		//2)columns index
+		sp.reset(); 
+		sp.start();
 		List<E> entities = new ArrayList<>();
 		for(Entity e:this.extractEntities(type)) 
 		                     entities.add((E)e);
-		
+		sp.stop();
+		log.debug("[PERFORMANCE] - extracting entities :" + sp.getTime() + " ms");
 		Path codeCoverageResultFolder = null;
 		CodeCoverage<E> coverage = new CodeCoverage<E>(traceType,testcases,entities,codeCoverageResultFolder);
 		//3
 		for(TestCase tc: testcases){ //set link for every test case
+		    sp.reset();
+			sp.start();
 			Path coverageResultFile =af.getCoverageResultFile(traceType,program,tc,"xml");
 			if(codeCoverageResultFolder==null) codeCoverageResultFolder=coverageResultFile.getParent();
 			List<E> coveredEntites = new ArrayList<>();
 			for(Entity e:this.extractCoveredEntities(type,tc) )
 				coveredEntites.add((E)e);
 			//4
+			sp.stop();
+			log.debug("[PERFORMANCE] - extracting coverage info for test case" + tc.getTestCaseID() + " :" + sp.getTime() + " ms");
 			coverage.setLink(tc,coveredEntites);
+			
 		}
 		coverage.setArtifactFile(codeCoverageResultFolder);
 		coverage.serializeCompressedMatrixToCSV(
-				Paths.get("output"+File.separator + type + "_" + traceType + "_" + testapp.getApplicationName() + "v" + program.getVersionNo()
-						+ "_" + DateUtils.now()+".txt"));
+				Paths.get("output"+File.separator + type + "_" + traceType + "_" + testapp.getApplicationName() + "_v" + program.getVersionNo()
+						+ "_" + DateUtils.now()+".csv"));
 		return coverage;
 	}
     

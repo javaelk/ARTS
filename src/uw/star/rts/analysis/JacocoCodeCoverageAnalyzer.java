@@ -8,6 +8,7 @@ import java.nio.file.*;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.lang.time.StopWatch;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 

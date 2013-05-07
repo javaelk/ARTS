@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.*;
 
+import uw.star.rts.util.ClassEntityComparator;
+
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multiset;
@@ -166,22 +168,34 @@ public class  CodeCoverage<E extends Entity> extends Trace<TestCase, E>{
 	 * Transform the code coverage matrix based on inbound dependency information
 	 * for each entity e' in inboundDependentEntities
      * merge test cases covers e' into e
+     * It's possible that a class exist in inboundDependentEntities (i.e. considered as a dependent of e does not exist in code coverage matrix. this is because columns in code coverage
+     * matrix only consists of executable entities (e.g. interfaces are not in the columns).
      * @param e - entity column which will be modified to merge other test cases into
 	 * @param inboundDependentEntities - list of entities (in names) the dependent on e,i.e. modification of e would require tests of every ePrime to be selected too.
 	 * @return a transformed codecoverage matrix , original code coverage is not modified
 	 */
-	public CodeCoverage transform(E e,List<String> inboundDependentEntities){
-		CodeCoverage newcc = this.createImmutableCopy();
-	    int ecol = column.indexOf(e);  //column number of e
-		for(int j=0;j<column.size();j++){
-	    	for(String ePrime : inboundDependentEntities){
-	    		if(column.get(j).getName().equals(ePrime)) //column number of ePrime is j
-	    		    newcc.merge(j,ecol);
-	    	}
-	    }
+	public CodeCoverage<E> transform(E e,List<String> inboundDependentEntities){
+		CodeCoverage<E> newcc = this.createImmutableCopy();
+		int to_column = column.indexOf(e);  //column number of e, this is the column that will be merged to
+
+		int[] from_columns = new int[inboundDependentEntities.size()]; //this holds column numbers of each dependent entities, these are the columns to merge from
+		//initialize to -1 to indicate entity not found in covereage matrix
+		for(int i=0; i<from_columns.length;i++)
+			from_columns[i]=-1;
+
+		//find column numbers by entity name
+		//TODO: performance can be improved if trace provides a lookupByName API and columns are sorted 
+		for(int i=0; i<from_columns.length;i++)
+			for(int j=0;j<column.size();j++)
+				if(column.get(j).getName().equals(inboundDependentEntities.get(i)))
+					from_columns[i]= j;
+
+		for(int i=0; i<from_columns.length;i++)
+			if(from_columns[i]!=-1)
+				newcc.merge(from_columns[i], to_column);
 		return newcc;
 	}
-	
+
 	/**
 	 * @return an immutable copy of this CodeCoverage with the same coverage information. O 
 	 */

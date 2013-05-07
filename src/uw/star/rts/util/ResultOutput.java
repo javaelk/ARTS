@@ -18,7 +18,7 @@ import uw.star.rts.technique.Technique;
 
 public class ResultOutput {
 	
-	static boolean OUTPUTCOST=false;
+	static boolean OUTPUTCOST=true;
 	
 	public static Path outputEvalResult_Prediction(String firstCellHeader,Map<uw.star.rts.technique.Technique,List<Map<PrecisionPredictionModel,Double>>> precision,Map<uw.star.rts.technique.Technique,List<Long>> predicatedAnalysisCost, List<String> testSubjectVersions,Map<uw.star.rts.technique.Technique,List<StopWatch>> actualCost){
 		Path outputFile = Paths.get("output"+File.separator+"evaluationResult_"+firstCellHeader+"_"+DateUtils.now("MMMdd_HHmm")+".csv");

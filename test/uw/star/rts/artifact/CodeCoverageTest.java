@@ -171,5 +171,26 @@ public class CodeCoverageTest extends TraceTest{
 		assertTrue(tcs.contains(e));
 		assertTrue(tcs.contains(f));
 		assertFalse(tcs.contains(b));
+		//verify old code coverage matrix is not modified in any ways
+		List<TestCase> oldtcsS3 = codeCoverage.getLinkedEntitiesByColumn(s3);
+		assertTrue(oldtcsS3.contains(a));
+		assertTrue(oldtcsS3.contains(c));
+		assertTrue(oldtcsS3.contains(e));
+		assertFalse(oldtcsS3.contains(d));
+		assertFalse(oldtcsS3.contains(f));
+		assertFalse(oldtcsS3.contains(b));		
+		
+		//verify newcc still contains that same objects in row and column arrays
+		assertTrue(newcc.row.get(0)==codeCoverage.row.get(0));
+		assertTrue(newcc.row.get(1)==codeCoverage.row.get(1));
+		assertTrue(newcc.row.get(2)==codeCoverage.row.get(2));
+		assertTrue(newcc.row.get(3)==codeCoverage.row.get(3));
+		assertTrue(newcc.row.get(4)==codeCoverage.row.get(4));
+		assertTrue(newcc.row.get(5)==codeCoverage.row.get(5));
+		assertTrue(newcc.column.get(0)==codeCoverage.column.get(0));
+		assertTrue(newcc.column.get(1)==codeCoverage.column.get(1));
+		assertTrue(newcc.column.get(2)==codeCoverage.column.get(2));
+		assertTrue(newcc.column.get(3)==codeCoverage.column.get(3));
+		
 	}
 }

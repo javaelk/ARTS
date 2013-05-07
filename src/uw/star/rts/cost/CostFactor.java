@@ -8,6 +8,7 @@ import java.util.*;
 public enum CostFactor {
   CoverageAnalysisCost,
   ChangeAnalysisCost,
+  DependencyAnalysisCost,
   ApplyTechniqueCost,  //cost of applying selection technique
   TestExecutionCost, //cost of test execution
   PrecisionPredictionCost, //cost to predict technique precision
@@ -16,14 +17,6 @@ public enum CostFactor {
   public boolean isPredicationCost(){
 	  boolean result = false;
 	  switch(this){
-	  case CoverageAnalysisCost:
-		  break;
-	  case ChangeAnalysisCost:
-		  break;
-	  case ApplyTechniqueCost:
-		  break;
-	  case TestExecutionCost:
-		  break;
 	  case PrecisionPredictionCost: result = true;
 	  	break;
 	  case AnalysisCostPredictionCost: result = true;

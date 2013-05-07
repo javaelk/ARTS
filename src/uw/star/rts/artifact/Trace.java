@@ -38,13 +38,13 @@ public class Trace<T extends Artifact, U extends Artifact> extends Artifact {
 	 * @uml.associationEnd multiplicity="(0 -1)"
 	 *                     elementType="uw.star.sts.artifact.Artifact"
 	 */
-	List<T> row;
+	List<T> row; //a list of artifacts on each row
 	/**
 	 * @uml.property name="column"
 	 * @uml.associationEnd multiplicity="(0 -1)"
 	 *                     elementType="uw.star.sts.artifact.Artifact"
 	 */
-	List<U> column;
+	List<U> column; // a list of artifacts on each column
 	/**
 	 * @uml.property name="links" multiplicity="(0 -1)" dimension="2"
 	 */
@@ -381,10 +381,10 @@ public class Trace<T extends Artifact, U extends Artifact> extends Artifact {
 	/**
 	 * merge all the ones from col1 to col2
 	 */
-	protected void merge(int col1,int col2){
+	protected void merge(int from_col,int to_col){
 		for(int i=0;i<row.size();i++)
-			if(links[i][col1]==1)
-				links[i][col2]=1;
+			if(links[i][from_col]==1)
+				links[i][to_col]=1;
 		
 	}
 

@@ -12,9 +12,9 @@ import java.nio.file.Paths;
 
 public class TestExecutionScriptGenerator {
 	public static void main(String[] args){
-		for(int i=0;i<14;i++){
-			Path testplanScript = Paths.get("/home/wliu/sir/jacoco_core-TC/testplans.alt/v"+i+"/v"+i+".class.junit.universe.all");
-			Path testExecutionScript = Paths.get("/home/wliu/sir/jacoco_core-TC/scripts/TestScripts/scriptR"+i+"coverage.cls");
+		for(int i=0;i<9;i++){
+			Path testplanScript = Paths.get("/home/wliu/sir/jacoco_core_snapshots-TC/testplans.alt/v"+i+"/v"+i+".class.junit.universe.all");
+			Path testExecutionScript = Paths.get("/home/wliu/sir/jacoco_core_snapshots-TC/scripts/TestScripts/scriptR"+i+"coverage.cls");
 			System.out.println("read from " + testplanScript + " to generate file " +testExecutionScript);
 			
 			try(BufferedReader reader = Files.newBufferedReader(testplanScript, StandardCharsets.ISO_8859_1)){
