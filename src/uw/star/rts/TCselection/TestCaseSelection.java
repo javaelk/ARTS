@@ -47,8 +47,10 @@ public class TestCaseSelection {
 			Program p = testsubject.getProgram(ProgramVariant.orig, i);
 			Program pPrime = testsubject.getProgram(ProgramVariant.orig, i+1);
 			results.put(pPrime, technique.selectTests(p, pPrime,cost.get(i+1)));
+			log.debug("Dependent analysis cost is " + cost.get(i+1).getElapsedTime(CostFactor.DependencyAnalysisCost));
 		}
 		outputToCSV(technique,testsubject,results);
+
 		return results;
 	}
 
