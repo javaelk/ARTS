@@ -122,11 +122,16 @@ public class Program extends Artifact{
 	 * @return 
 	 */
 	private Path findFilebyName(List<Path> codeFiles,String packageName,String className,String extenstion){
+	
 		if(packageName!=null){
 			if(packageName.contains(".")){
 			    className = packageName.replace('.', File.separatorChar)+File.separator+className + extenstion;
 			}else{
-				className = packageName+File.separator+className + extenstion;
+				if(packageName.equals("")){
+					className = className + extenstion;
+				}else{
+					className = packageName+File.separator+className + extenstion;	
+				}
 			}
 		}
 				

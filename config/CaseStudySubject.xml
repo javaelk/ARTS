@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <casestudy_subject xmlns="http://www.uwaterloo.ca/uw/star/sts/schema/CaseStudySubject">
 	<cs_subject>
-		<name>jacoco_core</name>
+		<name>apache_solr_core_release-TM</name>
 		<repository>SIR_JAVA</repository>
 		<trace_type>CODECOVERAGE_JACOCO</trace_type>
 		<test_type>unit</test_type>
 		<fault_type>seeded</fault_type>
 		<language>java</language>
-		<sequential_versions>14</sequential_versions>
-		<size_loc>80500</size_loc>
-		<size_class>627</size_class>
+		<sequential_versions>10</sequential_versions>
+		<size_loc>5067</size_loc>
+		<size_class>105</size_class>
 	</cs_subject>
 </casestudy_subject>

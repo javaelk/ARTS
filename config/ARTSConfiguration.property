@@ -3,5 +3,5 @@ UserGoalSelection=config/UserGoalSelection.xml
 CaseStudySubjectFile=config/CaseStudySubject.xml
 STStechniquesFile=config/STStechniques.xml
 Evaluation=true
-TestSubjectAnalysis=false
+TestSubjectAnalysis=true
 experiment_root=/home/wliu/sir
