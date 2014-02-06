@@ -60,6 +60,8 @@ public class EntityChangesTest {
 
 		System.out.println("Total #of classes in p0: " + p0.getCodeEntities(EntityType.CLAZZ).size());
 		System.out.println("Total #of classes in p1: " + p1.getCodeEntities(EntityType.CLAZZ).size());
+		
+		assertTrue("Total #of statements for source HtmlFormatter.java in p0: ", ((SourceFileEntity)p0.getEntityByName(EntityType.SOURCE, "org.apache.solr.highlight.HtmlFormatter.java")).getExecutableStatements().size()==9);
 
 		Map<String,List<ClassEntity>> resultMap = MD5ClassChangeAnalyzer.diff(p0, p1);
 
@@ -74,7 +76,7 @@ public class EntityChangesTest {
 		Set<ClassEntity> changedCoveredClassEntities = Sets.intersection(cca1.coveredClassEntities,changedEntities);
 		System.out.println("changedCoveredClassEntities in p0 (deleted and modified)intersec covered , total " + changedCoveredClassEntities.size() + " : " + changedCoveredClassEntities+"\n");
 
-		//convert modified classentity into a String set with the same format as changed source 
+		//convert modified class entity into a String set with the same format as changed source 
 		Iterable<String> modifiedClsStrSet = Iterables.transform(changedCoveredClassEntities, new Function<ClassEntity,String>(){
 			public String apply(ClassEntity cls){
 				return (cls.getPackageName().equals(""))?getBestGuessJavaSourceFileName(cls)+".java":
@@ -120,7 +122,7 @@ public class EntityChangesTest {
 		int extensionIdx = clsName.lastIndexOf(".class");
 		if(extensionIdx!=-1) //contains .class file extension name
 			clsName.delete(extensionIdx, clsName.length());
-		int innerClassIdx = clsName.lastIndexOf("$"); //this is not bullet proof as Java class name can contain $
+		int innerClassIdx = clsName.indexOf("$"); //this is not bullet proof as Java class name can contain $
 		if(innerClassIdx!=-1)
 			clsName.delete(innerClassIdx, clsName.length());
 		return clsName.toString();
