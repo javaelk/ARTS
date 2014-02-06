@@ -4,4 +4,4 @@ CaseStudySubjectFile=config/CaseStudySubject.xml
 STStechniquesFile=config/STStechniques.xml
 Evaluation=true
 TestSubjectAnalysis=true
-experiment_root=/home/wliu/sir
+experiment_root=/media/data/wliu/sir

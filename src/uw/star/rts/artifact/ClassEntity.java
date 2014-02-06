@@ -71,22 +71,7 @@ public class ClassEntity extends Entity{
 	public String getClassName(){
 		return className;
 	}
-	/*this parse out Java source file name by removing .class and $ for inner class
-	 * package name is not included in the return
-	 * and no .java extension
-	 * 
-	 */
-	public String getJavaSourceFileName(){
-	    StringBuilder clsName = new StringBuilder(this.getClassName());
-	    int extensionIdx = clsName.lastIndexOf(".class");
-	    if(extensionIdx!=-1) //contains .class file extension name 
-	    	clsName.delete(extensionIdx, clsName.length());
-	    int innerClassIdx = clsName.lastIndexOf("$"); //this is not bullet proof as Java class name can contain $
-	    if(innerClassIdx!=-1)
-	    	clsName.delete(innerClassIdx, clsName.length());
-	    return clsName.toString();
-	    	
-	}
+
 	public Program getProgram(){
 		return p;
 	}
