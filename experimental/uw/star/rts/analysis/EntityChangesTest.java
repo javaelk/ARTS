@@ -90,7 +90,7 @@ public class EntityChangesTest {
 
 		uw.star.rts.analysis.ChangeAnalyzer ca = new TextualDifferencingChangeAnalysis(af,p0,p1); 
 		ca.analyzeChange(); 
-		//changed source - this includes added, changed and deleted 
+		//changed source - this includes changed and deleted but not added 
 		List<SourceFileEntity> modifiedSrc = ca.getModifiedSourceFiles();
 		System.out.println("MODIFIED source files in p0 , total " + modifiedSrc.size() + " : " + modifiedSrc+"\n");
 		//covered source

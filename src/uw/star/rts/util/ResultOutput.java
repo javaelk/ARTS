@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +17,8 @@ import uw.star.rts.cost.CostFactor;
 import uw.star.rts.cost.PrecisionPredictionModel;
 import uw.star.rts.technique.Technique;
 
+import com.google.common.collect.ArrayTable;
+import com.google.common.collect.Table;
 public class ResultOutput {
 	
 	static boolean OUTPUTCOST=true;
@@ -137,6 +140,4 @@ public class ResultOutput {
 		}
 		return outputFile;
 	}
-	
-	
 }

@@ -11,6 +11,6 @@ public class TestSubjectAnalysisRunner {
 	public static void main(String[] args){
 		Engine.getInputFiles("config/ARTSConfiguration.property");
 		testSubjects =Engine.extractInfoFromRepository(Paths.get("experimental/CaseStudySubject_test.xml"));
-		TestSubjectAnalysis.analyzeCoverageStability(testSubjects);
+		TestSubjectAnalysis.analyzeAllFactors(testSubjects);
 	}
 }

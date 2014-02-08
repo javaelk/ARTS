@@ -102,7 +102,7 @@ public class Engine {
 		List<uw.star.rts.technique.Technique> techs = tf.techniquesModeling();
 		//analyze test subjects to confirm assumptions
 		if(performTestSubjectAnalysis) 
-			TestSubjectAnalysis.analyzeCoverageStability(testSubjects);
+			TestSubjectAnalysis.analyzeAllFactors(testSubjects);
 				
 		uw.star.rts.technique.Technique proposedTechnique = proposeSelectionTechnique(tf,techs,testSubjects);
 		
