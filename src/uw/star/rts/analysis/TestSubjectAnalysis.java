@@ -6,11 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import uw.star.rts.artifact.*;
-import uw.star.rts.extraction.SIRJavaFactory;
 import uw.star.rts.util.*;
 
 import com.google.common.collect.*;
-import com.google.common.base.*;
+
 /**
  * This class provides data for analysis on factors may have impact on predictor's accuracy 
  * 1. Coverage relations stability - represented by the element changes in the coverage matrix
@@ -40,7 +39,7 @@ public class TestSubjectAnalysis {
 
 	static String[] GENERAL_HEADERS = { //these values won't combine with entity level
 		"#of TestCases", 
-		"#of Regression Test Cases (|T|)"
+		"#of non-obsolete Test Cases (|T|)"
 	};
 	//factor1
 	static String[] COVERRAGE_RELATIONS_HEADERS={
@@ -51,24 +50,45 @@ public class TestSubjectAnalysis {
 	};
 	//factor2
 	static String[] ENTITY_CHANGES_HEADERS={
-		"Total# of Entity",
-		"#Covered Entity(Ec)",
-		"#Covered Entity(Ec) by Regression TC",
-		"#Changed Entities(all)",
-		"#Changed Covered Entities", 
+		"Total# of Entity", //0
+		"#Covered Entity(Ec)",//1
+		"#entity not covered",//2
+		"#TC no coverage",//3
+		"%of empty cells",//4
+		"#Covered Entity(Ec) by Regression TC",//5
+		"#Changed Entities(all)",//6
+		"#Changed Covered Entities",//7 
 	};	
 	//factor3
 	static String[] TESTCASE_COVERAGE_HEADERS={
 		"Average# of Test Case per Covered Entity"
 	};
 
-	static Logger log;
-	public TestSubjectAnalysis(){
-		log= LoggerFactory.getLogger(TestSubjectAnalysis.class.getName());
-	}
+	static Logger log = LoggerFactory.getLogger(TestSubjectAnalysis.class.getName());;
 
+	//*this is the actual output orders on column
+	private static List<String> createColumnHeaders(String type){
+		List<String> header = new ArrayList<>();
+		header.add(ENTITY_CHANGES_HEADERS[0]);
+		header.add(ENTITY_CHANGES_HEADERS[1]);
+		header.add(ENTITY_CHANGES_HEADERS[5]);
+		header.add(COVERRAGE_RELATIONS_HEADERS[0]);
+		header.add(ENTITY_CHANGES_HEADERS[6]);
+		header.add(ENTITY_CHANGES_HEADERS[7]);
+		header.add(COVERRAGE_RELATIONS_HEADERS[2]);
+		header.add(ENTITY_CHANGES_HEADERS[3]);
+		header.add(ENTITY_CHANGES_HEADERS[2]);
+		header.add(ENTITY_CHANGES_HEADERS[4]);
+		header.add(COVERRAGE_RELATIONS_HEADERS[1]);
+		header.add(COVERRAGE_RELATIONS_HEADERS[3]);
+		//add entity type prefix
+		for(int i=0;i<header.size();i++)
+			header.set(i, type+"-"+header.get(i));
+		return header;
+	}
+	
 	public static void analyzeAllFactors(List<Application> testSubjects){
-		Map<String,List<String>> rows = new HashMap<>();
+		Map<String,List<String>> rows = new LinkedHashMap<>();
 		for(Application app: testSubjects){
 			ArrayTable<String,String,String> generalTable = analyzeGeneralInfo(app);
 			ArrayTable<String,String,String> stmTable = analyzeFactors(app,EntityType.STATEMENT);
@@ -77,27 +97,16 @@ public class TestSubjectAnalysis {
 
 			for(String ver: generalTable.rowKeyList()){
 				List<String> row = new ArrayList<>();
-
 				for(String col: GENERAL_HEADERS)
 					row.add(generalTable.get(ver, col));
-
-				for(String col: COVERRAGE_RELATIONS_HEADERS)
-					row.add(stmTable.get(row, EntityType.STATEMENT+"-"+col));
-				for(String col: ENTITY_CHANGES_HEADERS)
-					row.add(stmTable.get(row, EntityType.STATEMENT+"-"+col));
-
-				for(String col: COVERRAGE_RELATIONS_HEADERS)
-					row.add(srcTable.get(row, EntityType.SOURCE+"-"+col));
-				for(String col: ENTITY_CHANGES_HEADERS)
-					row.add(srcTable.get(row, EntityType.SOURCE+"-"+col));
-
-				for(String col: COVERRAGE_RELATIONS_HEADERS)
-					row.add(clzTable.get(row, EntityType.CLAZZ+"-"+col));
-				for(String col: ENTITY_CHANGES_HEADERS)
-					row.add(clzTable.get(row, EntityType.CLAZZ+"-"+col));
+				for(String col: createColumnHeaders(EntityType.STATEMENT.toString()))
+					row.add(stmTable.get(ver, col));
+				for(String col: createColumnHeaders(EntityType.SOURCE.toString()))
+					row.add(srcTable.get(ver, col));
+				for(String col: createColumnHeaders(EntityType.CLAZZ.toString()))
+					row.add(clzTable.get(ver, col));
 				rows.put(ver, row);
 			}
-
 		}
 
 		//create first row headers
@@ -105,12 +114,8 @@ public class TestSubjectAnalysis {
 		header.add("TestSubject-Version");
 		header.addAll(Arrays.asList(GENERAL_HEADERS));
 		List<String >type = Arrays.asList(EntityType.STATEMENT.toString(),EntityType.SOURCE.toString(),EntityType.CLAZZ.toString());
-		for(String t: type){
-			for(String s :COVERRAGE_RELATIONS_HEADERS)
-				header.add(t+"-"+s);
-			for(String s :ENTITY_CHANGES_HEADERS)
-				header.add(t+"-"+s);		
-		}
+		for(String t: type)
+            header.addAll(createColumnHeaders(t));		
 		
 		ResultOutput.outputResult("TestSubjectAnalysis", header, rows);
 	}
@@ -122,7 +127,7 @@ public class TestSubjectAnalysis {
 			tablePerApp.put(rowKey,GENERAL_HEADERS[0], //			"#of TestCases",
 					testapp.getTestSuite().getTestCaseByVersion(i).size()+"");
 			tablePerApp.put(rowKey,GENERAL_HEADERS[1], //			"#of Regression Test Cases (|T|)"
-					testapp.getTestSuite().getRegressionTestCasesByVersion(i)+"");
+					testapp.getTestSuite().getRegressionTestCasesByVersion(i).size()+"");
 		}
 		return tablePerApp;
 	}
@@ -136,7 +141,7 @@ public class TestSubjectAnalysis {
 	public static ArrayTable<String,String,String> analyzeFactors(Application testapp,EntityType entityType){
 
 		TestSuite ts = testapp.getTestSuite();
-		ArrayTable<String,String,String> tablePerApp = ArrayTable.create(Arrays.asList(createAppVersionKeys(testapp)),Arrays.asList(COVERRAGE_RELATIONS_HEADERS));
+		ArrayTable<String,String,String> tablePerApp = ArrayTable.create(Arrays.asList(createAppVersionKeys(testapp)),createColumnHeaders(entityType.toString()));
 		CodeCoverage<Entity> lastVersionTrace = null;
 		Set<String> entityUnionOfAllVersions = Sets.newHashSet();
 
@@ -144,12 +149,12 @@ public class TestSubjectAnalysis {
 			String rowKey = createAppVersionKey(testapp,i);
 			CodeCoverageAnalyzer cca =  CodeCoverageAnalyzerFactory.create(testapp.getRepository(),
 					testapp,testapp.getProgram(ProgramVariant.orig, i),ts);
-			//?cca2.extractEntities(EntityType.SOURCE);
-			//?cca2.extractEntities(EntityType.CLAZZ);
+
 			CodeCoverage<Entity> trace =  cca.createCodeCoverage(entityType);
 			//factor1
+			int cc = trace.getCumulativeCoverage(ts.getRegressionTestCasesByVersion(i));
 			tablePerApp.put(rowKey, entityType+"-"+COVERRAGE_RELATIONS_HEADERS[0], //"Cumulative Coverage(CC)",
-					trace.getCumulativeCoverage(ts.getRegressionTestCasesByVersion(i))+"");
+					cc+"");
 
 			tablePerApp.put(rowKey, entityType+"-"+COVERRAGE_RELATIONS_HEADERS[1], //"Total #of Elements",
 					trace.getColumns().size()*trace.getRows().size()+"");
@@ -169,17 +174,26 @@ public class TestSubjectAnalysis {
 			tablePerApp.put(rowKey, entityType+"-"+ENTITY_CHANGES_HEADERS[0],//"Total# of Entity",
 					trace.getColumns().size()+"");
 
-			tablePerApp.put(rowKey, entityType+"-"+ENTITY_CHANGES_HEADERS[1],//"#Covered Entity(Ec)",
-					trace.getCoveredEntities().size()+"");
+			
+/*	 should always use non-obsolete test cases, this is removed*/ 		
+/*tablePerApp.put(rowKey, entityType+"-"+ENTITY_CHANGES_HEADERS[1],//"#Covered Entity(Ec)", 
+					trace.getCoveredEntities().size()+"");*/
 
-			tablePerApp.put(rowKey, entityType+"-"+ENTITY_CHANGES_HEADERS[2],//"#Covered Entity(Ec) by Regression TC",
+			tablePerApp.put(rowKey, entityType+"-"+ENTITY_CHANGES_HEADERS[5],//"#Covered Entity(Ec) by Regression TC",
 					trace.getCoveredEntities(ts.getRegressionTestCasesByVersion(i)).size()+"");
+			
+			tablePerApp.put(rowKey, entityType+"-"+ENTITY_CHANGES_HEADERS[2],//"#entity not covered",
+					trace.getColumns().size()-trace.getCoveredEntities(ts.getRegressionTestCasesByVersion(i)).size()+"");
+			
+			long totalNumCells = trace.getColumns().size()*trace.getRows().size();
+			tablePerApp.put(rowKey, entityType+"-"+ENTITY_CHANGES_HEADERS[4],//"%of empty cells", (total#of cells - CC / total#of cells )*100
+					((totalNumCells-cc)*1.0/totalNumCells)*100+"");
+			
+			List<String> changes = analyzeChanges(testapp,entityType,i,rowKey,lastVersionTrace);
+			tablePerApp.put(rowKey, entityType+"-"+ENTITY_CHANGES_HEADERS[6],//	"#Changed Entities(all)",
+					changes.get(0)); // write analysis result to the next row
 
-			List<String> changes = analyzeChanges(testapp,entityType,i,rowKey,trace);
-			tablePerApp.put(rowKey, entityType+"-"+ENTITY_CHANGES_HEADERS[3],//	"#Changed Entities(all)",
-					changes.get(0));
-
-			tablePerApp.put(rowKey, entityType+"-"+ENTITY_CHANGES_HEADERS[4],//	"#Changed Covered Entities", 
+			tablePerApp.put(rowKey, entityType+"-"+ENTITY_CHANGES_HEADERS[7],//	"#Changed Covered Entities", 
 					changes.get(1));
 
 			lastVersionTrace = trace; //keep it for next version
@@ -187,15 +201,16 @@ public class TestSubjectAnalysis {
 		return tablePerApp;
 	}
 
-	private static List<String> analyzeChanges(Application testapp,EntityType entityType,int i,String rowKey,CodeCoverage<Entity> trace){
+	
+	private static List<String> analyzeChanges(Application testapp,EntityType entityType,int i,String rowKey,CodeCoverage<Entity> lastVersionTrace){
 		List<String> changeResults = new ArrayList<>();
 		//"#Changed Entities(all)",this would need to do change analysis
 		String numChangedEntities = "N/A";
 		String numChangedCoveredEntities = "N/A";
-		Program p =testapp.getProgram(ProgramVariant.orig, i-1);
-		Program pPrime = testapp.getProgram(ProgramVariant.orig, i);
-		Set<Entity> modifiedEntity = Sets.newHashSet();
 		if(i!=0){
+			Set<Entity> modifiedEntity = Sets.newHashSet();
+			Program p =testapp.getProgram(ProgramVariant.orig, i-1);
+			Program pPrime = testapp.getProgram(ProgramVariant.orig, i);
 			if(entityType.equals(EntityType.SOURCE)){//parse diff results
 				ChangeAnalyzer ca = new TextualDifferencingChangeAnalysis(testapp.getRepository(),p,pPrime);
 				ca.analyzeChange();
@@ -206,9 +221,9 @@ public class TestSubjectAnalysis {
 			}else if(entityType.equals(EntityType.STATEMENT)){//parse diff results
 				ChangeAnalyzer ca = new TextualDifferencingChangeAnalysis(testapp.getRepository(),p,pPrime);
 				ca.analyzeChange();
-				List<StatementEntity> modifiedStm = ca.getModifiedStatements();
+				List<StatementEntity> modifiedStm = ca.getModifiedStatements(); //these are the entities in p  
 				numChangedEntities = modifiedStm.size()+"";
-				log.debug("modified statements in "+rowKey+ " total:" +  numChangedEntities + " : "+ modifiedStm);
+				log.debug("modified statements between "+ p.getName() + "and " + pPrime.getName() +" total:" +  numChangedEntities + " : "+ modifiedStm);
 				modifiedEntity.addAll(modifiedStm);
 			}else{
 				Map<String,List<ClassEntity>> resultMap = MD5ClassChangeAnalyzer.diff(p, pPrime);
@@ -219,17 +234,19 @@ public class TestSubjectAnalysis {
 				modifiedEntity.addAll(resultMap.get("DELETED"));
 			}
 			//"#Changed Covered Entities",
-			//up cast to Entity 
-			Set<Entity> modifiedEntity2 = Sets.newHashSet(Iterables.transform(modifiedEntity, new Function<Entity,Entity>(){
-				public Entity apply(Entity e){
-					return (Entity)e;
-				}
-			}));
 
+			//debug - check the entity type of each set
+			for(Entity e: modifiedEntity)
+				if(e instanceof StatementEntity)
+					log.debug("modified entity " +  e + " is of type StatementEntity");
+            Set<Entity> coveredSet= Sets.newHashSet(lastVersionTrace.getCoveredEntities(testapp.getTestSuite().getRegressionTestCasesByVersion(i)));
+            for(Entity e: coveredSet)
+				if(e instanceof StatementEntity)
+					log.debug("covered entity " +  e + " is of type StatementEntity");
+            log.debug("covered statements in "+p.getName()+ " " + coveredSet);
+			
 			//then intersec
-			Set<Entity> changedCoveredEntity = Sets.intersection(
-					Sets.newHashSet(trace.getCoveredEntities(testapp.getTestSuite().getRegressionTestCasesByVersion(i))),
-					modifiedEntity2);
+			Set<Entity> changedCoveredEntity = Sets.intersection(coveredSet,modifiedEntity);
 			numChangedCoveredEntities = changedCoveredEntity.size()+"";
 			log.debug("modifed and covered "+entityType+" in "+ rowKey+ "total: " + numChangedCoveredEntities + " : "+changedCoveredEntity );
 		}
@@ -253,6 +270,8 @@ public class TestSubjectAnalysis {
 	private static String createAppVersionKey(Application testapp, int ver){
 		return testapp.getApplicationName()+"-v"+ver;
 	}
+	
+
 }
 
 

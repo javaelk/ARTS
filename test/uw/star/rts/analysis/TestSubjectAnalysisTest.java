@@ -26,7 +26,7 @@ public class TestSubjectAnalysisTest {
 		af =new SIRJavaFactory();
 		EXPERIMENT_ROOT = PropertyUtil.getPropertyByName("config"+File.separator+"ARTSConfiguration.property",Constant.EXPERIMENTROOT);
 		af.setExperimentRoot(EXPERIMENT_ROOT);		
-		testapp = af.extract("apache_solr_core_release-TM",TraceType.CODECOVERAGE_JACOCO);
+		testapp = af.extract("jacoco_core",TraceType.CODECOVERAGE_JACOCO);
 	}
 	
 	@Test
