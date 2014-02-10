@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import uw.star.rts.artifact.*;
 import uw.star.rts.util.*;
 
+import com.google.common.base.Function;
 import com.google.common.collect.*;
 
 /**
@@ -23,10 +24,10 @@ import com.google.common.collect.*;
  * Calculate once , output to multiple formats(one contains detailed information, the other one only contains columns needed for factor analysis)
  * Output one version specific, one average of all versions
  * 
- * Use a data structure to allow direct write to a cell, the output of the data may not be sequential 
- * Must be flexible to add new columns or new factors as there are likely new factor need to be considered
+ * Use a data structure to allow direct write to a cell, the output of the data may not be sequential - check 
+ * Must be flexible to add new columns or new factors as there are likely new factor need to be considered - check
  * reduce the amount of manual post -processing work in Excel
- * code reuse , break down to smaller methods
+ * code reuse , break down to smaller methods - check
  * @author wliu
  *
  */
@@ -65,6 +66,8 @@ public class TestSubjectAnalysis {
 	};
 
 	static Logger log = LoggerFactory.getLogger(TestSubjectAnalysis.class.getName());;
+	
+	static Table<String,String,Set<Entity>> changedCoveredEntityTable = HashBasedTable.create();
 
 	//*this is the actual output orders on column
 	private static List<String> createColumnHeaders(String type){
@@ -116,6 +119,8 @@ public class TestSubjectAnalysis {
 		List<String >type = Arrays.asList(EntityType.STATEMENT.toString(),EntityType.SOURCE.toString(),EntityType.CLAZZ.toString());
 		for(String t: type)
             header.addAll(createColumnHeaders(t));		
+		
+		sourceAndClassEntityRule(rows.keySet()); 
 		
 		ResultOutput.outputResult("TestSubjectAnalysis", header, rows);
 	}
@@ -235,18 +240,14 @@ public class TestSubjectAnalysis {
 			}
 			//"#Changed Covered Entities",
 
-			//debug - check the entity type of each set
-			for(Entity e: modifiedEntity)
-				if(e instanceof StatementEntity)
-					log.debug("modified entity " +  e + " is of type StatementEntity");
             Set<Entity> coveredSet= Sets.newHashSet(lastVersionTrace.getCoveredEntities(testapp.getTestSuite().getRegressionTestCasesByVersion(i)));
-            for(Entity e: coveredSet)
-				if(e instanceof StatementEntity)
-					log.debug("covered entity " +  e + " is of type StatementEntity");
-            log.debug("covered statements in "+p.getName()+ " " + coveredSet);
-			
-			//then intersec
+
+            //then intersec
 			Set<Entity> changedCoveredEntity = Sets.intersection(coveredSet,modifiedEntity);
+			//keep this in a table for comparison later
+			if(entityType==EntityType.SOURCE||entityType==EntityType.CLAZZ)
+				changedCoveredEntityTable.put(rowKey, entityType+"-"+ENTITY_CHANGES_HEADERS[7], ImmutableSet.copyOf(changedCoveredEntity));
+			
 			numChangedCoveredEntities = changedCoveredEntity.size()+"";
 			log.debug("modifed and covered "+entityType+" in "+ rowKey+ "total: " + numChangedCoveredEntities + " : "+changedCoveredEntity );
 		}
@@ -254,6 +255,44 @@ public class TestSubjectAnalysis {
 		changeResults.add(numChangedCoveredEntities);
 		return changeResults;
 	}
+	
+	/**
+	 * This compares changed and covered class entities with changed and covered source entities
+	 * It makes sense that every changed class' source is in the changed source list
+	 */
+	private static void sourceAndClassEntityRule(Set<String> versions){
+		for(String ver: versions){
+			if(changedCoveredEntityTable.rowKeySet().contains(ver)){
+				//transform a set of SourceEntity to a set of String
+				Set<String> modifiedSrcStrSet = Sets.newHashSet(Iterables.transform(
+						changedCoveredEntityTable.get(ver, EntityType.SOURCE+"-"+ENTITY_CHANGES_HEADERS[7])
+						,new Function<Entity,String>(){
+							public String apply(Entity src){
+								return src.toString();
+							}
+						}));
+
+				//transform a set of ClassEntity into a String set with the same format as changed source 
+				Iterable<String> modifiedClsStrSet = Iterables.transform(
+						changedCoveredEntityTable.get(ver, EntityType.CLAZZ+"-"+ENTITY_CHANGES_HEADERS[7]),
+						new Function<Entity,String>(){
+							public String apply(Entity e){
+								ClassEntity cls = (ClassEntity)e;
+								String src = cls.getBestGuessJavaSourceFileName();
+								return (cls.getPackageName().equals(""))?src+".java":
+									cls.getPackageName()+"."+src+".java";
+							}
+						});
+
+				//verify every changed classes' source are in the changed source list
+				for(String cls: modifiedClsStrSet)
+					if(!modifiedSrcStrSet.contains(cls))
+						log.error(ver + "modified class " + cls+ " is not in modified source list\n");
+			}
+		}
+	}
+
+
 	/**
 	 * create an array of Strings that can be used as row keys in the table
 	 * key is in the format of application name - v\d - e.g. apache-ant-v0

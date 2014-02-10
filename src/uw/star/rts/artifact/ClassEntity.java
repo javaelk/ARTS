@@ -76,6 +76,26 @@ public class ClassEntity extends Entity{
 		return p;
 	}
 	
+	/*this makes a best guess of Java source file name by removing .class and $ for inner class
+	 * package name is not included in the return
+	 * and no .java extension
+	 * this is only a best guess as there are many cases where it's impossible to figure out the original source name from class name
+	 * Java allows multiple classes in one source as long as there is only one public
+	 * also Java allows class name with $
+	 *
+	 */
+	public String getBestGuessJavaSourceFileName(){
+		StringBuilder clsName = new StringBuilder(this.getClassName());
+		int extensionIdx = clsName.lastIndexOf(".class");
+		if(extensionIdx!=-1) //contains .class file extension name
+			clsName.delete(extensionIdx, clsName.length());
+		int innerClassIdx = clsName.indexOf("$"); //this is not bullet proof as Java class name can contain $
+		if(innerClassIdx!=-1)
+			clsName.delete(innerClassIdx, clsName.length());
+		return clsName.toString();
+
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
