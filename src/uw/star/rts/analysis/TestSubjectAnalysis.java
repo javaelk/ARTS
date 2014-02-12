@@ -249,7 +249,7 @@ public class TestSubjectAnalysis {
 				changedCoveredEntityTable.put(rowKey, entityType+"-"+ENTITY_CHANGES_HEADERS[7], ImmutableSet.copyOf(changedCoveredEntity));
 			
 			numChangedCoveredEntities = changedCoveredEntity.size()+"";
-			log.debug("modifed and covered "+entityType+" in "+ rowKey+ "total: " + numChangedCoveredEntities + " : "+changedCoveredEntity );
+			log.debug("modifed and covered "+entityType+" in "+ rowKey+ " total: " + numChangedCoveredEntities + " : "+changedCoveredEntity );
 		}
 		changeResults.add(numChangedEntities);
 		changeResults.add(numChangedCoveredEntities);
@@ -287,7 +287,7 @@ public class TestSubjectAnalysis {
 				//verify every changed classes' source are in the changed source list
 				for(String cls: modifiedClsStrSet)
 					if(!modifiedSrcStrSet.contains(cls))
-						log.error(ver + "modified class " + cls+ " is not in modified source list\n");
+						log.error(ver + " modified class " + cls+ " is not in modified source list\n");
 			}
 		}
 	}

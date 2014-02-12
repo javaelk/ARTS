@@ -136,7 +136,7 @@ public class SIRJavaArtifactVerification extends ArtifactVerification {
 				 }
 
 			 }else{
-				 System.out.println("something is wrong, file verion number "+fileVer + " does not match with directory version number" + dirVer);
+				 log.error("something is wrong, file verion number "+fileVer + " does not match with directory version number" + dirVer);
 			 }
 
 		 }
