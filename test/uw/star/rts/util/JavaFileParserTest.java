@@ -22,4 +22,10 @@ public class JavaFileParserTest {
 		String fileName = "test"+File.separator+"testfiles"+File.separator+"XSLTLiaison.java.txt";
 		assertTrue("in interface",JavaFileParser.isInterface(fileName));
 	}
+	
+	@Test
+	public void testNonJavaFile(){
+		String fileName = "test/testfiles/JaCoCoTest.java.txt";
+		assertTrue(JavaFileParser.getJavaPackageName(fileName)==null);
+	}
 }

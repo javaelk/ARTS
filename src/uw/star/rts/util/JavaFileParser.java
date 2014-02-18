@@ -73,6 +73,7 @@ public class JavaFileParser {
 
 	/**
 	 * parse java file and get package name 
+	 * return empty string if this is not a Java file (doesn't have .java extension)
 	 * @param fileName - absolute path to the java file
 	 * @return package name of the given java file
 	 */
@@ -87,9 +88,16 @@ public class JavaFileParser {
 			log.error(fileName + " is a directory" );
 			throw new IllegalArgumentException();
 		}
+		if(!(javafile.getFileName().toString().endsWith(".java"))){
+			log.error(fileName + " is not a Java file" );
+			return null;
+		}
 		return getJavaPackageName(javafile);
 	}
 
+	/**
+	 * return empty string if this is a java file without package declaration
+	 */
 	public static String getJavaPackageName(Path javafile){
 		Charset cs = Charset.forName("latin1");
 		try(BufferedReader reader = Files.newBufferedReader(javafile, cs)){
@@ -110,7 +118,7 @@ public class JavaFileParser {
 			log.error("IO exception in reading file " + javafile);
 			e.printStackTrace();
 		}
-		return null;
+		return "";
 	}
 
 }
