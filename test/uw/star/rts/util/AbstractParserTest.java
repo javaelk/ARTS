@@ -1,4 +1,4 @@
-package uw.star.rts.testsubject.sir_java;
+package uw.star.rts.util;
 
 import static org.junit.Assert.*;
 
@@ -10,7 +10,7 @@ import java.util.List;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import uw.star.rts.testsubject.sir_java.JUnit4TestsParser;
+import uw.star.rts.util.JUnit4TestsParser;
 
 public abstract class AbstractParserTest {
 	

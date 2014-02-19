@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry excluding="testfiles/|testfiles/|testfiles/" kind="src" path="test"/>
-	<classpathentry kind="src" path="test/testfiles"/>
 	<classpathentry kind="src" path="generated"/>
 	<classpathentry kind="src" path="experimental"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.7.0_51"/>
@@ -39,6 +38,6 @@
 	<classpathentry kind="lib" path="lib/guava-14.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/qdox-2.0-20101128.200019-2.jar"/>
 	<classpathentry kind="lib" path="/RTS-T11/bin" sourcepath="/RTS-T11/src"/>
-	<classpathentry kind="lib" path="/RTS-T25/bin"/>
+	<classpathentry kind="lib" path="/RTS-T25/bin" sourcepath="/RTS-T25/src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

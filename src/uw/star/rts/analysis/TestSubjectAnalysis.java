@@ -258,36 +258,35 @@ public class TestSubjectAnalysis {
 	
 	/**
 	 * This compares changed and covered class entities with changed and covered source entities
-	 * It makes sense that every changed class' source is in the changed source list
+	 * for every changedCoveredSource
+	 *    find it's classes ->push to okayClasses
+	 * for every changedCoveredClass
+	 *     if can not  find it's source in the change source list 
+	 *      push to modifiedClsStrSet
+	 * {modifiedClsStrSet} - {okayClasses}-> this is the set the classes changed but not source change - report error
 	 */
 	private static void sourceAndClassEntityRule(Set<String> versions){
 		for(String ver: versions){
+
 			if(changedCoveredEntityTable.rowKeySet().contains(ver)){
-				//transform a set of SourceEntity to a set of String
-				Set<String> modifiedSrcStrSet = Sets.newHashSet(Iterables.transform(
-						changedCoveredEntityTable.get(ver, EntityType.SOURCE+"-"+ENTITY_CHANGES_HEADERS[7])
-						,new Function<Entity,String>(){
-							public String apply(Entity src){
-								return src.toString();
-							}
-						}));
-
-				//transform a set of ClassEntity into a String set with the same format as changed source 
-				Iterable<String> modifiedClsStrSet = Iterables.transform(
-						changedCoveredEntityTable.get(ver, EntityType.CLAZZ+"-"+ENTITY_CHANGES_HEADERS[7]),
-						new Function<Entity,String>(){
-							public String apply(Entity e){
-								ClassEntity cls = (ClassEntity)e;
-								String src = cls.getBestGuessJavaSourceFileName();
-								return (cls.getPackageName().equals(""))?src+".java":
-									cls.getPackageName()+"."+src+".java";
-							}
-						});
-
+				Set<String> okayClasses = new HashSet<>();
+				Set<String> okaySources = new HashSet<>();
+				for(Entity src: changedCoveredEntityTable.get(ver, EntityType.SOURCE+"-"+ENTITY_CHANGES_HEADERS[7])){
+					okaySources.add(src.toString());
+					okayClasses.addAll(new QDoxJavaParser().getClassesFromSource(src.getArtifactFile()));
+				}
+				Set<String> modifiedClsStrSet = new HashSet<>();
+				for(Entity e:changedCoveredEntityTable.get(ver, EntityType.CLAZZ+"-"+ENTITY_CHANGES_HEADERS[7])){
+					ClassEntity clz = (ClassEntity)e;
+					String srcName = clz.getBestGuessJavaSourceFileName();
+				    String fullSrcName = clz.getPackageName().equals("")?srcName+".java":
+					                     clz.getPackageName()+"."+srcName+".java";
+					if(!(okaySources.contains(fullSrcName)))
+						modifiedClsStrSet.add(e.toString());
+				}
 				//verify every changed classes' source are in the changed source list
-				for(String cls: modifiedClsStrSet)
-					if(!modifiedSrcStrSet.contains(cls))
-						log.error(ver + " modified class " + cls+ " is not in modified source list\n");
+				for(String cls: Sets.difference(modifiedClsStrSet, okayClasses))
+					log.error(ver + " modified class " + cls+ " is not in modified source list\n");
 			}
 		}
 	}

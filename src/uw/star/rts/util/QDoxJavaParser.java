@@ -1,4 +1,4 @@
-package uw.star.rts.testsubject.sir_java;
+package uw.star.rts.util;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -87,6 +87,26 @@ public class QDoxJavaParser implements JUnit4TestsParser{
 							if(note.toString().matches(JUNIT4_TEST_ANNOTATION_REGEX))	
 								resultSet.add(cls.getFullyQualifiedName());
 				}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new ArrayList<String>(resultSet);
+	}
+	/**
+	 * this is not smart enough to find all inner classes and static classes
+	 * use with caution! 
+	 * @param testFile
+	 * @return
+	 */
+    public List<String> getClassesFromSource(Path testFile){
+		Set <String> resultSet = new HashSet<>();
+		JavaDocBuilder builder = new JavaDocBuilder();
+		try {
+			builder.addSource(testFile.toFile());
+			for(JavaSource src: builder.getSources())
+				for(JavaClass cls :src.getClasses())
+					resultSet.add(cls.getFullyQualifiedName());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

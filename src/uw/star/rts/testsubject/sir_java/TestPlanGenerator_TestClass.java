@@ -4,6 +4,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import uw.star.rts.util.QDoxJavaParser;
+
 
 public class TestPlanGenerator_TestClass {
 	public static void main(String[] args){

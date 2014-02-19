@@ -1,4 +1,4 @@
-package uw.star.rts.testsubject.sir_java;
+package uw.star.rts.util;
 
 import java.nio.file.Path;
 import java.util.List;
