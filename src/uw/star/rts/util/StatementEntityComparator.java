@@ -11,6 +11,7 @@ import uw.star.rts.artifact.StatementEntity;
  */
 public class StatementEntityComparator implements Comparator<StatementEntity> {
 
+	//TODO: this needs to be improved. it's possible that same source file have two identical statements, maybe check method name as well?
 	@Override
 	public int compare(StatementEntity o1, StatementEntity o2) {
 		if(o1.getPackageName().equals(o2.getPackageName())&&o1.getSrcName().equals(o2.getSrcName())&&

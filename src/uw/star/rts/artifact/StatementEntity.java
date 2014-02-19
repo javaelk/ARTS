@@ -97,7 +97,9 @@ public class StatementEntity extends Entity {
 
 	@Override
 	public String toString() {
-		return packageName + "." + srcName +"." + lineNum + "."+ statement; 
+		return (packageName==null||packageName.equals(""))?
+				srcName +"." + lineNum + "."+ statement:
+				packageName + "." + srcName +"." + lineNum + "."+ statement; 
 	}
 
 }

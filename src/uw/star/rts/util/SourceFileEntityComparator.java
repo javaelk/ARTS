@@ -7,9 +7,6 @@ public class SourceFileEntityComparator implements Comparator<SourceFileEntity> 
 
 	@Override
 	public int compare(SourceFileEntity o1, SourceFileEntity o2) {
-		if(o1.getPackageName().equals(o2.getPackageName())&&o1.getSourceFileName().equals(o2.getSourceFileName()))
-			return 0;
-		return -1;
+		return o1.getName().compareTo(o2.getName());
 	}
-
 }

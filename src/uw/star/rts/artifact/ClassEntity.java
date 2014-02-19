@@ -57,7 +57,9 @@ public class ClassEntity extends Entity{
 	
 	@Override
 	public String toString(){
-		return packageName+ "."+ className;
+		return (packageName==null||packageName.equals(""))?
+				className:
+				packageName+ "."+ className;
 	}
 	
 	public String getName(){

@@ -121,7 +121,9 @@ public class SourceFileEntity extends Entity {
 	}
 	@Override
 	public String toString(){
-		return packageName+"."+sourceFileName;
+		return  (packageName==null||packageName.equals(""))?
+				sourceFileName:
+				packageName+"."+sourceFileName;
 	}
 
 
