@@ -32,14 +32,14 @@ do
   cd $VER
   tar xvzf $HOME/git/jacoco_tags/jacoco/jacoco-$VER.tar.gz
 
-#remove all blank lines from src code
-$experiment_root/workspace/pretty/removeBlankLines.sh org.jacoco.core/src
+#beautify
+$HOME/java/Jindent/Jindent -J-Xms256M -J-Xmx256M -r -p $HOME/java/Jindent/RTS.xjs org.jacoco.core/src/*.java
 
 #remove comments from src code
 $experiment_root/workspace/pretty/pretty.sh org.jacoco.core/src
 
-#beautify
-$experiment_root/workspace/astyle/build/gcc/bin/astyle --style=java --recursive --suffix=none --quiet --max-code-length=200 --lineend=linux org.jacoco.core/src/*.java
+#remove all blank lines from src code
+$experiment_root/workspace/pretty/removeBlankLines.sh org.jacoco.core/src
 
 #fix licese header issue
 if [ -f org.jacoco.build/license-header.txt ]

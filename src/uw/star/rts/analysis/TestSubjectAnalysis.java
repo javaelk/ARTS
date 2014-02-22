@@ -266,6 +266,8 @@ public class TestSubjectAnalysis {
 	 * {modifiedClsStrSet} - {okayClasses}-> this is the set the classes changed but not source change - report error
 	 */
 	private static void sourceAndClassEntityRule(Set<String> versions){
+		log.info("checking rule : Changed covered class should in changed covered source\n");
+		
 		for(String ver: versions){
 
 			if(changedCoveredEntityTable.rowKeySet().contains(ver)){
@@ -285,10 +287,13 @@ public class TestSubjectAnalysis {
 						modifiedClsStrSet.add(e.toString());
 				}
 				//verify every changed classes' source are in the changed source list
+				
 				for(String cls: Sets.difference(modifiedClsStrSet, okayClasses))
 					log.error(ver + " modified class " + cls+ " is not in modified source list\n");
+		        		
 			}
 		}
+		log.info("Completed rule checking: Changed covered class should in changed covered source\n");
 	}
 
 
