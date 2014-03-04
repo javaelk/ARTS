@@ -36,8 +36,8 @@
 	<classpathentry kind="lib" path="lib/javaparser-1.0.8.jar" sourcepath="/home/wliu/java/javaparser-1.0.8-src"/>
 	<classpathentry kind="lib" path="lib/junit-4.10.jar"/>
 	<classpathentry kind="lib" path="lib/guava-14.0.1.jar"/>
-	<classpathentry kind="lib" path="lib/qdox-2.0-20101128.200019-2.jar"/>
 	<classpathentry kind="lib" path="/RTS-T11/bin" sourcepath="/RTS-T11/src"/>
 	<classpathentry kind="lib" path="/RTS-T25/bin" sourcepath="/RTS-T25/src"/>
+	<classpathentry kind="lib" path="lib/qdox-2.0-20130706.124819-8.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -59,7 +59,7 @@ public class ClassInstrumenter extends ClassAdapter implements IClassProbesVisit
       {
         probeCount = count;
       }
-    @Override
+    @Test
     public void visitEnd()
       {
         probeArrayStrategy.addMembers(cv);

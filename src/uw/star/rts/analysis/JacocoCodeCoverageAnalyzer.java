@@ -80,7 +80,7 @@ public class JacocoCodeCoverageAnalyzer extends CodeCoverageAnalyzer{
 		}
 	}
 
-    
+	
 	/**
 	 * Parse all sourcefile and statement for a package
 	 * @param p

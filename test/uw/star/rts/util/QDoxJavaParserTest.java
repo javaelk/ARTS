@@ -31,5 +31,12 @@ public class QDoxJavaParserTest{
 		System.out.println(clazz2);
 	}
 	
+	@Test
+	public void testGetAnnotation(){
+		List<String> testMethods = parser.getJUnit4TestMethodsFromFile(Paths.get("test/testfiles/DisMaxRequestHandlerTest.java"));
+		assertTrue(testMethods.contains("org.apache.solr.DisMaxRequestHandlerTest.testSomeStuff"));
+		
+ 	}
+	
 
 }

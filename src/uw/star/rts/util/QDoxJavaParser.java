@@ -18,7 +18,7 @@ public class QDoxJavaParser implements JUnit4TestsParser{
 	@Override
 	public List<String> getJUnit4TestMethodsFromFolder(Path testFileFolder){
 		List<String> resultLst = new ArrayList<>();
-		JavaDocBuilder builder = new JavaDocBuilder();
+		JavaProjectBuilder builder = new JavaProjectBuilder();
 		builder.addSourceTree(testFileFolder.toFile());
 		/*		//optionally add ClassLibrary here
 		ClassLibrary lib = builder.getClassLibrary();
@@ -27,7 +27,7 @@ public class QDoxJavaParser implements JUnit4TestsParser{
 			for(JavaClass cls :src.getClasses()){
 			    if(cls.isAbstract()) continue;   //BUG fix, skip abstract
 				for(JavaMethod m : cls.getMethods(true))  //add test methods from super
-					for ( Annotation note: m.getAnnotations())
+					for ( JavaAnnotation note: m.getAnnotations())
 						if(note.toString().matches(JUNIT4_TEST_ANNOTATION_REGEX))	
 							resultLst.add(cls.getFullyQualifiedName()+"."+m.getName());
 			}
@@ -36,7 +36,7 @@ public class QDoxJavaParser implements JUnit4TestsParser{
 	@Override
 	public List<String> getJUnit4TestMethodsFromFile(Path testFile){
 		List<String> resultLst = new ArrayList<>();
-		JavaDocBuilder builder = new JavaDocBuilder();
+		JavaProjectBuilder builder = new JavaProjectBuilder();
 		try {
 			builder.addSource(testFile.toFile());
 			/*		//optionally add ClassLibrary here
@@ -46,7 +46,7 @@ public class QDoxJavaParser implements JUnit4TestsParser{
 				for(JavaClass cls :src.getClasses()){
 					if(cls.isAbstract()) continue;   //BUG fix, skip abstract
 					for(JavaMethod m : cls.getMethods(true))  //add test methods from super
-						for ( Annotation note: m.getAnnotations())
+						for ( JavaAnnotation note: m.getAnnotations())
 							if(note.toString().matches(JUNIT4_TEST_ANNOTATION_REGEX))	
 								resultLst.add(cls.getFullyQualifiedName()+"."+m.getName());
 				}
@@ -60,13 +60,13 @@ public class QDoxJavaParser implements JUnit4TestsParser{
 	@Override
     public List<String> getJUnit4TestClassesFromFolder(Path testFileFolder){
 		Set <String> resultSet = new HashSet<>();
-		JavaDocBuilder builder = new JavaDocBuilder();
+		JavaProjectBuilder builder = new JavaProjectBuilder();
 		builder.addSourceTree(testFileFolder.toFile());
 		for(JavaSource src: builder.getSources())
 			for(JavaClass cls :src.getClasses()){
 			    if(cls.isAbstract()) continue;   //BUG fix, skip abstract
 				for(JavaMethod m : cls.getMethods(true))  //add test methods from super
-					for ( Annotation note: m.getAnnotations())
+					for ( JavaAnnotation note: m.getAnnotations())
 						if(note.toString().matches(JUNIT4_TEST_ANNOTATION_REGEX))	
 							resultSet.add(cls.getFullyQualifiedName());
 			}
@@ -76,14 +76,14 @@ public class QDoxJavaParser implements JUnit4TestsParser{
 	@Override
     public List<String> getJUnit4TestClassesFromFile(Path testFile){
 		Set <String> resultSet = new HashSet<>();
-		JavaDocBuilder builder = new JavaDocBuilder();
+		JavaProjectBuilder builder = new JavaProjectBuilder();
 		try {
 			builder.addSource(testFile.toFile());
 			for(JavaSource src: builder.getSources())
 				for(JavaClass cls :src.getClasses()){
 					if(cls.isAbstract()) continue;   //BUG fix, skip abstract
 					for(JavaMethod m : cls.getMethods(true))  //add test methods from super
-						for ( Annotation note: m.getAnnotations())
+						for ( JavaAnnotation note: m.getAnnotations())
 							if(note.toString().matches(JUNIT4_TEST_ANNOTATION_REGEX))	
 								resultSet.add(cls.getFullyQualifiedName());
 				}
@@ -101,7 +101,7 @@ public class QDoxJavaParser implements JUnit4TestsParser{
 	 */
     public List<String> getClassesFromSource(Path testFile){
 		Set <String> resultSet = new HashSet<>();
-		JavaDocBuilder builder = new JavaDocBuilder();
+		JavaProjectBuilder builder = new JavaProjectBuilder();
 		try {
 			builder.addSource(testFile.toFile());
 			for(JavaSource src: builder.getSources())
@@ -110,7 +110,10 @@ public class QDoxJavaParser implements JUnit4TestsParser{
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (com.thoughtworks.qdox.parser.ParseException e){
+			e.printStackTrace(); //print stacktrace but continue - return empty set of Classes
 		}
+		
 		return new ArrayList<String>(resultSet);
 	}
 }
