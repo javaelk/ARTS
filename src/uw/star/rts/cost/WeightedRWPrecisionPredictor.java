@@ -1,5 +1,12 @@
 package uw.star.rts.cost;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import uw.star.rts.analysis.*;
 import uw.star.rts.artifact.*;
 import ca.uwaterloo.uw.star.sts.schema.stStechniques.TechniqueDocument.Technique;
@@ -17,27 +24,29 @@ import ca.uwaterloo.uw.star.sts.schema.stStechniques.TechniqueDocument.Technique
  */
 public class WeightedRWPrecisionPredictor extends RWPredictor {
 	
+	static Logger log =LoggerFactory.getLogger(WeightedRWPrecisionPredictor.class.getName());
 	/**
 	 * @param app
 	 * @return the percentage of test case of T that the RW predictor predicts will be selected by technique teq 
 	 *         when an arbitary changes is made to P 
 	 */
-//	@Override
-/*    public static double getPredicatedPercetageOfTestCaseSelected(Program p, Technique teq){
-			
-		double wncm = 0;
-		foreach(Entity e:p.getEntities())
-		  wncm += (new CoverageAnalysis().getNumCoveredTestCases(e)) * e.getChangeFrequency();
-		return wncm/(p.getTestSuite.getSize());
-	}*/
-	/**
-	 * this predictor would need a change frequency of each entity. This would normally available from version
-	 * control tool. However, when version control tool is not available(in my case , only have each versions), there
-	 * is additional cost of perform change analysis. 
-	 * Even though the diff tool is very effective, there is an overhead of beautify src code and convert 
-	 * diff results back to modified objects arrays.
-	 * 
-	 */
-	
-
+	public static double predictSelectionRate(CodeCoverage cover,List<TestCase> regressionTestcases){
+		//		total number of test cases covered by ej *		weight of ej
+		double wncm=0.0;
+		for(Object ej: cover.getCoveredEntities()){
+			log.debug("covered entity " + ((SourceFileEntity)ej).getName() );
+			for(Object tc: cover.getLinkedEntitiesByColumn((Entity)ej)){   //find all test cases covers this entity ej
+				log.debug("test case " + (TestCase)tc);
+				if(regressionTestcases.contains((TestCase)tc)){
+					log.debug("add " + ((SourceFileEntity)ej).getChangeFrequency());
+					wncm += ((SourceFileEntity)ej).getChangeFrequency();
+				}else{
+					log.debug("test case " + (TestCase)tc + " is not a regression test case");
+				}
+			}
+		}
+		log.debug("wncm = " + wncm);
+		double pim = wncm/regressionTestcases.size();
+		return pim;
+	}
 }

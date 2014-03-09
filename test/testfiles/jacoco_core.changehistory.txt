@@ -1,0 +1,26 @@
+commit f8176c407fc64cf126a6b66047d295d22ddb402d
+Author: Evgeny Mandrikov <mandrikov@gmail.com>
+Date:   Tue Mar 4 19:40:28 2014 +0100
+
+    Prepare for next development iteration
+
+M	jacoco-maven-plugin.test/pom.xml
+M	jacoco-maven-plugin/pom.xml
+M	jacoco/pom.xml
+M	org.jacoco.agent.rt.test/pom.xml
+M	org.jacoco.agent.rt/pom.xml
+A	pom.xml
+commit de1febf766dbde623c767c5d1d492f0296474ae9
+Author: Evgeny Mandrikov <mandrikov@gmail.com>
+Date:   Mon Mar 3 22:24:25 2014 +0100
+
+    Prepare release 0.6.5
+
+D	jacoco-maven-plugin.test/pom.xml
+M	jacoco-maven-plugin/pom.xml
+M	jacoco/pom.xml
+A	org.jacoco.agent.rt.test/pom.xml
+M	org.jacoco.agent.rt/pom.xml
+M	org.jacoco.agent.test/META-INF/MANIFEST.MF
+M	org.jacoco.agent.test/pom.xml
+M	org.jacoco.agent/META-INF/MANIFEST.MF

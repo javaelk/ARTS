@@ -1,3 +1,0 @@
-actual,T11-Textual Differing-uw.star.rts.technique.TextualDifference_Source_precision,T11-CoverageAnalysisCost(ms),T11-ChangeAnalysisCost(ms),T11-ApplyTechniqueCost(ms),T11-TestExecutionCost(ms),T11-Textual Differing-uw.star.rts.technique.TextualDifference_Statement_precision,T11-CoverageAnalysisCost(ms),T11-ChangeAnalysisCost(ms),T11-ApplyTechniqueCost(ms),T11-TestExecutionCost(ms)
-apache-xml-security-v0,1.0,-1,-1,-1,-1,1.0,-1,-1,-1,-1
-apache-xml-security-v1,1.0,2147,20,2,-1,1.0,53486,24,40,-1

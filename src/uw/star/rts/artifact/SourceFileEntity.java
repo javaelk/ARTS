@@ -17,6 +17,7 @@ public class SourceFileEntity extends Entity {
 	// source <--> class <->method
 	// source <-->statement      
 	List<ClassEntity> clazz; //a source could be compiled into multiple classes 
+	double changeFrequency;
 	
 	List<StatementEntity> executableStm; //all executable statment ordered by line number
 	int[] stmIndex; //a  map table: index:line number, value: index in executableStm.This is for O(1) access of getStatementByLineNumber()
@@ -108,8 +109,13 @@ public class SourceFileEntity extends Entity {
 		return sourceFileName;
 	}
 	
+   public double getChangeFrequency(){
+	   return changeFrequency;
+   }
 
-
+   public void setChangeFrequency(double freq){
+	   this.changeFrequency = freq;
+   }
 	@Override
 	public EntityType getEntityType() {
 		return EntityType.SOURCE;
