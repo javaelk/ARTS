@@ -1,0 +1,36 @@
+------------------------------------------------------------------------
+r1570985 | uschindler | 2014-02-23 03:28:17 -0500 (Sun, 23 Feb 2014) | 1 line
+Changed paths:
+   D /lucene/dev/trunk/solr/licenses/jcl-over-slf4j-1.6.6.jar.sha1
+   M /lucene/dev/trunk/solr/licenses/jcl-over-slf4j-1.7.6.jar.sha1
+   D /lucene/dev/trunk/solr/licenses/jul-to-slf4j-1.6.6.jar.sha1
+   M /lucene/dev/trunk/solr/licenses/jul-to-slf4j-1.7.6.jar.sha1
+   D /lucene/dev/trunk/solr/licenses/slf4j-api-1.6.6.jar.sha1
+   M /lucene/dev/trunk/solr/licenses/slf4j-api-1.7.6.jar.sha1
+   D /lucene/dev/trunk/solr/contrib/morphlines-core/src/test-files/test-documents/testSVG.svg
+   M /lucene/dev/trunk/solr/licenses/slf4j-log4j12-1.7.6.jar.sha1
+
+Update license sha1 and eol-style
+------------------------------------------------------------------------
+r1570955 | markrmiller | 2014-02-22 21:22:02 -0500 (Sat, 22 Feb 2014) | 1 line
+Changed paths:
+   M /lucene/dev/trunk/solr/contrib/morphlines-core/src/test-files/morphlines-core.marker
+   M /lucene/dev/trunk/solr/contrib/morphlines-core/src/test-files/test-documents/cars.csv
+   M /lucene/dev/trunk/solr/contrib/morphlines-core/src/test-files/test-documents/complex.mbox
+   M /lucene/dev/trunk/solr/contrib/morphlines-core/src/test-files/test-documents/email.eml
+   M /lucene/dev/trunk/solr/contrib/morphlines-core/src/test-files/test-documents/rsstest.rss
+   M /lucene/dev/trunk/solr/contrib/morphlines-core/src/test-files/test-documents/sample-statuses-20120906-141433
+   M /lucene/dev/trunk/solr/contrib/morphlines-core/src/test-files/test-documents/testEMLX.emlx
+   M /lucene/dev/trunk/solr/contrib/morphlines-core/src/test-files/test-documents/testRFC822
+   M /lucene/dev/trunk/solr/contrib/morphlines-core/src/test-files/test-documents/testRTFVarious.rtf
+   M /lucene/dev/trunk/solr/contrib/morphlines-core/src/test-files/test-documents/testSVG.svg
+   M /lucene/dev/trunk/solr/contrib/morphlines-core/src/test-files/test-morphlines/loadSolrBasic.conf
+   M /lucene/dev/trunk/solr/contrib/morphlines-core/src/test-files/test-morphlines/solrCellDocumentTypes.conf
+   M /lucene/dev/trunk/solr/contrib/morphlines-core/src/test-files/test-morphlines/solrCellJPGCompressed.conf
+   M /lucene/dev/trunk/solr/contrib/morphlines-core/src/test-files/test-morphlines/solrCellXML.conf
+   M /lucene/dev/trunk/solr/contrib/morphlines-core/src/test-files/test-morphlines/tokenizeText.conf
+   M /lucene/dev/trunk/solr/contrib/morphlines-core/src/test-files/test-morphlines/tutorialReadAvroContainer.conf
+
+SOLR-5764: Set eol-style on test resources
+------------------------------------------------------------------------
+

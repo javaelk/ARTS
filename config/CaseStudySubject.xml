@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <casestudy_subject xmlns="http://www.uwaterloo.ca/uw/star/sts/schema/CaseStudySubject">
 	<cs_subject>
-		<name>jacoco-core-snapshots-TC</name>
+		<name>apache-solr-core-snapshots-TC</name>
 		<repository>SIR_JAVA</repository>
 		<trace_type>CODECOVERAGE_JACOCO</trace_type>
 		<test_type>unit</test_type>
@@ -10,5 +10,8 @@
 		<sequential_versions>9</sequential_versions>
 		<size_loc>5048</size_loc>
 		<size_class>105</size_class>
+		<repository_type>svn</repository_type>
+		<v0_sha_code>r1487602</v0_sha_code>
+		<source_code_path_prefix>/lucene/dev/trunk/solr/core/src/java/</source_code_path_prefix>
 	</cs_subject>
 </casestudy_subject>

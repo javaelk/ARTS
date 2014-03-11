@@ -10,29 +10,33 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import org.slf4j.LoggerFactory;
 
-public class GitChangeHistoryParser extends ChangeHistoryParser {
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+
+/**
+ * parser specific to SVN log --verbose ouput
+ * @author wliu
+ *
+ */
+public class SvnChangeHistoryParser extends ChangeHistoryParser{
+	static String SHACODE_PATTERN="^(r[0-9]+).*";
+	static String MODIFIED_FILE_PATTERN="^\\s+([MAD]{1})\\s+(.*)$";
+	static String COMMIT_SEPARATOR_PATTERN="^-+";
 	
-	static String SHACODE_PATTERN="^commit\\s+([0-9a-f]*)$";  //beginning line commit following with white space and hexdecimal sha code
-	static String MODIFIED_FILE_PATTERN="^([MAD]{1})\\s+(.*)$";  //begins with exactly 1 M,A or D and some white space then a file path
-	
-	public GitChangeHistoryParser(Path changeHistoryFile){
+	public SvnChangeHistoryParser(Path changeHistoryFile){
 		super(changeHistoryFile);
-		log = LoggerFactory.getLogger(GitChangeHistoryParser.class.getName());
+		log = LoggerFactory.getLogger(SvnChangeHistoryParser.class.getName());
 		allCommits = parse();
 	}
-	/*
-	 * parse the chagneHistory file and store the information as a list of commits
-     * this assumes the change history file is already order by date , latest date on the top of the file(descending order)
-	 */
+	
 	List<Commit> parse(){
 		List<Commit> parseResult = new ArrayList<>();
-		Charset charset = Charset.forName("US-ASCII");
+		Charset charset = Charset.forName("UTF-8");
 		Pattern shaCodePattern = Pattern.compile(SHACODE_PATTERN);//pre-compile patterns as they are used frequently in the loop
 		Pattern modifiedFilePattern = Pattern.compile(MODIFIED_FILE_PATTERN);
+		Pattern commitSeparatorPattern = Pattern.compile(COMMIT_SEPARATOR_PATTERN);
 		
 		try(BufferedReader reader = Files.newBufferedReader(changeHistoryFile, charset)){
 			String line = null;
@@ -41,31 +45,31 @@ public class GitChangeHistoryParser extends ChangeHistoryParser {
 			while((line=reader.readLine())!=null){
 				Matcher matcher_shaCodePattern = shaCodePattern.matcher(line);
 				Matcher matcher_modifiedFilePattern = modifiedFilePattern.matcher(line);
-
+                Matcher matcher_commitSeparatorPattern = commitSeparatorPattern.matcher(line);
+                
 				if(matcher_shaCodePattern.matches()){ //line contains sha code
-				   //log.debug("line: " + line + " matches " + matcher_shaCodePattern.group(1));
-				   if(aCommit!=null)
-					   parseResult.add(aCommit);  //push last commit into result list
+				   log.debug("line: " + line + " matches " + matcher_shaCodePattern.group(1));
 				   aCommit = new Commit(matcher_shaCodePattern.group(1));
 				   modifiedFilesMap = HashMultimap.create(); //The multimap does not store duplicate key-value pairs.
 				   aCommit.setModifiedFilesMap(modifiedFilesMap);
 				}else if(matcher_modifiedFilePattern.matches()){//line contain modified file
 					if(aCommit!=null){
 						modifiedFilesMap.put(matcher_modifiedFilePattern.group(1), matcher_modifiedFilePattern.group(2));
-					 //  	log.debug("line:" + line + " matches " + matcher_modifiedFilePattern.group(1));
+					   	log.debug("line:" + line + " matches " + matcher_modifiedFilePattern.group(1));
 					}else{
 						log.error("find " + line + " but there is no sha code line before it");
 					}
+				}else if(matcher_commitSeparatorPattern.matches()){ // this is a separator line ----
+					   if(aCommit!=null)
+						   parseResult.add(aCommit);  //push last commit into result list
 				}
 			}
-			   if(aCommit!=null)
-				   parseResult.add(aCommit);  //push last commit into result list
 		
 		}catch(IOException e){
 			log.error("error in reading file " + changeHistoryFile);
 			e.printStackTrace();
 		}
 		return parseResult;
+	
 	}
-    
 }

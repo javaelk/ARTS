@@ -46,6 +46,10 @@ public class Application {
 	ArtifactFactory af;
 	
 	TraceType traceType;
+	String svnType;
+	String v0ShaCode;
+	String sourceCodePathPrefix;
+	
 	
 	Path applicationRootPath; //root folder of application on disk
 	/**

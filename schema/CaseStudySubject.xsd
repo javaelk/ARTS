@@ -22,6 +22,9 @@
 				<xs:element name="sequential_versions" type="xs:int" />
 				<xs:element name="size_loc" type="xs:int" />
 				<xs:element name="size_class" type="xs:int" />
+				<xs:element name="repository_type" type="xs:string" />
+				<xs:element name="v0_sha_code" type="xs:string" />
+				<xs:element name="source_code_path_prefix" type="xs:string" />
 			</xs:all>
 		</xs:complexType>
 	</xs:element>
