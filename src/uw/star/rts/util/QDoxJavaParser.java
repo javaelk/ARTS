@@ -101,8 +101,7 @@ public class QDoxJavaParser implements JUnit4TestsParser{
 		return new ArrayList<String>(resultSet);
 	}
 	/**
-	 * this is not smart enough to find all inner classes and static classes
-	 * use with caution! 
+	 * Get all classes and nested classes from a Java source
 	 * @param testFile
 	 * @return
 	 */
@@ -112,8 +111,11 @@ public class QDoxJavaParser implements JUnit4TestsParser{
 		try {
 			builder.addSource(testFile.toFile());
 			for(JavaSource src: builder.getSources())
-				for(JavaClass cls :src.getClasses())
+				for(JavaClass cls :src.getClasses()){
 					resultSet.add(cls.getFullyQualifiedName());
+					for(JavaClass nested : cls.getNestedClasses())
+						resultSet.add(nested.getFullyQualifiedName());
+				}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

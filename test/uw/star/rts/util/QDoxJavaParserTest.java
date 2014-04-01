@@ -28,6 +28,7 @@ public class QDoxJavaParserTest{
 	public void testGetClassesFromSource(){
 		List<String> clazz = parser.getClassesFromSource(Paths.get("test/testfiles/ValueSourceParser.java"));
 		assertTrue(clazz.contains("org.apache.solr.search.NamedParser"));
+		System.out.println(clazz);
 		List<String> clazz2 = parser.getClassesFromSource(Paths.get("test/testfiles/ClassInstrumenter.java"));
 		System.out.println(clazz2);
 	}
