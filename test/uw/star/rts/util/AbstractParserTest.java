@@ -14,7 +14,7 @@ import uw.star.rts.util.JUnit4TestsParser;
 
 public abstract class AbstractParserTest {
 	
-	static JUnit4TestsParser parser;
+	public static JUnit4TestsParser parser;
 
 	@Test
 	public void testjunit4TestMethodParser(){

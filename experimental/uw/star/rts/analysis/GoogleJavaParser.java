@@ -26,7 +26,7 @@ import japa.parser.ast.visitor.VoidVisitorAdapter;
  * @author wliu
  *
  */
-public class GoogleJavaParser implements JavaParser {
+public class GoogleJavaParser implements JavaParser {      
 
 	Program p;
 	ArtifactFactory af;
