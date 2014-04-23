@@ -209,7 +209,9 @@ public class Engine {
 	 * @return a list of techniques and their implementations 
 	 */
 	static uw.star.rts.technique.Technique proposeSelectionTechnique(TechniqueFactory tf,List<uw.star.rts.technique.Technique> techs, List<Application> testsubjects){
+		//TODO: log.info("3.2 == Techniques Filtering == ");
 		techs = tf.filterOnDataAvailability(techs);
+		//TODO:.. whole bunch of stuff still missing ...
 
 		List<String> testSubjectVersions = new ArrayList<>();
 		for(Application app: testsubjects){

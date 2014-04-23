@@ -20,7 +20,7 @@ public class SourceFileEntity extends Entity {
 	double changeFrequency;
 	
 	List<StatementEntity> executableStm; //all executable statment ordered by line number
-	int[] stmIndex; //a  map table: index:line number, value: index in executableStm.This is for O(1) access of getStatementByLineNumber()
+	int[] stmIndex; //a mapping table: index:line number, value: index in executableStm.This is for O(1) access of getStatementByLineNumber()
 	Logger log;
 	
 	public SourceFileEntity(Program p, String packageName, String srcfileName, Path sourceFile){
@@ -54,7 +54,7 @@ public class SourceFileEntity extends Entity {
     
 	/**
 	 * 
-	 * @param allExecutableStms, a set of all executable statements, statements are ordered and unique
+	 * @param allExecutableStms, a set of all executable statements, statements are ordered and unique. stm index number does not match with line number though
 	 * @return
 	 */
 	public boolean setExecutableStatements(List<StatementEntity> allExecutableStms){
@@ -71,7 +71,7 @@ public class SourceFileEntity extends Entity {
 		//line number of last element is the size of index array
 		if(executableStm.size()>0){
 			stmIndex = new int[executableStm.get(executableStm.size()-1).getLineNumber()];
-			//initalize to -1, otherwise default is zero which will point to the 1st element of executableStm
+			//initialize to -1, otherwise default is zero which will point to the 1st element of executableStm
 			for(int i=0;i<stmIndex.length;i++)
 				stmIndex[i] = -1;
 

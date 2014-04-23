@@ -1,4 +1,4 @@
-package uw.star.rts.analysis;
+package uw.star.rts.util;
 
 import java.lang.reflect.Modifier;
 import java.nio.file.Path;
@@ -9,10 +9,6 @@ import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.TestClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import uw.star.rts.util.FileUtility;
-import uw.star.rts.util.JUnit4TestsParser;
-import uw.star.rts.util.JavaFileParser;
 
 /**
  * This class utilize Junit testclass and FrameworkMethod to parse all JUnit4 test methods. It need access to both source and class files.

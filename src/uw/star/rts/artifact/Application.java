@@ -103,6 +103,14 @@ public class Application {
 		return traceType;
 	}
 
+	/**
+	 * TODO: take this value from each subject's xml file
+	 * @return
+	 */
+	
+	public boolean changeFrequencyIsSupported(){
+		return false;
+	}
 	/*
 	 * 
 	 * DESIGN PATTERN:Do not expose internal data structure. Only expose various getter methods. 

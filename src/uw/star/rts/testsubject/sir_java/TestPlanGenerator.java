@@ -5,7 +5,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import uw.star.rts.analysis.JUnitTestClassParser;
 import uw.star.rts.util.*;
 
 import com.google.common.collect.*;
@@ -19,7 +18,7 @@ public class TestPlanGenerator {
 		//Path testcaseSrcDir = Paths.get("/home/wliu/sir/jacoco_core/versions.alt/orig/v1/jacoco_core/build/src/testcases");
 		Path testcaseSrcDir = Paths.get(args[0]);
 		
-		//boolean USEQDOXONLY = true;
+		boolean USEQDOXONLY = true;
 		//Path testcaseClassDir = Paths.get("/home/wliu/sir/jacoco_core/versions.alt/orig/v0/jacoco_core/build/testcases");
 		//Path mainClassDir = Paths.get("/home/wliu/sir/jacoco_core/versions.alt/orig/v0/jacoco_core/build/classes");
 
@@ -28,7 +27,7 @@ public class TestPlanGenerator {
 		QDoxJavaParser qparser = new QDoxJavaParser();
 		List<String> methods2 =qparser.getJUnit4TestMethodsFromFolder(testcaseSrcDir); 
 		
-/*		if(!USEQDOXONLY){
+		if(!USEQDOXONLY){
 		// method 1 - use junit4
 		JUnitTestClassParser jparser = new JUnitTestClassParser();
 		List<String> methods1 = jparser.getJUnit4TestMethodsFromFolder(testcaseSrcDir);
@@ -42,8 +41,8 @@ public class TestPlanGenerator {
 				System.out.println("diff - " + s);
 		}}
 		else{
-*/			for(String m: methods2)
+			for(String m: methods2)
 				System.out.println("-P["+m+"]");
-	
+		}
 	}
 }

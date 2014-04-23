@@ -60,4 +60,18 @@
 		<size_loc>16800</size_loc>
 		<size_class>143</size_class>
 	</cs_subject>
+		<cs_subject>
+		<name>jacoco-core-snapshots-TM</name>
+		<repository>SIR_JAVA</repository>
+		<trace_type>CODECOVERAGE_JACOCO</trace_type>
+		<test_type>unit</test_type>
+		<fault_type>seeded</fault_type>
+		<language>java</language>
+		<sequential_versions>9</sequential_versions>
+		<size_loc>5048</size_loc>
+		<size_class>105</size_class>
+		<repository_type>svn</repository_type>
+		<v0_sha_code>r1487602</v0_sha_code>
+		<source_code_path_prefix>/lucene/dev/trunk/solr/core/src/java/</source_code_path_prefix>
+	</cs_subject>
 </casestudy_subject>
